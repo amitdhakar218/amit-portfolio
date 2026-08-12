@@ -1,5 +1,19 @@
 let profileData = null;
 
+// Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyAWGMnCK0qxMfDaXP-EBhSfzI--STPvyis",
+  authDomain: "amit-portfolio-79db4.firebaseapp.com",
+  projectId: "amit-portfolio-79db4",
+  storageBucket: "amit-portfolio-79db4.appspot.com",
+  messagingSenderId: "1025346253206",
+  appId: "1:1025346253206:web:1b88c9cb7c1b7c3e9c8c1e",
+  databaseURL: "https://amit-portfolio-79db4-default-rtdb.firebaseio.com"
+};
+
+const app = firebase.initializeApp(firebaseConfig);
+const db = firebase.database(app);
+
 const ICON_MAP = {
   "github.com": "github", "linkedin.com": "linkedin", "instagram.com": "instagram",
   "youtube.com": "youtube", "youtu.be": "youtube", "facebook.com": "facebook", "fb.com": "facebook",
@@ -77,9 +91,10 @@ async function loadThemeTokens() {
 
 async function loadProfileCommon() {
   try {
-    const res = await fetch("../shared/data/profile.json");
-    if (!res.ok) throw new Error("not found");
-    profileData = await res.json();
+    // Firebase से profile data load करो
+    const snapshot = await db.ref("profile").get();
+    if (!snapshot.exists()) throw new Error("Profile not found in Firebase");
+    profileData = snapshot.val();
     window.profileData = profileData;
 
     const taglineEl = document.querySelector(".hero-tagline");
