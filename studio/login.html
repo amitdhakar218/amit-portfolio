@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Login</title>
+  <meta name="description" content="Amit Studio — login to manage the portfolio website." />
+
+  <link rel="stylesheet" href="../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../shared/css/components.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="login-page">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+
+    <div class="card login-card">
+      <div style="text-align:center; margin-bottom: var(--space-lg);">
+        <h2 class="text-gradient" style="margin-bottom: var(--space-xs);">Amit Studio</h2>
+        <p class="text-muted">Sign in to manage your portfolio</p>
+      </div>
+
+      <p class="text-muted" id="login-status" style="text-align:center; margin-bottom: var(--space-md); min-height: 1.2em;"></p>
+
+      <form id="login-form">
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <label class="form-field">
+            <span>Username</span>
+            <input type="text" id="field-username" required autocomplete="username" />
+          </label>
+          <label class="form-field">
+            <span>Password</span>
+            <input type="password" id="field-password" required autocomplete="current-password" />
+          </label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-lg);" id="login-submit-btn">
+          🔒 Login
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

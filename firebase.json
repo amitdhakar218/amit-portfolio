@@ -1,0 +1,22 @@
+{
+  "hosting": [
+    {
+      "target": "portfolio",
+      "public": "portfolio",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "target": "studio",
+      "public": "studio",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    }
+  ]
+}

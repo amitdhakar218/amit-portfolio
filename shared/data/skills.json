@@ -1,0 +1,10 @@
+[
+  { "id": "skill-001", "name": "HTML", "percentage": 90 },
+  { "id": "skill-002", "name": "CSS", "percentage": 85 },
+  { "id": "skill-003", "name": "JavaScript", "percentage": 80 },
+  { "id": "skill-004", "name": "Node.js", "percentage": 70 },
+  { "id": "skill-005", "name": "Git", "percentage": 75 },
+  { "id": "skill-006", "name": "GitHub", "percentage": 80 },
+  { "id": "skill-007", "name": "Express", "percentage": 60 },
+  { "id": "skill-008", "name": "AI Development", "percentage": 65 }
+]

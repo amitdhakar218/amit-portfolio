@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Resume</title>
+  <link rel="stylesheet" href="../../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../../shared/css/components.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="studio-layout">
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
+        <a href="profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="projects.html" class="sidebar-item">💼 Projects</a>
+        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="certificates.html" class="sidebar-item">🎓 Certificates</a>
+        <a href="resume.html" class="sidebar-item active">📄 Resume</a>
+        <a href="gallery.html" class="sidebar-item">🖼️ Gallery</a>
+        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+    <div class="studio-main">
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Resume</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+      <main class="studio-content">
+        <p class="text-muted" id="resume-status" style="margin-bottom: var(--space-lg);">Loading resume info...</p>
+
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title">Current Resume</h3>
+          <p class="card-body text-mono" id="resume-current-path" style="margin: var(--space-sm) 0;">—</p>
+          <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+            <a href="#" class="btn btn-primary" id="resume-preview-btn" target="_blank">👁️ Download Preview</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3 class="card-title">Replace Resume</h3>
+          <form id="resume-form">
+            <div class="form-grid">
+              <label class="form-field form-field-wide"><span>Resume File Path</span><input type="text" id="field-resume-path" placeholder="assets/resume.pdf" /></label>
+              <label class="form-field form-field-wide">
+                <span>— OR Upload Resume PDF —</span>
+                <input type="file" id="resume-file-upload" accept="application/pdf" />
+                <p class="text-muted" id="resume-upload-status" style="font-size:0.8rem; margin-top:4px;"></p>
+              </label>
+            </div>
+            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary">💾 Update Resume Path</button>
+            </div>
+          </form>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/app.js"></script>
+  <script src="../js/resume.js"></script>
+</body>
+</html>

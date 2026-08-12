@@ -1,0 +1,17 @@
+{
+  "projects": {
+    "default": "amit-portfolio-os"
+  },
+  "targets": {
+    "amit-portfolio-os": {
+      "hosting": {
+        "portfolio": [
+          "amit-portfolio-os"
+        ],
+        "studio": [
+          "amit-portfolio-studio"
+        ]
+      }
+    }
+  }
+}

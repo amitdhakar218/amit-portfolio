@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projects | Amit Dhakar</title>
+  <link rel="stylesheet" href="../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../shared/css/components.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="side-panel-overlay" id="side-panel-overlay"></div>
+  <div class="side-panel" id="side-panel">
+    <button class="side-panel-close" id="side-panel-close">✕</button>
+    <div style="clear:both; margin-top: var(--space-lg);"></div>
+    <a href="index.html" class="side-panel-link">🏠 Home</a>
+    <a href="about.html" class="side-panel-link">👤 About</a>
+    <a href="projects.html" class="side-panel-link">💼 Projects</a>
+    <a href="skills.html" class="side-panel-link">🧠 Skills</a>
+    <a href="certificates.html" class="side-panel-link">🎓 Certificates</a>
+    <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
+    <a href="videos.html" class="side-panel-link">🎬 Videos</a>
+    <a href="blog.html" class="side-panel-link">📝 Blog</a>
+    <a href="achievements.html" class="side-panel-link">🏆 Achievements</a>
+    <a href="contact.html" class="side-panel-link">📩 Contact</a>
+    <a href="#" class="side-panel-link feedback-link" id="side-panel-feedback-link">💬 Feedback</a>
+  </div>
+
+  <nav class="navbar" id="main-navbar">
+    <a href="index.html" class="brand-logo-wrap" style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);">
+      <img src="assets/logo.png" alt="Logo" class="brand-logo-img scrolled-always" id="brand-logo-img" />
+      <div class="navbar-logo brand-name-text">Amit<span style="color: var(--color-primary);">.</span></div>
+    </a>
+    <button class="menu-toggle-btn" id="menu-toggle-btn">⋮</button>
+  </nav>
+
+  <button type="button" id="feedback-fab" class="btn btn-primary" style="position:fixed; bottom:24px; right:24px; z-index:200; border-radius:50px;">💬 Feedback</button>
+  <div class="modal-overlay" id="feedback-modal-overlay" style="display:none;">
+    <div class="card modal-box">
+      <h3 class="card-title">💬 Leave Feedback</h3>
+      <p id="feedback-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
+      <form id="feedback-form">
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <label class="form-field"><span>Your Name (optional)</span><input type="text" id="fb-name" /></label>
+          <label class="form-field"><span>Your Feedback</span><textarea id="fb-message" rows="3" required></textarea></label>
+        </div>
+        <div class="hero-buttons" style="margin-top: var(--space-md);">
+          <button type="submit" class="btn btn-primary" style="flex:1;">Send</button>
+          <button type="button" class="btn btn-outline" id="feedback-close-btn" style="flex:1;">Close</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <section class="section" style="padding-top: var(--space-xl);">
+    <h2 class="section-title">Projects</h2>
+    <div class="projects-grid" id="projects-grid"><p class="text-muted">Loading...</p></div>
+  </section>
+
+  <footer class="footer">
+    <p class="text-muted" id="footer-location"></p>
+    <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
+  </footer>
+
+  <script src="js/common.js"></script>
+  <script src="js/projects-page.js"></script>
+</body>
+</html>

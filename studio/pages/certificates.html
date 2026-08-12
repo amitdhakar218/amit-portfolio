@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Certificates</title>
+  <link rel="stylesheet" href="../../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../../shared/css/components.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="studio-layout">
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
+        <a href="profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="projects.html" class="sidebar-item">💼 Projects</a>
+        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="certificates.html" class="sidebar-item active">🎓 Certificates</a>
+        <a href="resume.html" class="sidebar-item">📄 Resume</a>
+        <a href="gallery.html" class="sidebar-item">🖼️ Gallery</a>
+        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+    <div class="studio-main">
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Certificates</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+      <main class="studio-content">
+        <p class="text-muted" id="certificates-status" style="margin-bottom: var(--space-lg);">Loading certificates...</p>
+
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title" id="certificate-form-title">Add New Certificate</h3>
+          <form id="certificate-form">
+            <input type="hidden" id="field-certificate-id" />
+            <div class="form-grid">
+              <label class="form-field"><span>Certificate Name</span><input type="text" id="field-certificate-name" required /></label>
+              <label class="form-field"><span>Organization</span><input type="text" id="field-certificate-org" required /></label>
+              <label class="form-field"><span>Issue Date</span><input type="text" id="field-certificate-date" placeholder="e.g. 2026" /></label>
+              <label class="form-field">
+                <span>Image Path or Link</span>
+                <input type="text" id="field-certificate-image" placeholder="assets/certificate.png or https://..." />
+              </label>
+              <label class="form-field">
+                <span>— OR Upload Image —</span>
+                <input type="file" id="certificate-image-upload" accept="image/*" />
+                <p class="text-muted" id="certificate-image-upload-status" style="font-size:0.8rem; margin-top:4px;"></p>
+              </label>
+              <label class="form-field form-field-wide"><span>PDF Path</span><input type="text" id="field-certificate-pdf" placeholder="assets/certificates/my-cert.pdf" /></label>
+              <label class="form-field form-field-wide">
+                <span>— OR Upload PDF —</span>
+                <input type="file" id="certificate-pdf-upload" accept="application/pdf" />
+                <p class="text-muted" id="certificate-pdf-upload-status" style="font-size:0.8rem; margin-top:4px;"></p>
+              </label>
+            </div>
+            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary" id="certificate-submit-btn">+ Add Certificate</button>
+              <button type="button" class="btn btn-outline" id="certificate-cancel-btn" style="display:none;">Cancel Edit</button>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="card-title" style="margin-bottom: var(--space-md);">Existing Certificates</h3>
+        <div class="certificates-grid stagger-grid" id="studio-certificates-grid"></div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/app.js"></script>
+  <script src="../js/certificates.js"></script>
+</body>
+</html>

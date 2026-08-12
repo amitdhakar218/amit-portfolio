@@ -1,0 +1,21 @@
+{
+  "name": "amit-portfolio-os-api",
+  "version": "0.3.0",
+  "description": "Backend API for Amit Portfolio OS.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "express-session": "^1.18.0",
+    "bcryptjs": "^2.4.3",
+    "nodemailer": "^6.9.13",
+    "multer": "^1.4.5-lts.1"
+  },
+  "author": "Amit Dhakar",
+  "license": "MIT",
+  "private": true
+}

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Gallery</title>
+  <link rel="stylesheet" href="../../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../../shared/css/components.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+  <div class="studio-layout">
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
+        <a href="profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="projects.html" class="sidebar-item">💼 Projects</a>
+        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="certificates.html" class="sidebar-item">🎓 Certificates</a>
+        <a href="resume.html" class="sidebar-item">📄 Resume</a>
+        <a href="gallery.html" class="sidebar-item active">🖼️ Gallery</a>
+        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+    <div class="studio-main">
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Gallery</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+      <main class="studio-content">
+        <p class="text-muted" id="gallery-status" style="margin-bottom: var(--space-lg);">Loading gallery...</p>
+
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title" id="gallery-form-title">Add New Image</h3>
+          <form id="gallery-form">
+            <input type="hidden" id="field-gallery-id" />
+            <div class="form-grid">
+              <label class="form-field"><span>Title</span><input type="text" id="field-gallery-title" required /></label>
+              <label class="form-field">
+                <span>Image Path or Link</span>
+                <input type="text" id="field-gallery-image" placeholder="assets/gallery/photo1.jpg or https://..." required />
+              </label>
+              <label class="form-field">
+                <span>— OR Upload from Device —</span>
+                <input type="file" id="gallery-file-upload" accept="image/*" />
+                <p class="text-muted" id="gallery-upload-status" style="font-size:0.8rem; margin-top:4px;"></p>
+              </label>
+              <label class="form-field form-field-wide"><span>Caption</span><input type="text" id="field-gallery-caption" /></label>
+            </div>
+            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary" id="gallery-submit-btn">+ Add Image</button>
+              <button type="button" class="btn btn-outline" id="gallery-cancel-btn" style="display:none;">Cancel Edit</button>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="card-title" style="margin-bottom: var(--space-md);">Existing Images</h3>
+        <div class="certificates-grid stagger-grid" id="studio-gallery-grid"></div>
+      </main>
+    </div>
+  </div>
+  <script src="../js/app.js"></script>
+  <script src="../js/gallery.js"></script>
+</body>
+</html>

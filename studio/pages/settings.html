@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Settings</title>
+  <meta name="description" content="Amit Studio — general website settings." />
+
+  <link rel="stylesheet" href="../../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../../shared/css/components.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <div class="studio-layout">
+
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
+        <a href="profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="projects.html" class="sidebar-item">💼 Projects</a>
+        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="certificates.html" class="sidebar-item">🎓 Certificates</a>
+        <a href="resume.html" class="sidebar-item">📄 Resume</a>
+        <a href="gallery.html" class="sidebar-item">🖼️ Gallery</a>
+        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="settings.html" class="sidebar-item active">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <div class="studio-main">
+
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Settings</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+
+      <main class="studio-content">
+        <p class="text-muted" id="settings-status" style="margin-bottom: var(--space-lg);">Manage general website settings.</p>
+
+        <!-- ===== Section Visibility Toggles (NEW) ===== -->
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title">Website Sections — Show / Hide</h3>
+          <p class="text-muted" style="font-size:0.85rem; margin-bottom: var(--space-md);">
+            Turn any section off to hide it from the public website (and its nav link). Turn it back on anytime — no data is deleted.
+          </p>
+          <div id="section-toggles" style="display:flex; flex-direction:column; gap: var(--space-sm);">
+            <!-- Rendered by settings.js -->
+          </div>
+        </div>
+
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title">Site Info</h3>
+          <form id="settings-form">
+            <div class="form-grid">
+              <label class="form-field form-field-wide">
+                <span>Site Title (Browser Tab)</span>
+                <input type="text" id="field-site-title" placeholder="Amit Dhakar | AI Application Developer" />
+              </label>
+              <label class="form-field form-field-wide">
+                <span>Meta Description (SEO)</span>
+                <textarea id="field-site-description" rows="2"></textarea>
+              </label>
+              <label class="form-field">
+                <span>Favicon Path</span>
+                <input type="text" id="field-favicon" placeholder="assets/favicon.ico" />
+              </label>
+            </div>
+            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary">💾 Save Settings</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="card" style="border-color: #ef4444;">
+          <h3 class="card-title" style="color: #ef4444;">⚠️ Danger Zone</h3>
+          <p class="card-body text-muted">Reload Studio and discard any unsaved form input on this page.</p>
+          <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+            <button type="button" class="btn btn-outline" id="settings-reset-btn" style="border-color: #ef4444; color: #ef4444;">↺ Reload Studio</button>
+          </div>
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/settings.js"></script>
+</body>
+</html>
