@@ -72,15 +72,16 @@
 
   <div class="topbar-links">
     <a href="#home-hero">Home</a>
-    <a href="about.html">About</a>
-    <a href="projects.html">Projects</a>
-    <a href="skills.html">Skills</a>
-    <a href="certificates.html">Certificates</a>
-    <a href="gallery.html">Gallery</a>
-    <a href="videos.html">Videos</a>
-    <a href="blog.html">Blog</a>
-    <a href="achievements.html">Achievements</a>
-    <a href="contact.html">Contact</a>
+    <a href="#about">About</a>
+    <a href="#resume">Resume</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#certificates">Certificates</a>
+    <a href="#gallery">Gallery</a>
+    <a href="#videos">Videos</a>
+    <a href="#blog">Blog</a>
+    <a href="#achievements">Achievements</a>
+    <a href="#contact-section">Contact</a>
   </div>
 
   <section id="home-hero" class="hero">
@@ -98,6 +99,104 @@
     </div>
   </section>
 
+  <section id="about" class="section">
+    <h2 class="section-title">About Me</h2>
+    <div class="about-container" style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); align-items:center;">
+      <img src="assets/profile.jpg" alt="Profile" class="about-photo reveal" style="border-radius: var(--radius-lg); max-width:100%;">
+      <div class="about-text reveal">
+        <p class="text-muted" id="about-intro">Loading...</p>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap: var(--space-md); margin-top: var(--space-lg);">
+          <div class="card">
+            <h4 style="margin-bottom: var(--space-sm);">🎓 Education</h4>
+            <p class="text-muted" id="about-education">Loading...</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-bottom: var(--space-sm);">💼 Experience</h4>
+            <p class="text-muted" id="about-experience">Loading...</p>
+          </div>
+          <div class="card">
+            <h4 style="margin-bottom: var(--space-sm);">🎯 Goals</h4>
+            <p class="text-muted" id="about-goals">Loading...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="resume" class="section">
+    <h2 class="section-title">Resume</h2>
+    <div class="card reveal">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <h3 class="card-title">📄 Download My Resume</h3>
+          <p class="text-muted">Get a full copy of my resume — education, projects, and skills.</p>
+        </div>
+        <a href="#" class="btn btn-primary" id="resume-download-btn" download>⬇️ Download</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects" class="section">
+    <h2 class="section-title">Projects</h2>
+    <div id="projects-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="skills" class="section">
+    <h2 class="section-title">Skills</h2>
+    <div id="skills-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="certificates" class="section">
+    <h2 class="section-title">Certificates</h2>
+    <div id="certificates-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="gallery" class="section">
+    <h2 class="section-title">Gallery</h2>
+    <div id="gallery-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="videos" class="section">
+    <h2 class="section-title">Videos</h2>
+    <div id="videos-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="blog" class="section">
+    <h2 class="section-title">Blog</h2>
+    <div id="blog-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="achievements" class="section">
+    <h2 class="section-title">Achievements</h2>
+    <div id="achievements-content" class="reveal">Loading...</div>
+  </section>
+
+  <section id="contact-section" class="section">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-links reveal">
+      <a href="mailto:" class="btn btn-outline" id="contact-email">📧 Email</a>
+      <a href="tel:" class="btn btn-outline" id="contact-phone">📱 Phone</a>
+      <a href="https://wa.me/919174573889" class="btn btn-primary" target="_blank">💬 WhatsApp Me</a>
+      <div class="contact-links" id="contact-social-links"></div>
+    </div>
+    <div class="card reveal" style="margin-top: var(--space-lg); max-width: 500px;">
+      <h3 class="card-title">📩 Send Me Info Directly</h3>
+      <p class="text-muted" style="font-size:0.85rem; margin-bottom: var(--space-md);">Fill this and it goes straight to my email.</p>
+      <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
+      <form id="contact-form">
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <label class="form-field"><span>Your Email *</span><input type="email" id="cf-email" required /></label>
+          <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
+          <label class="form-field"><span>Message *</span><textarea id="cf-message" rows="3" required></textarea></label>
+          <label class="form-field"><span>📸 Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
+          <label class="form-field"><span>🎥 Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
+          <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
+      </form>
+    </div>
+  </section>
+
   <footer class="footer">
     <p class="text-muted" id="footer-location"></p>
     <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
@@ -108,7 +207,11 @@
   <script src="js/common.js"></script>
 
   <script>
-    window.addEventListener("profileLoaded", initTypingAnimation);
+    window.addEventListener("profileLoaded", () => {
+      initTypingAnimation();
+      loadHomePageSections();
+    });
+
     function initTypingAnimation() {
       const el = document.getElementById("typing-text");
       if (!el) return;
@@ -135,6 +238,117 @@
         setTimeout(type, deleting ? 50 : 100);
       }
       type();
+    }
+
+    function loadHomePageSections() {
+      const db = window.db;
+      if (!db) return;
+
+      // Load Projects
+      db.ref("projects").once("value", (snapshot) => {
+        const projects = snapshot.val();
+        const el = document.getElementById("projects-content");
+        if (projects && Object.keys(projects).length > 0) {
+          el.innerHTML = Object.values(projects).map(p => `
+            <div class="card reveal" style="margin-bottom: var(--space-md);">
+              <h3 class="card-title">${p.title || "Project"}</h3>
+              <p class="text-muted">${p.description || ""}</p>
+              ${p.link ? `<a href="${p.link}" target="_blank" class="btn btn-outline">View →</a>` : ""}
+            </div>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No projects added yet.</p>`;
+        }
+      });
+
+      // Load Skills
+      db.ref("skills").once("value", (snapshot) => {
+        const skills = snapshot.val();
+        const el = document.getElementById("skills-content");
+        if (skills && Object.keys(skills).length > 0) {
+          el.innerHTML = Object.values(skills).map(s => `
+            <div class="card reveal" style="display:inline-block; margin-right: var(--space-sm); margin-bottom: var(--space-sm);">
+              <span style="font-weight:bold;">${s.name || "Skill"}</span>
+            </div>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No skills added yet.</p>`;
+        }
+      });
+
+      // Load Certificates
+      db.ref("certificates").once("value", (snapshot) => {
+        const certs = snapshot.val();
+        const el = document.getElementById("certificates-content");
+        if (certs && Object.keys(certs).length > 0) {
+          el.innerHTML = Object.values(certs).map(c => `
+            <div class="card reveal" style="margin-bottom: var(--space-md);">
+              <h3 class="card-title">🎓 ${c.title || "Certificate"}</h3>
+              <p class="text-muted">${c.issuer || ""}</p>
+            </div>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No certificates added yet.</p>`;
+        }
+      });
+
+      // Load Gallery
+      db.ref("gallery").once("value", (snapshot) => {
+        const gallery = snapshot.val();
+        const el = document.getElementById("gallery-content");
+        if (gallery && Object.keys(gallery).length > 0) {
+          el.innerHTML = `<div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-md);">
+            ${Object.values(gallery).map(img => `<img src="${img.url}" alt="${img.title}" style="width:100%; border-radius: var(--radius-md); cursor:pointer;" />`).join("")}
+          </div>`;
+        } else {
+          el.innerHTML = `<p class="text-muted">No gallery images yet.</p>`;
+        }
+      });
+
+      // Load Videos
+      db.ref("videos").once("value", (snapshot) => {
+        const videos = snapshot.val();
+        const el = document.getElementById("videos-content");
+        if (videos && Object.keys(videos).length > 0) {
+          el.innerHTML = Object.values(videos).map(v => `
+            <div class="card reveal" style="margin-bottom: var(--space-md);">
+              <h3 class="card-title">🎥 ${v.title || "Video"}</h3>
+              <a href="${v.url}" target="_blank" class="btn btn-outline">Watch →</a>
+            </div>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No videos added yet.</p>`;
+        }
+      });
+
+      // Load Blog
+      db.ref("blog").once("value", (snapshot) => {
+        const blog = snapshot.val();
+        const el = document.getElementById("blog-content");
+        if (blog && Object.keys(blog).length > 0) {
+          el.innerHTML = Object.values(blog).map(b => `
+            <div class="card reveal" style="margin-bottom: var(--space-md);">
+              <h3 class="card-title">📝 ${b.title || "Post"}</h3>
+              <p class="text-muted">${b.content?.substring(0, 150) || ""}...</p>
+            </div>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No blog posts yet.</p>`;
+        }
+      });
+
+      // Load Achievements
+      db.ref("profile/about/achievements").once("value", (snapshot) => {
+        const achievements = snapshot.val();
+        const el = document.getElementById("achievements-content");
+        if (achievements) {
+          el.innerHTML = achievements.split("\n").filter(Boolean).map(a => `
+            <p class="card-body reveal" style="margin-bottom: var(--space-sm);">🏆 ${a}</p>
+          `).join("");
+        } else {
+          el.innerHTML = `<p class="text-muted">No achievements yet.</p>`;
+        }
+      });
     }
   </script>
 </body>
