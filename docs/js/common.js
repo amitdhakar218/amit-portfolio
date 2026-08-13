@@ -67,7 +67,7 @@ function initScrollReveal() {
 
 async function loadThemeTokens() {
   try {
-    const res = await fetch("../shared/config/design-tokens.json");
+    const res = await fetch("shared/config/design-tokens.json");
     if (!res.ok) throw new Error("not found");
     const tokens = await res.json();
     const root = document.documentElement.style;

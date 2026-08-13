@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.getElementById("projects-grid");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/projects.json");
+    const res = await fetch("shared/data/projects.json");
     if (!res.ok) throw new Error("not found");
     const projects = await res.json();
     grid.innerHTML = "";

@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const list = document.getElementById("skills-list");
   if (!list) return;
   try {
-    const res = await fetch("../shared/data/skills.json");
+    const res = await fetch("shared/data/skills.json");
     if (!res.ok) throw new Error("not found");
     const skills = await res.json();
     list.innerHTML = "";

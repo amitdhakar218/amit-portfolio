@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const grid = document.getElementById("certificates-grid");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/certificates.json");
+    const res = await fetch("shared/data/certificates.json");
     if (!res.ok) throw new Error("not found");
     const certificates = await res.json();
     grid.innerHTML = "";

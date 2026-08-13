@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const grid = document.getElementById("full-gallery-grid");
   try {
-    const res = await fetch("../shared/data/gallery.json");
+    const res = await fetch("shared/data/gallery.json");
     if (!res.ok) throw new Error("gallery.json not found");
     const gallery = await res.json();
     grid.innerHTML = "";

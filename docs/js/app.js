@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 /* ---------- NEW: Load saved theme (fixes "Theme not working" bug) ---------- */
 async function loadThemeTokens() {
   try {
-    const res = await fetch("../shared/config/design-tokens.json");
+    const res = await fetch("shared/config/design-tokens.json");
     if (!res.ok) throw new Error("design-tokens.json not found");
     const tokens = await res.json();
     const root = document.documentElement.style;
@@ -58,7 +58,7 @@ async function loadThemeTokens() {
 
 async function applySectionVisibility() {
   try {
-    const res = await fetch("../shared/data/site-settings.json");
+    const res = await fetch("shared/data/site-settings.json");
     if (!res.ok) throw new Error("site-settings.json not found yet");
     const data = await res.json();
     const sections = data.sections || {};
@@ -75,7 +75,7 @@ async function applySectionVisibility() {
 
 async function loadProfile() {
   try {
-    const res = await fetch("../shared/data/profile.json");
+    const res = await fetch("shared/data/profile.json");
     if (!res.ok) throw new Error("profile.json not found yet");
     profileData = await res.json();
 
@@ -173,7 +173,7 @@ async function loadProjects() {
   const grid = document.getElementById("projects-grid");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/projects.json");
+    const res = await fetch("shared/data/projects.json");
     if (!res.ok) throw new Error("projects.json not found");
     const projects = await res.json();
     grid.innerHTML = "";
@@ -199,7 +199,7 @@ async function loadSkills() {
   const list = document.getElementById("skills-list");
   if (!list) return;
   try {
-    const res = await fetch("../shared/data/skills.json");
+    const res = await fetch("shared/data/skills.json");
     if (!res.ok) throw new Error("skills.json not found");
     const skills = await res.json();
     list.innerHTML = "";
@@ -216,7 +216,7 @@ async function loadCertificates() {
   const grid = document.getElementById("certificates-grid");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/certificates.json");
+    const res = await fetch("shared/data/certificates.json");
     if (!res.ok) throw new Error("certificates.json not found");
     const certificates = await res.json();
     grid.innerHTML = "";
@@ -234,7 +234,7 @@ async function loadGallery() {
   const viewAllBox = document.getElementById("gallery-viewall");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/gallery.json");
+    const res = await fetch("shared/data/gallery.json");
     if (!res.ok) throw new Error("gallery.json not found");
     const gallery = await res.json();
     grid.innerHTML = "";
@@ -259,7 +259,7 @@ async function loadVideos() {
   const viewAllBox = document.getElementById("videos-viewall");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/videos.json");
+    const res = await fetch("shared/data/videos.json");
     if (!res.ok) throw new Error("videos.json not found");
     const videos = await res.json();
     grid.innerHTML = "";
@@ -281,7 +281,7 @@ async function loadBlog() {
   const viewAllBox = document.getElementById("blog-viewall");
   if (!grid) return;
   try {
-    const res = await fetch("../shared/data/blog.json");
+    const res = await fetch("shared/data/blog.json");
     if (!res.ok) throw new Error("blog.json not found");
     const posts = await res.json();
     grid.innerHTML = "";

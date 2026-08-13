@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const grid = document.getElementById("full-videos-grid");
   try {
-    const res = await fetch("../shared/data/videos.json");
+    const res = await fetch("shared/data/videos.json");
     if (!res.ok) throw new Error("videos.json not found");
     const videos = await res.json();
     grid.innerHTML = "";

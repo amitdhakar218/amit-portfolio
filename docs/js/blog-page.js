@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const grid = document.getElementById("full-blog-grid");
   try {
-    const res = await fetch("../shared/data/blog.json");
+    const res = await fetch("shared/data/blog.json");
     if (!res.ok) throw new Error("blog.json not found");
     const posts = await res.json();
     grid.innerHTML = "";
