@@ -1,3 +1,0 @@
-theme: null
-plugins: []
-exclude: [node_modules, api, studio, .git]
