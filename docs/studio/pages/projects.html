@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Projects</title>
+  <meta name="description" content="Amit Studio — manage portfolio projects." />
+
+  <link rel="stylesheet" href="../../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../../shared/css/components.css" />
+  <link rel="stylesheet" href="../css/style.css" />
+</head>
+<body>
+
+  <div class="studio-layout">
+
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
+        <a href="profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="projects.html" class="sidebar-item active">💼 Projects</a>
+        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="certificates.html" class="sidebar-item">🎓 Certificates</a>
+        <a href="resume.html" class="sidebar-item">📄 Resume</a>
+        <a href="gallery.html" class="sidebar-item">🖼️ Gallery</a>
+        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <div class="studio-main">
+
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Projects</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+
+      <main class="studio-content">
+        <p class="text-muted" id="projects-status" style="margin-bottom: var(--space-lg);">Loading projects...</p>
+
+        <div class="card" style="margin-bottom: var(--space-lg);">
+          <h3 class="card-title" id="project-form-title">Add New Project</h3>
+          <form id="project-form">
+            <input type="hidden" id="field-project-id" />
+            <div class="form-grid">
+              <label class="form-field">
+                <span>Project Name</span>
+                <input type="text" id="field-project-name" required />
+              </label>
+              <label class="form-field">
+                <span>Technology (comma separated)</span>
+                <input type="text" id="field-project-tech" placeholder="JavaScript, Node.js" />
+              </label>
+              <label class="form-field form-field-wide">
+                <span>Description</span>
+                <textarea id="field-project-description" rows="2"></textarea>
+              </label>
+              <label class="form-field">
+                <span>Screenshot Path</span>
+                <input type="text" id="field-project-screenshot" placeholder="assets/project-placeholder.png" />
+              </label>
+              <label class="form-field">
+                <span>GitHub Link</span>
+                <input type="url" id="field-project-github" />
+              </label>
+              <label class="form-field">
+                <span>Demo Link</span>
+                <input type="url" id="field-project-demo" />
+              </label>
+              <label class="form-field">
+                <span>Video Link</span>
+                <input type="url" id="field-project-video" />
+              </label>
+              <label class="form-field">
+                <span>Future Update?</span>
+                <select id="field-project-future">
+                  <option value="false">No</option>
+                  <option value="true">Yes</option>
+                </select>
+              </label>
+            </div>
+            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+              <button type="submit" class="btn btn-primary" id="project-submit-btn">+ Add Project</button>
+              <button type="button" class="btn btn-outline" id="project-cancel-btn" style="display:none;">Cancel Edit</button>
+            </div>
+          </form>
+        </div>
+
+        <h3 class="card-title" style="margin-bottom: var(--space-md);">Existing Projects</h3>
+        <div class="projects-grid stagger-grid" id="studio-projects-grid">
+          <!-- Rendered by projects.js -->
+        </div>
+      </main>
+
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script src="../js/projects.js"></script>
+</body>
+</html>

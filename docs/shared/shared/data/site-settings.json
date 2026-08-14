@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "about": true,
+    "projects": true,
+    "skills": true,
+    "certificates": true,
+    "gallery": true,
+    "videos": true,
+    "blog": true
+  }
+}

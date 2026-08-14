@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Studio | Dashboard</title>
+  <meta name="description" content="Amit Studio — CMS to manage the Amit Dhakar Portfolio Website." />
+
+  <link rel="stylesheet" href="../shared/css/design-system.css" />
+  <link rel="stylesheet" href="../shared/css/components.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="studio-layout">
+
+    <aside class="sidebar">
+      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
+      <nav>
+        <a href="index.html" class="sidebar-item active">📊 Dashboard</a>
+        <a href="pages/profile.html" class="sidebar-item">👤 Profile</a>
+        <a href="pages/projects.html" class="sidebar-item">💼 Projects</a>
+        <a href="pages/skills.html" class="sidebar-item">🧠 Skills</a>
+        <a href="pages/certificates.html" class="sidebar-item">🎓 Certificates</a>
+        <a href="pages/resume.html" class="sidebar-item">📄 Resume</a>
+        <a href="pages/gallery.html" class="sidebar-item">🖼️ Gallery</a>
+        <a href="pages/videos.html" class="sidebar-item">🎬 Videos</a>
+        <a href="pages/blog.html" class="sidebar-item">📝 Blog</a>
+        <a href="pages/analytics.html" class="sidebar-item">📈 Analytics</a>
+        <a href="pages/theme.html" class="sidebar-item">🎨 Theme</a>
+        <a href="pages/settings.html" class="sidebar-item">⚙️ Settings</a>
+      </nav>
+    </aside>
+
+    <div class="studio-main">
+
+      <header class="navbar studio-topbar">
+        <div><h2 style="margin:0;">Dashboard</h2></div>
+        <div style="display:flex; align-items:center; gap: var(--space-md);">
+          <div class="text-muted text-mono" id="studio-date"></div>
+          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
+        </div>
+      </header>
+
+      <main class="studio-content">
+        <h3 class="text-muted" style="margin-bottom: var(--space-lg);">Welcome back, Amit 👋</h3>
+
+        <div class="dashboard-grid">
+          <div class="card">
+            <h3 class="card-title">💼 Projects</h3>
+            <p class="card-body" id="stat-projects">— items</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">🧠 Skills</h3>
+            <p class="card-body" id="stat-skills">— items</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">🎓 Certificates</h3>
+            <p class="card-body" id="stat-certificates">— items</p>
+          </div>
+          <div class="card">
+            <h3 class="card-title">📝 Blog Posts</h3>
+            <p class="card-body" id="stat-blog">— items</p>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top: var(--space-lg);">
+          <h3 class="card-title">Quick Actions</h3>
+          <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
+            <a href="pages/projects.html" class="btn btn-primary">+ Add Project</a>
+            <a href="pages/skills.html" class="btn btn-outline">+ Add Skill</a>
+            <a href="pages/certificates.html" class="btn btn-outline">+ Add Certificate</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script src="../shared/js/firebase-app-compat.js"></script>
+<script src="../shared/js/firebase-firestore-compat.js"></script>
+<script src="../shared/js/firebase-storage-compat.js"></script>
+<script src="../shared/js/firebase.js"></script>
+<script src="../shared/js/firestore-service.js"></script>
+<script src="js/app.js"></script>
+</html>
