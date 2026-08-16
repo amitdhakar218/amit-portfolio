@@ -23,7 +23,47 @@
     <a href="blog.html" class="side-panel-link">📝 Blog</a>
     <a href="achievements.html" class="side-panel-link">🏆 Achievements</a>
     <a href="contact.html" class="side-panel-link">📩 Contact</a>
+    <a href="#" class="side-panel-link feedback-link" id="side-panel-feedback-link">💬 Feedback</a>
   </div>
+
+  
+  <!-- Feedback -->
+  <button type="button" id="feedback-fab" class="btn btn-primary">
+    💬 Feedback
+  </button>
+
+  <div class="modal-overlay" id="feedback-modal-overlay">
+    <div class="card modal-box">
+      <h3 class="card-title">💬 Leave Feedback</h3>
+
+      <p id="feedback-status" class="text-muted" style="min-height:1.2em; margin-bottom:var(--space-sm);"></p>
+
+      <form id="feedback-form">
+        <div class="form-grid" style="grid-template-columns:1fr;">
+          <label class="form-field">
+            <span>Your Name (optional)</span>
+            <input type="text" id="fb-name" />
+          </label>
+
+          <label class="form-field">
+            <span>Your Feedback</span>
+            <textarea id="fb-message" rows="4" required></textarea>
+          </label>
+        </div>
+
+        <div class="hero-buttons" style="margin-top:var(--space-md);">
+          <button type="submit" class="btn btn-primary" style="flex:1;">
+            Send
+          </button>
+
+          <button type="button" class="btn btn-outline" id="feedback-close-btn" style="flex:1;">
+            Close
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
 
   <nav class="navbar" id="main-navbar">
     <a href="index.html" class="brand-logo-wrap" style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);">
@@ -218,5 +258,6 @@
       }
     });
   </script>
+  <script src="js/home-page.js"></script>
 </body>
 </html>

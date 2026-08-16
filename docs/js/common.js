@@ -19,17 +19,44 @@ if (typeof firebase !== "undefined" && !firebase.apps.length) {
 let profileData = null;
 
 const ICON_MAP = {
-  "github.com": "github", "linkedin.com": "linkedin", "instagram.com": "instagram",
-  "youtube.com": "youtube", "youtu.be": "youtube", "facebook.com": "facebook", "fb.com": "facebook",
-  "twitter.com": "x", "x.com": "x", "wa.me": "whatsapp", "whatsapp.com": "whatsapp",
-  "t.me": "telegram", "telegram": "telegram", "behance.net": "behance", "dribbble.com": "dribbble",
-  "medium.com": "medium", "discord": "discord", "twitch.tv": "twitch", "reddit.com": "reddit"
+  "github.com": "github",
+  "linkedin.com": "linkedin",
+  "instagram.com": "instagram",
+  "youtube.com": "youtube",
+  "youtu.be": "youtube",
+  "facebook.com": "facebook",
+  "fb.com": "facebook",
+  "twitter.com": "x",
+  "x.com": "x",
+  "wa.me": "whatsapp",
+  "whatsapp.com": "whatsapp",
+  "t.me": "telegram",
+  "telegram": "telegram",
+  "behance.net": "behance",
+  "dribbble.com": "dribbble",
+  "medium.com": "medium",
+  "discord": "discord",
+  "twitch.tv": "twitch",
+  "reddit.com": "reddit"
 };
 
 function getIconSlug(url) {
   const u = (url || "").toLowerCase();
-  for (const key in ICON_MAP) { if (u.includes(key)) return ICON_MAP[key]; }
+  for (const key in ICON_MAP) {
+    if (u.includes(key)) return ICON_MAP[key];
+  }
   return null;
+}
+
+function getSocialIcon(slug) {
+  const icons = {
+    github: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .7A11.3 11.3 0 0 0 8.4 22.8c.57.1.78-.25.78-.55v-2.1c-3.18.69-3.85-1.35-3.85-1.35-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.54-.29-5.2-1.27-5.2-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.17a10.9 10.9 0 0 1 5.7 0c2.17-1.48 3.13-1.17 3.13-1.17.62 1.57.23 2.73.11 3.02.73.8 1.18 1.82 1.18 3.07 0 4.39-2.67 5.35-5.21 5.64.41.36.78 1.07.78 2.16v3.2c0 .3.21.65.79.54A11.3 11.3 0 0 0 12 .7Z"/></svg>`,
+      linkedin: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.03 2.03 0 1 0 5.25 7.06 2.03 2.03 0 0 0 5.25 3ZM20.44 13.42c0-3.46-1.84-5.07-4.3-5.07-1.98 0-2.86 1.09-3.35 1.85V8.5H9.41V20h3.38v-6.06c0-1.6.3-3.15 2.28-3.15 1.95 0 1.98 1.83 1.98 3.25V20h3.39v-6.58Z"/></svg>`,
+      youtube: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.55 3.6 12 3.6 12 3.6s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"/></svg>`,
+      instagram: `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 12 16.5 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 12 14.5 2.5 2.5 0 0 0 12 9.5ZM17.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"/></svg>`
+    };
+
+    return icons[slug] || `<span class="social-icon-fallback">🔗</span>`;
 }
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -156,7 +183,11 @@ function renderSocialLinks(links) {
   const contactContainer = document.getElementById("contact-social-links");
   const buildLinks = () => links.map(link => {
     const slug = getIconSlug(link.url);
-    return `<a href="${link.url}" class="btn btn-outline social-link-tracked" data-slug="${slug || ''}" target="_blank">${slug ? slug.toUpperCase() : "Link"}</a>`;
+    const label = slug ? slug.charAt(0).toUpperCase() + slug.slice(1) : "Link";
+    return `<a href="${link.url}" class="btn btn-outline social-link-tracked" data-slug="${slug || ''}" target="_blank" rel="noopener noreferrer" aria-label="${label}">
+      <span class="social-icon">${getSocialIcon(slug)}</span>
+      <span>${label}</span>
+    </a>`;
   }).join("");
   if (heroContainer) heroContainer.innerHTML = buildLinks();
   if (contactContainer) contactContainer.innerHTML = buildLinks();
@@ -189,17 +220,75 @@ function initSidePanel() {
 
 function initFeedbackModal() {
   const fab = document.getElementById("feedback-fab");
+  const sideLink = document.getElementById("side-panel-feedback-link");
   const overlay = document.getElementById("feedback-modal-overlay");
-  if (!fab || !overlay) return;
-  fab.addEventListener("click", () => overlay.style.display = "flex");
-  document.getElementById("feedback-close-btn").addEventListener("click", () => overlay.style.display = "none");
-  
-  document.getElementById("feedback-form").addEventListener("submit", async (e) => {
+  const closeBtn = document.getElementById("feedback-close-btn");
+  const form = document.getElementById("feedback-form");
+
+  if (!overlay || !form) return;
+
+  const openModal = (e) => {
+    if (e) e.preventDefault();
+    overlay.style.display = "flex";
+  };
+
+  const closeModal = () => {
+    overlay.style.display = "none";
+  };
+
+  if (fab) fab.addEventListener("click", openModal);
+  if (sideLink) sideLink.addEventListener("click", openModal);
+  if (closeBtn) closeBtn.addEventListener("click", closeModal);
+
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeModal();
+  });
+
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-    const msg = document.getElementById("fb-message").value;
-    if (typeof firebase !== "undefined") {
-      await firebase.database().ref("feedback").push({ message: msg, timestamp: new Date().toISOString() });
-      document.getElementById("feedback-status").textContent = "✅ Sent!";
+
+    const name = document.getElementById("fb-name")?.value.trim() || "";
+    const message = document.getElementById("fb-message")?.value.trim() || "";
+    const status = document.getElementById("feedback-status");
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    if (!message) return;
+
+    if (submitBtn) submitBtn.disabled = true;
+    if (status) status.textContent = "Sending...";
+
+    try {
+      if (typeof firebase === "undefined" || !firebase.database) {
+        throw new Error("Firebase connection unavailable");
+      }
+
+      await firebase.database().ref("feedback").push({
+        name,
+        message,
+        timestamp: new Date().toISOString()
+      });
+
+      if (status) {
+        status.textContent = "✅ Feedback sent successfully!";
+        status.style.color = "var(--color-accent)";
+      }
+
+      form.reset();
+
+      setTimeout(() => {
+        closeModal();
+        if (status) status.textContent = "";
+      }, 1200);
+
+    } catch (err) {
+      console.error("Feedback error:", err);
+
+      if (status) {
+        status.textContent = `❌ ${err.message}`;
+        status.style.color = "#ef4444";
+      }
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 }
