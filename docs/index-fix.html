@@ -1,0 +1,27 @@
+<!-- Add this script block BEFORE closing </body> tag in index.html -->
+<script>
+  async function loadHomePageData() {
+    try {
+      // Load Projects
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("projects").once("value", (snapshot) => {
+          const projects = snapshot.val();
+          if (projects) {
+            const count = Object.keys(projects).length;
+            document.getElementById("projects-grid").innerHTML = `<p>${count} Project${count === 1 ? "" : "s"}</p>`;
+          }
+        });
+        
+        firebase.database().ref("skills").once("value", (snapshot) => {
+          const skills = snapshot.val();
+          if (skills) {
+            const list = Object.values(skills).map(s => `<span class="btn btn-outline">${s}</span>`).join("");
+            document.getElementById("skills-list").innerHTML = list;
+          }
+        });
+      }
+    } catch (err) { console.log("Data load error:", err); }
+  }
+  
+  document.addEventListener("DOMContentLoaded", loadHomePageData);
+</script>

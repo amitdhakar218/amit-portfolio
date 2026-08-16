@@ -194,5 +194,26 @@
 
   <script src="js/common.js"></script>
   <script type="module" src="js/app.js"></script>
+  <script>
+    async function loadHomeData() {
+      try {
+        if (typeof firebase !== "undefined" && firebase.database) {
+          firebase.database().ref("projects").limitToFirst(3).once("value", snap => {
+            const data = snap.val();
+            const count = data ? Object.keys(data).length : 0;
+            document.getElementById("projects-grid").innerHTML = `<p>${count} Projects</p>`;
+          });
+          firebase.database().ref("skills").limitToFirst(5).once("value", snap => {
+            const data = snap.val();
+            if (data) {
+              const html = Object.values(data).slice(0, 5).map(s => `<span class="btn btn-outline">${s}</span>`).join("");
+              document.getElementById("skills-list").innerHTML = html;
+            }
+          });
+        }
+      } catch (e) {}
+    }
+    document.addEventListener("DOMContentLoaded", loadHomeData);
+  </script>
 </body>
 </html>
