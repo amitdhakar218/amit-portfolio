@@ -70,20 +70,6 @@
     <button class="menu-toggle-btn" id="menu-toggle-btn">⋮</button>
   </nav>
 
-  <div class="topbar-links">
-    <a href="#home-hero">Home</a>
-    <a href="#about">About</a>
-    <a href="#resume">Resume</a>
-    <a href="#projects">Projects</a>
-    <a href="#skills">Skills</a>
-    <a href="#certificates">Certificates</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#videos">Videos</a>
-    <a href="#blog">Blog</a>
-    <a href="#achievements">Achievements</a>
-    <a href="#contact-section">Contact</a>
-  </div>
-
   <section id="home-hero" class="hero">
     <div class="hero-blob hero-blob-1"></div>
     <div class="hero-blob hero-blob-2"></div>
@@ -99,100 +85,44 @@
     </div>
   </section>
 
-  <section id="about" class="section reveal">
-    <h2 class="section-title">About Me</h2>
-    <div class="about-content">
-      <img src="assets/profile.jpg" alt="Amit Dhakar" class="about-photo radius-lg" id="about-photo" />
-      <div class="about-text">
-        <p id="about-intro">Loading...</p>
-        <div class="about-details">
-          <div class="card"><h3 class="card-title">🎓 Education</h3><p class="card-body" id="about-education">—</p></div>
-          <div class="card"><h3 class="card-title">💼 Experience</h3><p class="card-body" id="about-experience">—</p></div>
-          <div class="card"><h3 class="card-title">🎯 Goals</h3><p class="card-body" id="about-goals">—</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="resume" class="section reveal">
-    <h2 class="section-title">Resume</h2>
-    <div class="card" style="max-width: 500px;">
-      <h3 class="card-title">📄 Download My Resume</h3>
-      <p class="card-body" style="margin-bottom: var(--space-md);">Get a full copy of my resume — education, projects, and skills in one PDF.</p>
-      <a href="#" class="btn btn-primary" id="resume-download-btn" download target="_blank">⬇️ Download Resume</a>
-    </div>
-  </section>
-
-  <section id="projects" class="section reveal">
-    <h2 class="section-title">Projects</h2>
-    <div class="projects-grid" id="projects-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="skills" class="section reveal">
-    <h2 class="section-title">Skills</h2>
-    <div class="skills-list" id="skills-list"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="certificates" class="section reveal">
-    <h2 class="section-title">Certificates</h2>
-    <div class="certificates-grid" id="certificates-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="gallery" class="section reveal">
-    <h2 class="section-title">Gallery</h2>
-    <div class="certificates-grid" id="gallery-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="videos" class="section reveal">
-    <h2 class="section-title">Videos</h2>
-    <div class="projects-grid" id="videos-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="blog" class="section reveal">
-    <h2 class="section-title">Blog</h2>
-    <div class="blog-grid" id="blog-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="achievements" class="section reveal">
-    <h2 class="section-title">Achievements</h2>
-    <div class="card" id="achievements-content"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="contact-section" class="section reveal">
-    <h2 class="section-title">Contact</h2>
-    <div class="contact-links" id="contact-social-links"></div>
-
-    <div class="hero-buttons" style="margin-top: var(--space-lg); flex-wrap:wrap;">
-      <a href="https://wa.me/919174573889" class="btn btn-primary" target="_blank">💬 WhatsApp Me</a>
-      <a href="mailto:" class="btn btn-outline" id="contact-email">📧 Send Email</a>
-      <a href="tel:" class="btn btn-outline" id="contact-phone">📱 Call</a>
-    </div>
-
-    <div class="card" style="margin-top: var(--space-lg); max-width: 500px;">
-      <h3 class="card-title">📩 Send Me Info Directly</h3>
-      <p id="contact-form-status" class="text-muted" style="min-height:1.2em;"></p>
-      <form id="contact-form">
-        <div class="form-grid" style="grid-template-columns: 1fr;">
-          <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
-          <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
-          <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
-      </form>
-    </div>
-  </section>
-
   <footer class="footer">
     <p class="text-muted" id="footer-location"></p>
     <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
   </footer>
 
-  <!-- Firebase Compat CDN Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js"></script>
   <script src="js/common.js"></script>
-  <script type="module" src="js/app.js"></script>
+
+  <script>
+    window.addEventListener("profileLoaded", initTypingAnimation);
+    function initTypingAnimation() {
+      const el = document.getElementById("typing-text");
+      if (!el) return;
+      const roles = window.profileData?.roles?.length ? window.profileData.roles : ["AI Application Developer"];
+      let roleIndex = 0, charIndex = 0, deleting = false;
+      function type() {
+        const currentRole = roles[roleIndex];
+        if (!deleting) { 
+          el.textContent = currentRole.substring(0, charIndex + 1); 
+          charIndex++; 
+          if (charIndex === currentRole.length) { 
+            deleting = true; 
+            setTimeout(type, 1500); 
+            return; 
+          } 
+        } else { 
+          el.textContent = currentRole.substring(0, charIndex - 1); 
+          charIndex--; 
+          if (charIndex === 0) { 
+            deleting = false; 
+            roleIndex = (roleIndex + 1) % roles.length; 
+          } 
+        }
+        setTimeout(type, deleting ? 50 : 100);
+      }
+      type();
+    }
+  </script>
 </body>
 </html>
