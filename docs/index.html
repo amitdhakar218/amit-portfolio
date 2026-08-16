@@ -13,14 +13,14 @@
   <div class="side-panel" id="side-panel">
     <button class="side-panel-close" id="side-panel-close">✕</button>
     <a href="index.html" class="side-panel-link">🏠 Home</a>
-    <a href="about.html" class="side-panel-link">👤 About</a>
-    <a href="projects.html" class="side-panel-link">💼 Projects</a>
-    <a href="skills.html" class="side-panel-link">🧠 Skills</a>
-    <a href="certificates.html" class="side-panel-link">🎓 Certificates</a>
-    <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
-    <a href="videos.html" class="side-panel-link">🎬 Videos</a>
-    <a href="blog.html" class="side-panel-link">📝 Blog</a>
-    <a href="contact.html" class="side-panel-link">📩 Contact</a>
+    <a href="#about" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">👤 About</a>
+    <a href="#projects" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">💼 Projects</a>
+    <a href="#skills" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🧠 Skills</a>
+    <a href="#certificates" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🎓 Certificates</a>
+    <a href="#gallery" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🖼️ Gallery</a>
+    <a href="#videos" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🎬 Videos</a>
+    <a href="#blog" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">📝 Blog</a>
+    <a href="#contact-section" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">📩 Contact</a>
   </div>
 
   <nav class="navbar" id="main-navbar">
@@ -93,7 +93,8 @@
   <section id="contact-section" class="section reveal">
     <h2 class="section-title">Contact</h2>
     <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
-    <form id="contact-form">
+    <div class="contact-links" id="contact-social-links"></div>
+    <form id="contact-form" style="margin-top: var(--space-lg);">
       <div class="form-grid" style="grid-template-columns: 1fr;">
         <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
         <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
@@ -112,20 +113,127 @@
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  
   <script src="js/common.js"></script>
-  <script src="js/projects-page.js"></script>
-  <script src="js/skills-page.js"></script>
-  <script src="js/certificates-page.js"></script>
-  <script src="js/gallery-page.js"></script>
-  <script src="js/videos-page.js"></script>
-  <script src="js/blog.js"></script>
-
+  
   <script>
     const CLOUDINARY_CLOUD_NAME = "va6h8cbz";
     const CLOUDINARY_PRESET = "amit_portfolio_uploads";
     const CONTACT_API_URL = "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
 
+    // Projects Loading
+    async function loadProjects() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("projects").once("value", snapshot => {
+          const projects = snapshot.val();
+          if (!projects) return;
+          const html = Object.entries(projects).map(([id, proj]) => `
+            <div class="card">
+              <h3 class="card-title">${proj.name || 'Project'}</h3>
+              <p class="card-body">${proj.description || ''}</p>
+              ${proj.link ? `<a href="${proj.link}" class="btn btn-outline" target="_blank">View</a>` : ''}
+            </div>
+          `).join("");
+          document.getElementById("projects-grid").innerHTML = html;
+        });
+      }
+    }
+
+    // Skills Loading
+    async function loadSkills() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("skills").once("value", snapshot => {
+          const skills = snapshot.val();
+          if (!skills) return;
+          const html = Object.values(skills).map(skill => `<span class="btn btn-outline">${skill}</span>`).join("");
+          document.getElementById("skills-list").innerHTML = html;
+        });
+      }
+    }
+
+    // Certificates Loading
+    async function loadCertificates() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("certificates").once("value", snapshot => {
+          const certs = snapshot.val();
+          if (!certs) return;
+          const html = Object.entries(certs).map(([id, cert]) => `
+            <div class="card">
+              <h3 class="card-title">${cert.name || 'Certificate'}</h3>
+              <p class="text-muted">${cert.date || ''}</p>
+              ${cert.image ? `<img src="${cert.image}" alt="${cert.name}" style="max-width:200px; margin-top: var(--space-sm);" />` : ''}
+            </div>
+          `).join("");
+          document.getElementById("certificates-grid").innerHTML = html;
+        });
+      }
+    }
+
+    // Gallery Loading
+    async function loadGallery() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("gallery").once("value", snapshot => {
+          const gallery = snapshot.val();
+          if (!gallery) return;
+          const html = Object.entries(gallery).map(([id, item]) => `
+            <div class="card">
+              ${item.image ? `<img src="${item.image}" alt="${item.title || ''}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;" />` : ''}
+              <h3 class="card-title" style="margin-top: var(--space-sm);">${item.title || 'Gallery Item'}</h3>
+            </div>
+          `).join("");
+          document.getElementById("gallery-grid").innerHTML = html;
+        });
+      }
+    }
+
+    // Videos Loading
+    async function loadVideos() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("videos").once("value", snapshot => {
+          const videos = snapshot.val();
+          if (!videos) return;
+          const html = Object.entries(videos).map(([id, vid]) => `
+            <div class="card">
+              <h3 class="card-title">${vid.title || 'Video'}</h3>
+              <p class="card-body">${vid.description || ''}</p>
+              ${vid.link ? `<a href="${vid.link}" class="btn btn-outline" target="_blank">Watch</a>` : ''}
+            </div>
+          `).join("");
+          document.getElementById("videos-grid").innerHTML = html;
+        });
+      }
+    }
+
+    // Blog Loading
+    async function loadBlog() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("blog").once("value", snapshot => {
+          const blogs = snapshot.val();
+          if (!blogs) return;
+          const html = Object.entries(blogs).map(([id, blog]) => `
+            <div class="card">
+              <h3 class="card-title">${blog.title || 'Blog Post'}</h3>
+              <p class="text-muted">${blog.date || ''}</p>
+              <p class="card-body">${blog.content ? blog.content.substring(0, 100) + '...' : ''}</p>
+            </div>
+          `).join("");
+          document.getElementById("blog-grid").innerHTML = html;
+        });
+      }
+    }
+
+    // Achievements Loading
+    async function loadAchievements() {
+      if (typeof firebase !== "undefined" && firebase.database) {
+        firebase.database().ref("profile").once("value", snapshot => {
+          const profile = snapshot.val();
+          if (!profile || !profile.about || !profile.about.achievements) return;
+          const achievements = profile.about.achievements || '';
+          document.getElementById("achievements-content").innerHTML = `<p class="card-body">${achievements}</p>`;
+        });
+      }
+    }
+
+    // Contact Form
     async function uploadToCloudinary(file, type) {
       const formData = new FormData();
       formData.append("file", file);
@@ -140,74 +248,75 @@
     }
 
     document.addEventListener("DOMContentLoaded", () => {
+      // Load all data
+      loadProjects();
+      loadSkills();
+      loadCertificates();
+      loadGallery();
+      loadVideos();
+      loadBlog();
+      loadAchievements();
+
+      // Contact Form Handler
       const form = document.getElementById("contact-form");
-      if (!form) return;
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          const statusEl = document.getElementById("contact-form-status");
+          const submitBtn = document.getElementById("cf-submit-btn");
+          const emailVal = document.getElementById("cf-email").value.trim();
+          const subjectVal = document.getElementById("cf-subject").value.trim();
+          const messageVal = document.getElementById("cf-message").value.trim();
+          const linkVal = document.getElementById("cf-link").value.trim();
+          const imageFile = document.getElementById("cf-image").files[0];
+          const videoFile = document.getElementById("cf-video").files[0];
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const statusEl = document.getElementById("contact-form-status");
-        const submitBtn = document.getElementById("cf-submit-btn");
-        const emailVal = document.getElementById("cf-email").value.trim();
-        const subjectVal = document.getElementById("cf-subject").value.trim();
-        const messageVal = document.getElementById("cf-message").value.trim();
-        const linkVal = document.getElementById("cf-link").value.trim();
-        const imageFile = document.getElementById("cf-image").files[0];
-        const videoFile = document.getElementById("cf-video").files[0];
+          if (!emailVal || !messageVal) return;
 
-        if (!emailVal || !messageVal) return;
+          statusEl.style.color = "var(--color-muted)";
+          submitBtn.disabled = true;
 
-        statusEl.style.color = "var(--color-muted)";
-        submitBtn.disabled = true;
+          try {
+            let imageUrl = "";
+            let videoUrl = "";
 
-        try {
-          let imageUrl = "";
-          let videoUrl = "";
+            if (imageFile) {
+              statusEl.textContent = "Uploading image...";
+              imageUrl = await uploadToCloudinary(imageFile, "image");
+            }
+            if (videoFile) {
+              statusEl.textContent = "Uploading video...";
+              videoUrl = await uploadToCloudinary(videoFile, "video");
+            }
 
-          if (imageFile) {
-            statusEl.textContent = "Uploading image...";
-            imageUrl = await uploadToCloudinary(imageFile, "image");
-          }
-          if (videoFile) {
-            statusEl.textContent = "Uploading video...";
-            videoUrl = await uploadToCloudinary(videoFile, "video");
-          }
+            statusEl.textContent = "Sending...";
 
-          statusEl.textContent = "Sending...";
-
-          const res = await fetch(CONTACT_API_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              email: emailVal,
-              subject: subjectVal,
-              message: messageVal,
-              imageUrl,
-              videoUrl,
-              linkUrl: linkVal
-            })
-          });
-          const result = await res.json();
-          if (!res.ok) throw new Error(result.error || "Failed to send");
-
-          if (typeof firebase !== "undefined" && firebase.database) {
-            firebase.database().ref("visitors").push({
-              email: emailVal,
-              subject: subjectVal,
-              message: messageVal,
-              timestamp: new Date().toISOString()
+            const res = await fetch(CONTACT_API_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                email: emailVal,
+                subject: subjectVal,
+                message: messageVal,
+                imageUrl,
+                videoUrl,
+                linkUrl: linkVal
+              })
             });
-          }
+            const result = await res.json();
+            if (!res.ok) throw new Error(result.error || "Failed to send");
 
-          statusEl.textContent = "✅ Sent! I'll get back to you soon.";
-          statusEl.style.color = "var(--color-accent)";
-          form.reset();
-        } catch (err) {
-          statusEl.textContent = `❌ ${err.message}`;
-          statusEl.style.color = "#ef4444";
-        } finally {
-          submitBtn.disabled = false;
-        }
-      });
+            statusEl.textContent = "✅ Sent! I'll get back to you soon.";
+            statusEl.style.color = "var(--color-accent)";
+            form.reset();
+          } catch (err) {
+            statusEl.textContent = `❌ ${err.message}`;
+            statusEl.style.color = "#ef4444";
+          } finally {
+            submitBtn.disabled = false;
+          }
+        });
+      }
     });
   </script>
 </body>
