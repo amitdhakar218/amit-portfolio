@@ -102,18 +102,22 @@
   <section class="section" style="padding-top: var(--space-xl);">
     <h2 class="section-title">Contact</h2>
     <div class="contact-links" id="contact-social-links"></div>
-    <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm); margin-top: var(--space-lg);"></p>
-    <form id="contact-form">
-      <div class="form-grid" style="grid-template-columns: 1fr;">
-        <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
-        <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
-        <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
-        <label class="form-field"><span>Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
-        <label class="form-field"><span>Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
-        <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
-    </form>
+    <div class="card" style="margin-top: var(--space-lg);">
+      <h3 class="card-title" style="margin-bottom: var(--space-xs);">📮 Send Me Info Directly</h3>
+      <p class="text-muted" style="margin-bottom: var(--space-md);">Fill this and it goes straight to my dashboard.</p>
+      <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
+      <form id="contact-form">
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
+          <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
+          <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
+          <label class="form-field"><span>Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
+          <label class="form-field"><span>Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
+          <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
+      </form>
+    </div>
   </section>
 
   <footer class="footer">
