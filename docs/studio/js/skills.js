@@ -1,11 +1,3 @@
-/* ==========================================================
-   Amit Studio — Skills Module Script
-   Depends on: Backend API (api/server.js) — /api/data/skills.json
-   Now connected to real backend: Add/Edit/Delete/Reorder
-   permanently update shared/data/skills.json.
-   ========================================================== */
-
-const API_BASE = "/api/data";
 let editingSkillId = null;
 let currentSkillsList = [];
 
@@ -19,22 +11,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cancelBtn) cancelBtn.addEventListener("click", resetSkillForm);
 });
 
-/* ---------- 1. Load skills.json from backend ---------- */
-async function loadSkillsList() {
+/* ---------- Helper: Convert Firebase Object to Array ---------- */
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.map((item, idx) => item ? { id: item.id || idx.toString(), ...item } : null).filter(Boolean);
+  return Object.keys(val).map(key => ({ id: key, ...val[key] }));
+}
+
+/* ---------- 1. Load skills from Firebase Realtime Database ---------- */
+function loadSkillsList() {
   const statusEl = document.getElementById("skills-status");
 
-  try {
-    const res = await fetch(`${API_BASE}/skills.json`);
-    if (!res.ok) throw new Error("Failed to fetch skills.json from backend");
-    currentSkillsList = await res.json();
-
-    if (statusEl) statusEl.textContent = `${currentSkillsList.length} skill(s) loaded from server ✅`;
-    renderSkillsList();
-
-  } catch (err) {
-    console.warn("Skills data not loaded:", err.message);
-    if (statusEl) statusEl.textContent = "⚠️ Could not load skills. Is the backend running?";
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  if (statusEl) statusEl.textContent = "Loading skills from Firebase...";
+
+  db.ref("skills").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      currentSkillsList = toArray(snapshot.val());
+      if (statusEl) statusEl.textContent = `${currentSkillsList.length} skill(s) loaded from Firebase ✅`;
+      renderSkillsList();
+    } else {
+      currentSkillsList = [];
+      if (statusEl) statusEl.textContent = "0 skills found in database.";
+      renderSkillsList();
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading skills: ${error.message}`;
+  });
 }
 
 /* ---------- 2. Render Skills List ---------- */
@@ -84,7 +92,7 @@ function renderSkillsList() {
   );
 }
 
-/* ---------- 3. Add / Update Skill on Submit (real backend calls) ---------- */
+/* ---------- 3. Add / Update Skill on Submit (Firebase) ---------- */
 async function handleSkillSubmit(e) {
   e.preventDefault();
 
@@ -92,34 +100,28 @@ async function handleSkillSubmit(e) {
   const percentage = parseInt(document.getElementById("field-skill-percentage").value, 10);
   if (!name || isNaN(percentage)) return;
 
+  const skillData = { name, percentage };
   const statusEl = document.getElementById("skills-status");
-  if (statusEl) statusEl.textContent = "Saving...";
+
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
 
   try {
+    if (!db) throw new Error("Firebase DB connection missing");
+
     if (editingSkillId) {
-      const res = await fetch(`${API_BASE}/skills.json/item/${editingSkillId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, percentage })
-      });
-      if (!res.ok) throw new Error("Backend rejected the update");
-      if (statusEl) statusEl.textContent = "✅ Skill updated permanently.";
+      await db.ref(`skills/${editingSkillId}`).update(skillData);
+      if (statusEl) statusEl.textContent = "✅ Skill updated in Firebase!";
     } else {
-      const res = await fetch(`${API_BASE}/skills.json/item`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, percentage })
-      });
-      if (!res.ok) throw new Error("Backend rejected the add request");
-      if (statusEl) statusEl.textContent = "✅ Skill added permanently.";
+      const newRef = db.ref("skills").push();
+      await newRef.set({ ...skillData, id: newRef.key });
+      if (statusEl) statusEl.textContent = "✅ Skill added to Firebase!";
     }
 
     resetSkillForm();
-    loadSkillsList();
 
   } catch (err) {
     console.error("Failed to save skill:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
@@ -141,26 +143,25 @@ function startEditSkill(id) {
   document.getElementById("skill-form").scrollIntoView({ behavior: "smooth" });
 }
 
-/* ---------- 5. Delete a Skill (real backend call) ---------- */
+/* ---------- 5. Delete a Skill (Firebase) ---------- */
 async function deleteSkill(id) {
   const statusEl = document.getElementById("skills-status");
-  if (statusEl) statusEl.textContent = "Deleting...";
+  if (statusEl) statusEl.textContent = "Deleting from Firebase...";
 
   try {
-    const res = await fetch(`${API_BASE}/skills.json/item/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Backend rejected the delete request");
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref(`skills/${id}`).remove();
 
-    if (statusEl) statusEl.textContent = "🗑️ Skill removed permanently.";
+    if (statusEl) statusEl.textContent = "🗑️ Skill removed from Firebase!";
     if (editingSkillId === id) resetSkillForm();
-    loadSkillsList();
 
   } catch (err) {
     console.error("Failed to delete skill:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Delete failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Delete failed: ${err.message}`;
   }
 }
 
-/* ---------- 6. Reorder a Skill (whole-array PUT save) ---------- */
+/* ---------- 6. Reorder Skills in Firebase ---------- */
 async function moveSkill(id, direction) {
   const index = currentSkillsList.findIndex(s => s.id === id);
   if (index === -1) return;
@@ -169,24 +170,17 @@ async function moveSkill(id, direction) {
   if (newIndex < 0 || newIndex >= currentSkillsList.length) return;
 
   [currentSkillsList[index], currentSkillsList[newIndex]] = [currentSkillsList[newIndex], currentSkillsList[index]];
-  renderSkillsList();
 
   const statusEl = document.getElementById("skills-status");
-  if (statusEl) statusEl.textContent = "Saving new order...";
+  if (statusEl) statusEl.textContent = "Saving new order to Firebase...";
 
   try {
-    const res = await fetch(`${API_BASE}/skills.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(currentSkillsList)
-    });
-    if (!res.ok) throw new Error("Backend rejected the reorder save");
-
-    if (statusEl) statusEl.textContent = "↕️ Order saved permanently.";
-
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref("skills").set(currentSkillsList);
+    if (statusEl) statusEl.textContent = "↕️ Order saved permanently to Firebase!";
   } catch (err) {
     console.error("Failed to save new order:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Reorder save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Reorder save failed: ${err.message}`;
   }
 }
 

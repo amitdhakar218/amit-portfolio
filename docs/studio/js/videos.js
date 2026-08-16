@@ -1,4 +1,3 @@
-const API_BASE = "/api/data";
 let editingVideoId = null;
 let currentVideosList = [];
 
@@ -20,24 +19,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function loadVideosList() {
-  const statusEl = document.getElementById("videos-status");
-  try {
-    const res = await fetch(`${API_BASE}/videos.json`);
-    if (!res.ok) throw new Error("not found");
-    currentVideosList = await res.json();
-    if (statusEl) statusEl.textContent = `${currentVideosList.length} video(s) loaded from server ✅`;
-    renderVideosList();
-  } catch (err) {
-    if (statusEl) statusEl.textContent = "⚠️ Could not load videos.";
-  }
+/* ---------- Helper: Convert Firebase Object to Array ---------- */
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.map((item, idx) => item ? { id: item.id || idx.toString(), ...item } : null).filter(Boolean);
+  return Object.keys(val).map(key => ({ id: key, ...val[key] }));
 }
 
+/* ---------- 1. Load videos from Firebase Realtime Database ---------- */
+function loadVideosList() {
+  const statusEl = document.getElementById("videos-status");
+
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
+  }
+
+  if (statusEl) statusEl.textContent = "Loading videos from Firebase...";
+
+  db.ref("videos").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      currentVideosList = toArray(snapshot.val());
+      if (statusEl) statusEl.textContent = `${currentVideosList.length} video(s) loaded from Firebase ✅`;
+      renderVideosList();
+    } else {
+      currentVideosList = [];
+      if (statusEl) statusEl.textContent = "0 videos found in database.";
+      renderVideosList();
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading videos: ${error.message}`;
+  });
+}
+
+/* ---------- 2. Render Videos List ---------- */
 function renderVideosList() {
   const grid = document.getElementById("studio-videos-grid");
   if (!grid) return;
   grid.innerHTML = "";
   if (currentVideosList.length === 0) { grid.innerHTML = `<p class="text-muted">No videos yet.</p>`; return; }
+  
   currentVideosList.forEach((video) => {
     const card = document.createElement("div");
     card.className = "card";
@@ -54,33 +76,47 @@ function renderVideosList() {
       </div>`;
     grid.appendChild(card);
   });
+
   grid.querySelectorAll('[data-action="edit"]').forEach(btn => btn.addEventListener("click", () => startEditVideo(btn.dataset.id)));
   grid.querySelectorAll('[data-action="delete"]').forEach(btn => btn.addEventListener("click", () => deleteVideo(btn.dataset.id)));
 }
 
+/* ---------- 3. Add / Update Video on Submit (Firebase) ---------- */
 async function handleVideoSubmit(e) {
   e.preventDefault();
   const title = document.getElementById("field-video-title").value.trim();
   const url = document.getElementById("field-video-url").value.trim();
   if (!title || !url) return;
-  const videoData = { title, url, description: document.getElementById("field-video-description").value };
+
+  const videoData = { 
+    title, 
+    url, 
+    description: document.getElementById("field-video-description").value || "" 
+  };
+
   const statusEl = document.getElementById("videos-status");
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
+
   try {
+    if (!db) throw new Error("Firebase DB connection missing");
+
     if (editingVideoId) {
-      await fetch(`${API_BASE}/videos.json/item/${editingVideoId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(videoData) });
-      if (statusEl) statusEl.textContent = "✅ Updated permanently.";
+      await db.ref(`videos/${editingVideoId}`).update(videoData);
+      if (statusEl) statusEl.textContent = "✅ Video updated in Firebase!";
     } else {
-      await fetch(`${API_BASE}/videos.json/item`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(videoData) });
-      if (statusEl) statusEl.textContent = "✅ Added permanently.";
+      const newRef = db.ref("videos").push();
+      await newRef.set({ ...videoData, id: newRef.key });
+      if (statusEl) statusEl.textContent = "✅ Video added to Firebase!";
     }
+
     resetVideoForm();
-    loadVideosList();
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ Save failed.";
+    console.error("Failed to save video:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
+/* ---------- 4. Start Editing a Video ---------- */
 function startEditVideo(id) {
   const video = currentVideosList.find(v => v.id === id);
   if (!video) return;
@@ -95,18 +131,24 @@ function startEditVideo(id) {
   document.getElementById("video-form").scrollIntoView({ behavior: "smooth" });
 }
 
+/* ---------- 5. Delete a Video (Firebase) ---------- */
 async function deleteVideo(id) {
   const statusEl = document.getElementById("videos-status");
+  if (statusEl) statusEl.textContent = "Deleting from Firebase...";
+
   try {
-    await fetch(`${API_BASE}/videos.json/item/${id}`, { method: "DELETE" });
-    if (statusEl) statusEl.textContent = "🗑️ Removed permanently.";
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref(`videos/${id}`).remove();
+
+    if (statusEl) statusEl.textContent = "🗑️ Video removed from Firebase!";
     if (editingVideoId === id) resetVideoForm();
-    loadVideosList();
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ Delete failed.";
+    console.error("Failed to delete video:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Delete failed: ${err.message}`;
   }
 }
 
+/* ---------- 6. Reset Form to "Add" Mode ---------- */
 function resetVideoForm() {
   editingVideoId = null;
   document.getElementById("video-form").reset();

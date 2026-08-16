@@ -1,10 +1,3 @@
-/* ==========================================================
-   Amit Studio — Settings Module Script
-   Depends on: Backend API — /api/data/site-settings.json
-   ========================================================== */
-
-const API_BASE = "/api/data";
-
 const SECTION_LABELS = {
   about: "👤 About",
   projects: "💼 Projects",
@@ -27,23 +20,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (resetBtn) resetBtn.addEventListener("click", handleStudioReload);
 });
 
-/* ---------- 1. Load and render toggles ---------- */
-async function loadSectionToggles() {
+/* ---------- 1. Load and render toggles from Firebase ---------- */
+function loadSectionToggles() {
   const container = document.getElementById("section-toggles");
+  const statusEl = document.getElementById("settings-status");
+
   if (!container) return;
 
-  try {
-    const res = await fetch(`${API_BASE}/site-settings.json`);
-    if (!res.ok) throw new Error("Failed to fetch site-settings.json");
-    const data = await res.json();
-    currentSections = data.sections || {};
-
-    renderToggles();
-
-  } catch (err) {
-    console.warn("Site settings not loaded:", err.message);
-    container.innerHTML = `<p class="text-muted">⚠️ Could not load section settings. Is the backend running?</p>`;
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  db.ref("siteSettings").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+      currentSections = data.sections || {};
+
+      const titleInput = document.getElementById("field-site-title");
+      const descInput = document.getElementById("field-site-description");
+      const faviconInput = document.getElementById("field-favicon");
+
+      if (titleInput && data.siteTitle) titleInput.value = data.siteTitle;
+      if (descInput && data.siteDescription) descInput.value = data.siteDescription;
+      if (faviconInput && data.favicon) faviconInput.value = data.favicon;
+    } else {
+      currentSections = {};
+    }
+    renderToggles();
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading settings: ${error.message}`;
+  });
 }
 
 function renderToggles() {
@@ -75,40 +83,47 @@ function renderToggles() {
   });
 }
 
-/* ---------- 2. Toggle + save immediately ---------- */
+/* ---------- 2. Toggle + save immediately to Firebase ---------- */
 async function toggleSection(key) {
   currentSections[key] = currentSections[key] === false ? true : false;
   renderToggles();
 
-  try {
-    const res = await fetch(`${API_BASE}/site-settings.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ sections: currentSections })
-    });
-    if (!res.ok) throw new Error("Backend rejected the save");
+  const statusEl = document.getElementById("settings-status");
 
-    const statusEl = document.getElementById("settings-status");
-    if (statusEl) statusEl.textContent = `✅ "${SECTION_LABELS[key]}" visibility updated permanently.`;
+  try {
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref("siteSettings/sections").set(currentSections);
+
+    if (statusEl) statusEl.textContent = `✅ "${SECTION_LABELS[key]}" visibility updated permanently in Firebase.`;
 
   } catch (err) {
     console.error("Failed to save section visibility:", err.message);
-    const statusEl = document.getElementById("settings-status");
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
-/* ---------- 3. Site Info Save (UI-only for now) ---------- */
-function handleSettingsSubmit(e) {
+/* ---------- 3. Site Info Save to Firebase ---------- */
+async function handleSettingsSubmit(e) {
   e.preventDefault();
   const settingsSnapshot = {
-    siteTitle: document.getElementById("field-site-title").value,
-    siteDescription: document.getElementById("field-site-description").value,
-    favicon: document.getElementById("field-favicon").value
+    siteTitle: document.getElementById("field-site-title").value.trim(),
+    siteDescription: document.getElementById("field-site-description").value.trim(),
+    favicon: document.getElementById("field-favicon").value.trim(),
+    sections: currentSections
   };
-  console.log("Settings ready to save (future phase will persist this):", settingsSnapshot);
+
   const statusEl = document.getElementById("settings-status");
-  if (statusEl) statusEl.textContent = "✅ Settings captured (site title/meta persistence coming in a future step).";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
+
+  try {
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref("siteSettings").set(settingsSnapshot);
+
+    if (statusEl) statusEl.textContent = "✅ Site settings saved permanently to Firebase!";
+  } catch (err) {
+    console.error("Failed to save site settings:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
+  }
 }
 
 /* ---------- 4. Reload Studio ---------- */

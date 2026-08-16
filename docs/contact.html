@@ -64,15 +64,15 @@
 
     <div class="card" style="margin-top: var(--space-lg); max-width: 500px;">
       <h3 class="card-title">📩 Send Me Info Directly</h3>
-      <p class="text-muted" style="font-size:0.85rem; margin-bottom: var(--space-md);">Fill this and it goes straight to my email.</p>
+      <p class="text-muted" style="font-size:0.85rem; margin-bottom: var(--space-md);">Fill this and it goes straight to my dashboard.</p>
       <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
       <form id="contact-form">
         <div class="form-grid" style="grid-template-columns: 1fr;">
-          <label class="form-field"><span>Your Email *</span><input type="email" id="cf-email" required /></label>
+          <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
           <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
-          <label class="form-field"><span>Message *</span><textarea id="cf-message" rows="3" required></textarea></label>
-          <label class="form-field"><span>📸 Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
-          <label class="form-field"><span>🎥 Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
+          <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
+          <label class="form-field"><span>Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
+          <label class="form-field"><span>Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
           <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
         </div>
         <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
@@ -85,95 +85,92 @@
     <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
   </footer>
 
+  <!-- Firebase Compat CDN Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <script src="js/common.js"></script>
   <script>
     const CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const CLOUDINARY_UPLOAD_PRESET = "amit_portfolio_uploads";
-    const VERCEL_API_URL = "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
+    const CLOUDINARY_PRESET = "amit_portfolio_uploads";
+    const CONTACT_API_URL = "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
 
-    async function uploadToCloudinary(file) {
+    async function uploadToCloudinary(file, type) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-      
-      try {
-        const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/auto/upload`, {
-          method: "POST",
-          body: formData
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-        return data.secure_url;
-      } catch (err) {
-        throw new Error(`File upload error: ${err.message}`);
-      }
+      formData.append("upload_preset", CLOUDINARY_PRESET);
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${type}/upload`, {
+        method: "POST",
+        body: formData
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
+      return data.secure_url;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("contact-form");
+      if (!form) return;
+
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
         const statusEl = document.getElementById("contact-form-status");
         const submitBtn = document.getElementById("cf-submit-btn");
-        
-        const email = document.getElementById("cf-email").value.trim();
-        const subject = document.getElementById("cf-subject").value.trim();
-        const message = document.getElementById("cf-message").value.trim();
+        const emailVal = document.getElementById("cf-email").value.trim();
+        const subjectVal = document.getElementById("cf-subject").value.trim();
+        const messageVal = document.getElementById("cf-message").value.trim();
+        const linkVal = document.getElementById("cf-link").value.trim();
         const imageFile = document.getElementById("cf-image").files[0];
         const videoFile = document.getElementById("cf-video").files[0];
-        const link = document.getElementById("cf-link").value.trim();
-        
-        if (!email || !message) {
-          statusEl.textContent = "❌ Email and Message are required.";
-          statusEl.style.color = "#ef4444";
-          return;
-        }
-        
-        statusEl.textContent = "📤 Uploading files...";
+
+        if (!emailVal || !messageVal) return;
+
         statusEl.style.color = "var(--color-muted)";
         submitBtn.disabled = true;
-        
-        let imageUrl = null;
-        let videoUrl = null;
-        
+
         try {
-          // Upload image if selected
+          let imageUrl = "";
+          let videoUrl = "";
+
           if (imageFile) {
-            statusEl.textContent = "📤 Uploading image...";
-            imageUrl = await uploadToCloudinary(imageFile);
+            statusEl.textContent = "Uploading image...";
+            imageUrl = await uploadToCloudinary(imageFile, "image");
           }
-          
-          // Upload video if selected
           if (videoFile) {
-            statusEl.textContent = "📤 Uploading video...";
-            videoUrl = await uploadToCloudinary(videoFile);
+            statusEl.textContent = "Uploading video...";
+            videoUrl = await uploadToCloudinary(videoFile, "video");
           }
-          
-          // Send email via Vercel
-          statusEl.textContent = "📧 Sending email...";
-          const emailPayload = {
-            visitorEmail: email,
-            subject: subject || "No subject",
-            message: message,
-            imageUrl: imageUrl,
-            videoUrl: videoUrl,
-            linkUrl: link
-          };
-          
-          const res = await fetch(VERCEL_API_URL, {
+
+          statusEl.textContent = "Sending...";
+
+          const res = await fetch(CONTACT_API_URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(emailPayload)
+            body: JSON.stringify({
+              email: emailVal,
+              subject: subjectVal,
+              message: messageVal,
+              imageUrl,
+              videoUrl,
+              linkUrl: linkVal
+            })
           });
-          
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || "Failed to send email");
-          
+          const result = await res.json();
+          if (!res.ok) throw new Error(result.error || "Failed to send");
+
+          if (typeof firebase !== "undefined" && firebase.database) {
+            firebase.database().ref("visitors").push({
+              email: emailVal,
+              subject: subjectVal,
+              message: messageVal,
+              timestamp: new Date().toISOString()
+            });
+          }
+
           statusEl.textContent = "✅ Sent! I'll get back to you soon.";
           statusEl.style.color = "var(--color-accent)";
           form.reset();
-          
         } catch (err) {
           statusEl.textContent = `❌ ${err.message}`;
           statusEl.style.color = "#ef4444";

@@ -1,12 +1,5 @@
-/* ==========================================================
-   Amit Studio — Projects Module Script
-   Depends on: Backend API (api/server.js) — /api/data/projects.json
-   Now connected to real backend: Add/Edit/Delete permanently
-   update shared/data/projects.json via POST/PUT/DELETE.
-   ========================================================== */
-
-const API_BASE = "/api/data";
 let editingProjectId = null;
+let currentProjectsList = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   loadProjectsList();
@@ -18,22 +11,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cancelBtn) cancelBtn.addEventListener("click", resetProjectForm);
 });
 
-/* ---------- 1. Load projects.json from backend ---------- */
-async function loadProjectsList() {
+/* ---------- Helper: Convert Firebase Object to Array ---------- */
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.map((item, idx) => item ? { id: item.id || idx.toString(), ...item } : null).filter(Boolean);
+  return Object.keys(val).map(key => ({ id: key, ...val[key] }));
+}
+
+/* ---------- 1. Load projects from Firebase Realtime Database ---------- */
+function loadProjectsList() {
   const statusEl = document.getElementById("projects-status");
 
-  try {
-    const res = await fetch(`${API_BASE}/projects.json`);
-    if (!res.ok) throw new Error("Failed to fetch projects.json from backend");
-    const projectsList = await res.json();
-
-    if (statusEl) statusEl.textContent = `${projectsList.length} project(s) loaded from server ✅`;
-    renderProjectsList(projectsList);
-
-  } catch (err) {
-    console.warn("Projects data not loaded:", err.message);
-    if (statusEl) statusEl.textContent = "⚠️ Could not load projects. Is the backend running?";
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  if (statusEl) statusEl.textContent = "Loading projects from Firebase...";
+
+  db.ref("projects").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      currentProjectsList = toArray(snapshot.val());
+      if (statusEl) statusEl.textContent = `${currentProjectsList.length} project(s) loaded from Firebase ✅`;
+      renderProjectsList(currentProjectsList);
+    } else {
+      currentProjectsList = [];
+      if (statusEl) statusEl.textContent = "0 projects found in database.";
+      renderProjectsList([]);
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading projects: ${error.message}`;
+  });
 }
 
 /* ---------- 2. Render Projects List ---------- */
@@ -51,8 +60,9 @@ function renderProjectsList(projectsList) {
   projectsList.forEach((project) => {
     const card = document.createElement("div");
     card.className = "card project-card";
+    const imgSrc = project.screenshot?.startsWith("http") ? project.screenshot : `../../portfolio/${project.screenshot || 'assets/project-placeholder.png'}`;
     card.innerHTML = `
-      <img src="../../portfolio/${project.screenshot || 'assets/project-placeholder.png'}" alt="${project.name}" class="project-image radius-md" />
+      <img src="${imgSrc}" alt="${project.name}" class="project-image radius-md" />
       <h3 class="card-title">${project.name}</h3>
       <p class="card-body">${project.description || ""}</p>
       <div class="project-tags">
@@ -74,7 +84,7 @@ function renderProjectsList(projectsList) {
   );
 }
 
-/* ---------- 3. Add / Update Project on Submit (real backend calls) ---------- */
+/* ---------- 3. Add / Update Project on Submit (Firebase) ---------- */
 async function handleProjectSubmit(e) {
   e.preventDefault();
 
@@ -86,45 +96,35 @@ async function handleProjectSubmit(e) {
 
   const projectData = {
     name,
-    description: document.getElementById("field-project-description").value,
+    description: document.getElementById("field-project-description").value || "",
     screenshot: document.getElementById("field-project-screenshot").value || "assets/project-placeholder.png",
     tech,
-    github: document.getElementById("field-project-github").value,
-    demo: document.getElementById("field-project-demo").value,
-    video: document.getElementById("field-project-video").value,
+    github: document.getElementById("field-project-github").value || "",
+    demo: document.getElementById("field-project-demo").value || "",
+    video: document.getElementById("field-project-video").value || "",
     futureUpdate: document.getElementById("field-project-future").value === "true"
   };
 
   const statusEl = document.getElementById("projects-status");
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
 
   try {
+    if (!db) throw new Error("Firebase DB connection missing");
+
     if (editingProjectId) {
-      const res = await fetch(`${API_BASE}/projects.json/item/${editingProjectId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(projectData)
-      });
-      if (!res.ok) throw new Error("Backend rejected the update");
-      console.log("Project updated permanently:", await res.json());
-      if (statusEl) statusEl.textContent = "✅ Project updated permanently.";
+      await db.ref(`projects/${editingProjectId}`).update(projectData);
+      if (statusEl) statusEl.textContent = "✅ Project updated in Firebase!";
     } else {
-      const res = await fetch(`${API_BASE}/projects.json/item`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(projectData)
-      });
-      if (!res.ok) throw new Error("Backend rejected the add request");
-      console.log("Project added permanently:", await res.json());
-      if (statusEl) statusEl.textContent = "✅ Project added permanently.";
+      const newRef = db.ref("projects").push();
+      await newRef.set({ ...projectData, id: newRef.key });
+      if (statusEl) statusEl.textContent = "✅ Project added to Firebase!";
     }
 
     resetProjectForm();
-    loadProjectsList();
 
   } catch (err) {
     console.error("Failed to save project:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
@@ -152,24 +152,21 @@ function startEditProject(id, projectsList) {
   document.getElementById("project-form").scrollIntoView({ behavior: "smooth" });
 }
 
-/* ---------- 5. Delete a Project (real backend call) ---------- */
+/* ---------- 5. Delete a Project (Firebase) ---------- */
 async function deleteProject(id) {
   const statusEl = document.getElementById("projects-status");
-  if (statusEl) statusEl.textContent = "Deleting...";
+  if (statusEl) statusEl.textContent = "Deleting from Firebase...";
 
   try {
-    const res = await fetch(`${API_BASE}/projects.json/item/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Backend rejected the delete request");
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref(`projects/${id}`).remove();
 
-    console.log("Project deleted permanently:", id);
-    if (statusEl) statusEl.textContent = "🗑️ Project removed permanently.";
-
+    if (statusEl) statusEl.textContent = "🗑️ Project removed from Firebase!";
     if (editingProjectId === id) resetProjectForm();
-    loadProjectsList();
 
   } catch (err) {
     console.error("Failed to delete project:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Delete failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Delete failed: ${err.message}`;
   }
 }
 

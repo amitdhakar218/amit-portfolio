@@ -1,4 +1,3 @@
-const API_BASE = "/api/data";
 const MAX_SOCIAL_LINKS = 15;
 let socialLinks = [];
 
@@ -30,37 +29,49 @@ document.addEventListener("DOMContentLoaded", () => {
   if (addBtn) addBtn.addEventListener("click", addSocialLinkRow);
 });
 
-async function loadProfileIntoForm() {
+/* ---------- 1. Load Profile from Firebase Realtime Database ---------- */
+function loadProfileIntoForm() {
   const statusEl = document.getElementById("profile-status");
-  try {
-    const res = await fetch(`${API_BASE}/profile.json`);
-    if (!res.ok) throw new Error("Failed to fetch profile.json");
-    const data = await res.json();
 
-    setValue("field-name", data.name);
-    setValue("field-title", data.title);
-    setValue("field-role", data.role);
-    setValue("field-tagline", data.tagline);
-    setValue("field-introduction", data.about?.introduction);
-    setValue("field-education", data.about?.education);
-    setValue("field-experience", data.about?.experience);
-    setValue("field-goals", data.about?.goals);
-    setValue("field-achievements", data.about?.achievements);
-    setValue("field-email", data.contact?.email);
-    setValue("field-phone", data.contact?.phone);
-    setValue("field-location", data.contact?.location);
-    setValue("field-resume", data.files?.resume);
-    setValue("field-photo", data.files?.profilePhoto);
-    setValue("field-logo", data.files?.logo);
-    setValue("field-hero-bg", data.files?.heroBackground);
-
-    socialLinks = Array.isArray(data.socialLinks) ? data.socialLinks : [];
-    renderSocialLinks();
-
-    if (statusEl) statusEl.textContent = "Profile data loaded from server ✅";
-  } catch (err) {
-    if (statusEl) statusEl.textContent = "⚠️ Could not load profile data. Is the backend running?";
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  if (statusEl) statusEl.textContent = "Loading profile from Firebase...";
+
+  db.ref("profile").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+
+      setValue("field-name", data.name);
+      setValue("field-title", data.title);
+      setValue("field-role", data.role);
+      setValue("field-tagline", data.tagline);
+      setValue("field-introduction", data.about?.introduction);
+      setValue("field-education", data.about?.education);
+      setValue("field-experience", data.about?.experience);
+      setValue("field-goals", data.about?.goals);
+      setValue("field-achievements", data.about?.achievements);
+      setValue("field-email", data.contact?.email);
+      setValue("field-phone", data.contact?.phone);
+      setValue("field-location", data.contact?.location);
+      setValue("field-resume", data.files?.resume);
+      setValue("field-photo", data.files?.profilePhoto);
+      setValue("field-logo", data.files?.logo);
+      setValue("field-hero-bg", data.files?.heroBackground);
+
+      socialLinks = Array.isArray(data.socialLinks) ? data.socialLinks : [];
+      renderSocialLinks();
+
+      if (statusEl) statusEl.textContent = "Profile data loaded from Firebase ✅";
+    } else {
+      if (statusEl) statusEl.textContent = "No profile data in Firebase yet. Fill form and Save.";
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading profile: ${error.message}`;
+  });
 }
 
 function setValue(id, value) {
@@ -112,46 +123,47 @@ function collectSocialLinksFromDOM() {
   return collected;
 }
 
+/* ---------- 2. Save Profile to Firebase ---------- */
 async function handleProfileSubmit(e) {
   e.preventDefault();
   const statusEl = document.getElementById("profile-status");
   const updatedData = {
-    name: document.getElementById("field-name").value,
-    title: document.getElementById("field-title").value,
-    role: document.getElementById("field-role").value,
-    tagline: document.getElementById("field-tagline").value,
+    name: document.getElementById("field-name").value || "",
+    title: document.getElementById("field-title").value || "",
+    role: document.getElementById("field-role").value || "",
+    tagline: document.getElementById("field-tagline").value || "",
     roles: [document.getElementById("field-role").value, document.getElementById("field-title").value].filter(Boolean),
     about: {
-      introduction: document.getElementById("field-introduction").value,
-      education: document.getElementById("field-education").value,
-      experience: document.getElementById("field-experience").value,
-      goals: document.getElementById("field-goals").value,
-      achievements: document.getElementById("field-achievements").value
+      introduction: document.getElementById("field-introduction").value || "",
+      education: document.getElementById("field-education").value || "",
+      experience: document.getElementById("field-experience").value || "",
+      goals: document.getElementById("field-goals").value || "",
+      achievements: document.getElementById("field-achievements").value || ""
     },
     contact: {
-      email: document.getElementById("field-email").value,
-      phone: document.getElementById("field-phone").value,
-      location: document.getElementById("field-location").value
+      email: document.getElementById("field-email").value || "",
+      phone: document.getElementById("field-phone").value || "",
+      location: document.getElementById("field-location").value || ""
     },
     socialLinks: collectSocialLinksFromDOM(),
     files: {
-      resume: document.getElementById("field-resume").value,
-      profilePhoto: document.getElementById("field-photo").value,
-      logo: document.getElementById("field-logo").value,
-      heroBackground: document.getElementById("field-hero-bg").value
+      resume: document.getElementById("field-resume").value || "",
+      profilePhoto: document.getElementById("field-photo").value || "",
+      logo: document.getElementById("field-logo").value || "",
+      heroBackground: document.getElementById("field-hero-bg").value || ""
     }
   };
 
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
   try {
-    const res = await fetch(`${API_BASE}/profile.json`, {
-      method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updatedData)
-    });
-    if (!res.ok) throw new Error("Save rejected");
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref("profile").set(updatedData);
+
     socialLinks = updatedData.socialLinks;
     renderSocialLinks();
-    if (statusEl) statusEl.textContent = "✅ Saved permanently to profile.json.";
+    if (statusEl) statusEl.textContent = "✅ Saved permanently to Firebase!";
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    console.error("Failed to save profile:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }

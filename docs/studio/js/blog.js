@@ -1,11 +1,3 @@
-/* ==========================================================
-   Amit Studio — Blog Module Script
-   Depends on: Backend API (api/server.js) — /api/data/blog.json
-   Now connected to real backend: Create/Edit/Delete permanently
-   update shared/data/blog.json via POST/PUT/DELETE.
-   ========================================================== */
-
-const API_BASE = "/api/data";
 let editingBlogId = null;
 let currentBlogList = [];
 
@@ -19,22 +11,38 @@ document.addEventListener("DOMContentLoaded", () => {
   if (cancelBtn) cancelBtn.addEventListener("click", resetBlogForm);
 });
 
-/* ---------- 1. Load blog.json from backend ---------- */
-async function loadBlogList() {
+/* ---------- Helper: Convert Firebase Object to Array ---------- */
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.map((item, idx) => item ? { id: item.id || idx.toString(), ...item } : null).filter(Boolean);
+  return Object.keys(val).map(key => ({ id: key, ...val[key] }));
+}
+
+/* ---------- 1. Load blog posts from Firebase Realtime Database ---------- */
+function loadBlogList() {
   const statusEl = document.getElementById("blog-status");
 
-  try {
-    const res = await fetch(`${API_BASE}/blog.json`);
-    if (!res.ok) throw new Error("Failed to fetch blog.json from backend");
-    currentBlogList = await res.json();
-
-    if (statusEl) statusEl.textContent = `${currentBlogList.length} article(s) loaded from server ✅`;
-    renderBlogList();
-
-  } catch (err) {
-    console.warn("Blog data not loaded:", err.message);
-    if (statusEl) statusEl.textContent = "⚠️ Could not load articles. Is the backend running?";
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  if (statusEl) statusEl.textContent = "Loading articles from Firebase...";
+
+  db.ref("blog").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      currentBlogList = toArray(snapshot.val());
+      if (statusEl) statusEl.textContent = `${currentBlogList.length} article(s) loaded from Firebase ✅`;
+      renderBlogList();
+    } else {
+      currentBlogList = [];
+      if (statusEl) statusEl.textContent = "0 articles found in database.";
+      renderBlogList();
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading articles: ${error.message}`;
+  });
 }
 
 /* ---------- 2. Render Blog Grid ---------- */
@@ -72,7 +80,7 @@ function renderBlogList() {
   );
 }
 
-/* ---------- 3. Create / Update Article on Submit (real backend calls) ---------- */
+/* ---------- 3. Create / Update Article on Submit (Firebase) ---------- */
 async function handleBlogSubmit(e) {
   e.preventDefault();
 
@@ -83,37 +91,29 @@ async function handleBlogSubmit(e) {
   const postData = {
     title,
     content,
-    date: document.getElementById("field-blog-date").value
+    date: document.getElementById("field-blog-date").value || ""
   };
 
   const statusEl = document.getElementById("blog-status");
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
 
   try {
+    if (!db) throw new Error("Firebase DB connection missing");
+
     if (editingBlogId) {
-      const res = await fetch(`${API_BASE}/blog.json/item/${editingBlogId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData)
-      });
-      if (!res.ok) throw new Error("Backend rejected the update");
-      if (statusEl) statusEl.textContent = "✅ Article updated permanently.";
+      await db.ref(`blog/${editingBlogId}`).update(postData);
+      if (statusEl) statusEl.textContent = "✅ Article updated in Firebase!";
     } else {
-      const res = await fetch(`${API_BASE}/blog.json/item`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(postData)
-      });
-      if (!res.ok) throw new Error("Backend rejected the create request");
-      if (statusEl) statusEl.textContent = "✅ Article created permanently.";
+      const newRef = db.ref("blog").push();
+      await newRef.set({ ...postData, id: newRef.key });
+      if (statusEl) statusEl.textContent = "✅ Article created in Firebase!";
     }
 
     resetBlogForm();
-    loadBlogList();
 
   } catch (err) {
     console.error("Failed to save article:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
@@ -136,22 +136,21 @@ function startEditBlog(id) {
   document.getElementById("blog-form").scrollIntoView({ behavior: "smooth" });
 }
 
-/* ---------- 5. Delete an Article (real backend call) ---------- */
+/* ---------- 5. Delete an Article (Firebase) ---------- */
 async function deleteBlog(id) {
   const statusEl = document.getElementById("blog-status");
-  if (statusEl) statusEl.textContent = "Deleting...";
+  if (statusEl) statusEl.textContent = "Deleting from Firebase...";
 
   try {
-    const res = await fetch(`${API_BASE}/blog.json/item/${id}`, { method: "DELETE" });
-    if (!res.ok) throw new Error("Backend rejected the delete request");
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref(`blog/${id}`).remove();
 
-    if (statusEl) statusEl.textContent = "🗑️ Article removed permanently.";
+    if (statusEl) statusEl.textContent = "🗑️ Article removed from Firebase!";
     if (editingBlogId === id) resetBlogForm();
-    loadBlogList();
 
   } catch (err) {
     console.error("Failed to delete article:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Delete failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Delete failed: ${err.message}`;
   }
 }
 

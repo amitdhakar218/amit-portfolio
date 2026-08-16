@@ -1,12 +1,3 @@
-/* ==========================================================
-   Amit Studio — Theme Module Script
-   Applies changes live via CSS custom properties on :root.
-   Now connected to real backend: Save Theme permanently writes
-   to shared/config/design-tokens.json via PUT.
-   ========================================================== */
-
-const API_BASE = "/api/data";
-
 const DEFAULT_THEME = {
   background: "#0d0d0d",
   surface: "#161616",
@@ -59,37 +50,50 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-/* ---------- 1. Load saved theme from backend on page load ---------- */
-async function loadSavedTheme() {
+/* ---------- 1. Load saved theme from Firebase Realtime Database ---------- */
+function loadSavedTheme() {
   const statusEl = document.getElementById("theme-status");
 
-  try {
-    const res = await fetch(`${API_BASE}/design-tokens.json`);
-    if (!res.ok) throw new Error("Failed to fetch design-tokens.json");
-    const tokens = await res.json();
-
-    setCssVar("--color-background", tokens.colors.background);
-    setCssVar("--color-surface", tokens.colors.surface);
-    setCssVar("--color-primary", tokens.colors.primary);
-    setCssVar("--color-accent", tokens.colors.accent);
-    setCssVar("--color-text", tokens.colors.text);
-    setCssVar("--color-muted", tokens.colors.muted);
-    setCssVar("--color-border", tokens.colors.border);
-    setCssVar("--font-primary", tokens.fonts.primary);
-
-    const primaryPicker = document.getElementById("field-color-primary");
-    const accentPicker = document.getElementById("field-color-accent");
-    const fontSelect = document.getElementById("field-font-primary");
-    if (primaryPicker) primaryPicker.value = tokens.colors.primary;
-    if (accentPicker) accentPicker.value = tokens.colors.accent;
-    if (fontSelect) fontSelect.value = tokens.fonts.primary;
-
-    if (statusEl) statusEl.textContent = "Saved theme loaded from server ✅";
-
-  } catch (err) {
-    console.warn("Theme not loaded from backend:", err.message);
-    if (statusEl) statusEl.textContent = "⚠️ Using default theme (could not load from server).";
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
   }
+
+  if (statusEl) statusEl.textContent = "Loading theme from Firebase...";
+
+  db.ref("themeTokens").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      const tokens = snapshot.val();
+
+      if (tokens.colors) {
+        setCssVar("--color-background", tokens.colors.background);
+        setCssVar("--color-surface", tokens.colors.surface);
+        setCssVar("--color-primary", tokens.colors.primary);
+        setCssVar("--color-accent", tokens.colors.accent);
+        setCssVar("--color-text", tokens.colors.text);
+        setCssVar("--color-muted", tokens.colors.muted);
+        setCssVar("--color-border", tokens.colors.border);
+      }
+
+      if (tokens.fonts) {
+        setCssVar("--font-primary", tokens.fonts.primary);
+      }
+
+      const primaryPicker = document.getElementById("field-color-primary");
+      const accentPicker = document.getElementById("field-color-accent");
+      const fontSelect = document.getElementById("field-font-primary");
+      if (primaryPicker && tokens.colors?.primary) primaryPicker.value = tokens.colors.primary;
+      if (accentPicker && tokens.colors?.accent) accentPicker.value = tokens.colors.accent;
+      if (fontSelect && tokens.fonts?.primary) fontSelect.value = tokens.fonts.primary;
+
+      if (statusEl) statusEl.textContent = "Saved theme loaded from Firebase ✅";
+    } else {
+      if (statusEl) statusEl.textContent = "Using default theme (no custom theme in Firebase yet).";
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading theme: ${error.message}`;
+  });
 }
 
 /* ---------- 2. Apply a full theme preset (live preview only) ---------- */
@@ -118,7 +122,7 @@ function setCssVar(name, value) {
   document.documentElement.style.setProperty(name, value);
 }
 
-/* ---------- 4. Handle Save — writes permanently via backend ---------- */
+/* ---------- 4. Save Theme directly to Firebase ---------- */
 async function handleThemeSave() {
   const statusEl = document.getElementById("theme-status");
 
@@ -141,21 +145,15 @@ async function handleThemeSave() {
     radius: { sm: "6px", md: "12px", lg: "20px" }
   };
 
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
 
   try {
-    const res = await fetch(`${API_BASE}/design-tokens.json`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(updatedTokens)
-    });
-    if (!res.ok) throw new Error("Backend rejected the save request");
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref("themeTokens").set(updatedTokens);
 
-    console.log("Theme saved permanently:", updatedTokens);
-    if (statusEl) statusEl.textContent = "✅ Theme saved permanently to design-tokens.json.";
-
+    if (statusEl) statusEl.textContent = "✅ Theme saved permanently to Firebase!";
   } catch (err) {
     console.error("Failed to save theme:", err.message);
-    if (statusEl) statusEl.textContent = "❌ Save failed. Is the backend running?";
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }

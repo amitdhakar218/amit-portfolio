@@ -1,4 +1,3 @@
-const API_BASE = "/api/data";
 let editingCertificateId = null;
 let currentCertificatesList = [];
 
@@ -30,24 +29,47 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-async function loadCertificatesList() {
-  const statusEl = document.getElementById("certificates-status");
-  try {
-    const res = await fetch(`${API_BASE}/certificates.json`);
-    if (!res.ok) throw new Error("not found");
-    currentCertificatesList = await res.json();
-    if (statusEl) statusEl.textContent = `${currentCertificatesList.length} certificate(s) loaded from server ✅`;
-    renderCertificatesList();
-  } catch (err) {
-    if (statusEl) statusEl.textContent = "⚠️ Could not load certificates.";
-  }
+/* ---------- Helper: Convert Firebase Object to Array ---------- */
+function toArray(val) {
+  if (!val) return [];
+  if (Array.isArray(val)) return val.map((item, idx) => item ? { id: item.id || idx.toString(), ...item } : null).filter(Boolean);
+  return Object.keys(val).map(key => ({ id: key, ...val[key] }));
 }
 
+/* ---------- 1. Load certificates from Firebase Realtime Database ---------- */
+function loadCertificatesList() {
+  const statusEl = document.getElementById("certificates-status");
+
+  if (!db) {
+    if (statusEl) statusEl.textContent = "⚠️ Firebase SDK not loaded.";
+    return;
+  }
+
+  if (statusEl) statusEl.textContent = "Loading certificates from Firebase...";
+
+  db.ref("certificates").on("value", (snapshot) => {
+    if (snapshot.exists()) {
+      currentCertificatesList = toArray(snapshot.val());
+      if (statusEl) statusEl.textContent = `${currentCertificatesList.length} certificate(s) loaded from Firebase ✅`;
+      renderCertificatesList();
+    } else {
+      currentCertificatesList = [];
+      if (statusEl) statusEl.textContent = "0 certificates found in database.";
+      renderCertificatesList();
+    }
+  }, (error) => {
+    console.error("Firebase read error:", error);
+    if (statusEl) statusEl.textContent = `❌ Error loading certificates: ${error.message}`;
+  });
+}
+
+/* ---------- 2. Render Certificates List ---------- */
 function renderCertificatesList() {
   const grid = document.getElementById("studio-certificates-grid");
   if (!grid) return;
   grid.innerHTML = "";
   if (currentCertificatesList.length === 0) { grid.innerHTML = `<p class="text-muted">No certificates yet.</p>`; return; }
+  
   currentCertificatesList.forEach((cert) => {
     const card = document.createElement("div");
     card.className = "card certificate-card";
@@ -63,38 +85,49 @@ function renderCertificatesList() {
       </div>`;
     grid.appendChild(card);
   });
+
   grid.querySelectorAll('[data-action="edit"]').forEach(btn => btn.addEventListener("click", () => startEditCertificate(btn.dataset.id)));
   grid.querySelectorAll('[data-action="delete"]').forEach(btn => btn.addEventListener("click", () => deleteCertificate(btn.dataset.id)));
 }
 
+/* ---------- 3. Add / Update Certificate on Submit (Firebase) ---------- */
 async function handleCertificateSubmit(e) {
   e.preventDefault();
   const name = document.getElementById("field-certificate-name").value.trim();
   const organization = document.getElementById("field-certificate-org").value.trim();
   if (!name || !organization) return;
+
   const certData = {
-    name, organization,
-    date: document.getElementById("field-certificate-date").value,
+    name, 
+    organization,
+    date: document.getElementById("field-certificate-date").value || "",
     image: document.getElementById("field-certificate-image").value || "assets/certificate-placeholder.png",
-    pdf: document.getElementById("field-certificate-pdf").value
+    pdf: document.getElementById("field-certificate-pdf").value || ""
   };
+
   const statusEl = document.getElementById("certificates-status");
-  if (statusEl) statusEl.textContent = "Saving...";
+  if (statusEl) statusEl.textContent = "Saving to Firebase...";
+
   try {
+    if (!db) throw new Error("Firebase DB connection missing");
+
     if (editingCertificateId) {
-      await fetch(`${API_BASE}/certificates.json/item/${editingCertificateId}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(certData) });
-      if (statusEl) statusEl.textContent = "✅ Updated permanently.";
+      await db.ref(`certificates/${editingCertificateId}`).update(certData);
+      if (statusEl) statusEl.textContent = "✅ Certificate updated in Firebase!";
     } else {
-      await fetch(`${API_BASE}/certificates.json/item`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(certData) });
-      if (statusEl) statusEl.textContent = "✅ Added permanently.";
+      const newRef = db.ref("certificates").push();
+      await newRef.set({ ...certData, id: newRef.key });
+      if (statusEl) statusEl.textContent = "✅ Certificate added to Firebase!";
     }
+
     resetCertificateForm();
-    loadCertificatesList();
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ Save failed.";
+    console.error("Failed to save certificate:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Save failed: ${err.message}`;
   }
 }
 
+/* ---------- 4. Start Editing a Certificate ---------- */
 function startEditCertificate(id) {
   const cert = currentCertificatesList.find(c => c.id === id);
   if (!cert) return;
@@ -111,18 +144,24 @@ function startEditCertificate(id) {
   document.getElementById("certificate-form").scrollIntoView({ behavior: "smooth" });
 }
 
+/* ---------- 5. Delete a Certificate (Firebase) ---------- */
 async function deleteCertificate(id) {
   const statusEl = document.getElementById("certificates-status");
+  if (statusEl) statusEl.textContent = "Deleting from Firebase...";
+
   try {
-    await fetch(`${API_BASE}/certificates.json/item/${id}`, { method: "DELETE" });
-    if (statusEl) statusEl.textContent = "🗑️ Removed permanently.";
+    if (!db) throw new Error("Firebase DB connection missing");
+    await db.ref(`certificates/${id}`).remove();
+
+    if (statusEl) statusEl.textContent = "🗑️ Certificate removed from Firebase!";
     if (editingCertificateId === id) resetCertificateForm();
-    loadCertificatesList();
   } catch (err) {
-    if (statusEl) statusEl.textContent = "❌ Delete failed.";
+    console.error("Failed to delete certificate:", err.message);
+    if (statusEl) statusEl.textContent = `❌ Delete failed: ${err.message}`;
   }
 }
 
+/* ---------- 6. Reset Form to "Add" Mode ---------- */
 function resetCertificateForm() {
   editingCertificateId = null;
   document.getElementById("certificate-form").reset();

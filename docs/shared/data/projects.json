@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "id": "project-001",
+    "name": "Project Name",
+    "description": "Short description of what this project does and the problem it solves.",
+    "screenshot": "assets/project-placeholder.png",
+    "tech": ["JavaScript", "Node.js"],
+    "github": "https://github.com/amitdhakar218",
+    "demo": "",
+    "video": "",
+    "futureUpdate": false
+  }
+]

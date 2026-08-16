@@ -9,8 +9,9 @@
   <link rel="stylesheet" href="../shared/css/design-system.css" />
   <link rel="stylesheet" href="../shared/css/components.css" />
   <link rel="stylesheet" href="css/style.css" />
+<link rel="manifest" href="manifest.json" />
 </head>
-<body>
+<body style="visibility:hidden">
 
   <div class="studio-layout">
 
@@ -73,13 +74,15 @@
           </div>
         </div>
       </main>
+
     </div>
   </div>
 
-<script src="../shared/js/firebase-app-compat.js"></script>
-<script src="../shared/js/firebase-firestore-compat.js"></script>
-<script src="../shared/js/firebase-storage-compat.js"></script>
-<script src="../shared/js/firebase.js"></script>
-<script src="../shared/js/firestore-service.js"></script>
-<script src="js/app.js"></script>
+  <!-- Firebase Compat CDN Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+  <script src="js/app.js"></script>
+</body>
 </html>

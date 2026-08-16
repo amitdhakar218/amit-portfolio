@@ -20,7 +20,7 @@
     <a href="skills.html" class="side-panel-link">🧠 Skills</a>
     <a href="certificates.html" class="side-panel-link">🎓 Certificates</a>
     <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
-    <a href="videos.html" class="side-panel-link">🎬 Videos</a>
+    <a href="videos.html" class="sidebar-item">🎬 Videos</a>
     <a href="blog.html" class="side-panel-link">📝 Blog</a>
     <a href="achievements.html" class="side-panel-link">🏆 Achievements</a>
     <a href="contact.html" class="side-panel-link">📩 Contact</a>
@@ -56,9 +56,9 @@
   <section class="section" style="padding-top: var(--space-xl);">
     <h2 class="section-title">About Me</h2>
     <div class="about-content">
-      <img src="assets/profile.jpg" alt="Amit Dhakar" class="about-photo radius-lg" />
+      <img src="assets/profile.jpg" alt="Amit Dhakar" class="about-photo radius-lg" id="about-photo" />
       <div class="about-text">
-        <p>Loading...</p>
+        <p id="about-intro">Loading...</p>
         <div class="about-details">
           <div class="card"><h3 class="card-title">🎓 Education</h3><p class="card-body" id="about-education">—</p></div>
           <div class="card"><h3 class="card-title">💼 Experience</h3><p class="card-body" id="about-experience">—</p></div>
@@ -72,6 +72,11 @@
     <p class="text-muted" id="footer-location"></p>
     <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
   </footer>
+
+  <!-- Firebase Compat CDN Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
   <script src="js/common.js"></script>
 </body>

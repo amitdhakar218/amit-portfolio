@@ -1,13 +1,22 @@
-let profileData = null;
-
-// Firebase config - SAFE VERSION (No API key exposed)
+// ==========================================
+// FIREBASE INITIALIZATION (PORTFOLIO SIDE)
+// ==========================================
 const firebaseConfig = {
+  apiKey: "AIzaSyBg8Y3T_B25Kvg6IHKNemu6JMAXUFhfn-M",
+  authDomain: "amit-portfolio-79db4.firebaseapp.com",
+  databaseURL: "https://amit-portfolio-79db4-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "amit-portfolio-79db4",
-  databaseURL: "https://amit-portfolio-79db4-default-rtdb.firebaseio.com"
+  storageBucket: "amit-portfolio-79db4.firebasestorage.app",
+  messagingSenderId: "925822310763",
+  appId: "1:925822310763:web:c59695e6aab94e9cca942e",
+  measurementId: "G-D45ZKBTBEY"
 };
 
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.database(app);
+if (typeof firebase !== "undefined" && !firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
+let profileData = null;
 
 const ICON_MAP = {
   "github.com": "github", "linkedin.com": "linkedin", "instagram.com": "instagram",
@@ -23,22 +32,6 @@ function getIconSlug(url) {
   return null;
 }
 
-function trackClick(type) {
-  try {
-    const blob = new Blob([JSON.stringify({ type })], { type: "application/json" });
-    navigator.sendBeacon("/api/track/click", blob);
-  } catch (err) {}
-}
-
-function trackVisit() {
-  if (sessionStorage.getItem("visitCounted")) return;
-  sessionStorage.setItem("visitCounted", "true");
-  try {
-    const blob = new Blob([JSON.stringify({})], { type: "application/json" });
-    navigator.sendBeacon("/api/track/visit", blob);
-  } catch (err) {}
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
   await loadThemeTokens();
   await loadProfileCommon();
@@ -49,7 +42,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   initVisitorModal();
   initScrollReveal();
   trackVisit();
+  const resumeBtn = document.getElementById("hero-resume-btn");
+  if (resumeBtn) resumeBtn.addEventListener("click", () => trackClick("resume"));
 });
+
+function trackVisit() {
+  if (typeof firebase === "undefined" || !firebase.database) return;
+  if (sessionStorage.getItem("visitCounted")) return;
+  firebase.database().ref("visits").push({ timestamp: new Date().toISOString() });
+  sessionStorage.setItem("visitCounted", "true");
+}
+
+function trackClick(type) {
+  if (typeof firebase === "undefined" || !firebase.database || !type) return;
+  firebase.database().ref("clicks").push({ type, timestamp: new Date().toISOString() });
+}
 
 function initScrollReveal() {
   const revealElements = document.querySelectorAll(".reveal");
@@ -67,9 +74,20 @@ function initScrollReveal() {
 
 async function loadThemeTokens() {
   try {
-    const res = await fetch("shared/config/design-tokens.json");
-    if (!res.ok) throw new Error("not found");
-    const tokens = await res.json();
+    let tokens = null;
+
+    if (typeof firebase !== "undefined" && firebase.database) {
+      const snapshot = await firebase.database().ref("themeTokens").once("value");
+      tokens = snapshot.val();
+    }
+
+    if (!tokens) {
+      const res = await fetch("shared/config/design-tokens.json").catch(() => null) || 
+                  await fetch("shared/config/design-tokens.json").catch(() => null);
+      if (!res || !res.ok) throw new Error("not found");
+      tokens = await res.json();
+    }
+
     const root = document.documentElement.style;
     if (tokens.colors) {
       root.setProperty("--color-background", tokens.colors.background);
@@ -80,74 +98,57 @@ async function loadThemeTokens() {
       root.setProperty("--color-muted", tokens.colors.muted);
       root.setProperty("--color-border", tokens.colors.border);
     }
-    if (tokens.fonts?.primary) root.setProperty("--font-primary", tokens.fonts.primary);
-  } catch (err) { console.warn("Theme not loaded:", err.message); }
+  } catch (err) { console.warn("Theme not loaded"); }
 }
 
 async function loadProfileCommon() {
   try {
-    const snapshot = await db.ref("profile").get();
-    if (!snapshot.exists()) throw new Error("Profile not found in Firebase");
-    profileData = snapshot.val();
+    // Firebase से डेटा फेच करें
+    if (typeof firebase !== "undefined" && firebase.database) {
+      const snapshot = await firebase.database().ref("profile").once("value");
+      profileData = snapshot.val();
+    }
+    
+    // Fallback if empty
+    if (!profileData) {
+      const res = await fetch("shared/data/profile.json").catch(() => null) ||
+                  await fetch("shared/data/profile.json").catch(() => null);
+      if (res && res.ok) profileData = await res.json();
+    }
+
+    if (!profileData) return;
+
     window.profileData = profileData;
-
     const taglineEl = document.querySelector(".hero-tagline");
-    if (taglineEl) taglineEl.textContent = profileData.tagline;
-
-    const resumeBtn = document.getElementById("hero-resume-btn");
-    if (resumeBtn && profileData.files?.resume) {
-      resumeBtn.href = profileData.files.resume;
-      resumeBtn.addEventListener("click", () => trackClick("resume"));
-    }
-
-    const logoImg = document.getElementById("brand-logo-img");
-    if (logoImg && profileData.files?.logo) logoImg.src = profileData.files.logo;
-
-    const heroSection = document.getElementById("home-hero");
-    if (heroSection && profileData.files?.heroBackground) {
-      heroSection.style.backgroundImage = `linear-gradient(rgba(5,5,5,0.88), rgba(5,5,5,0.94)), url('${profileData.files.heroBackground}')`;
-      heroSection.style.backgroundSize = "cover";
-      heroSection.style.backgroundPosition = "center top";
-    }
-
-    const emailEl = document.getElementById("contact-email");
-    if (emailEl && profileData.contact?.email) emailEl.href = `mailto:${profileData.contact.email}`;
-
-    const phoneEl = document.getElementById("contact-phone");
-    if (phoneEl) {
-      if (profileData.contact?.phone) phoneEl.href = `tel:${profileData.contact.phone}`;
-      else phoneEl.style.display = "none";
-    }
-
-    const footerLocation = document.getElementById("footer-location");
-    if (footerLocation && profileData.contact?.location) footerLocation.textContent = `📍 ${profileData.contact.location}`;
-
-    const aboutPhoto = document.querySelector(".about-photo");
-    if (aboutPhoto && profileData.files?.profilePhoto) aboutPhoto.src = profileData.files.profilePhoto;
+    if (taglineEl) taglineEl.textContent = profileData.tagline || "";
+    
+    const aboutIntro = document.getElementById("about-intro");
+    if (aboutIntro) aboutIntro.textContent = profileData.about?.introduction || "";
 
     const educationEl = document.getElementById("about-education");
     if (educationEl) educationEl.textContent = profileData.about?.education || "—";
-    const experienceEl = document.getElementById("about-experience");
-    if (experienceEl) experienceEl.textContent = profileData.about?.experience || "—";
-    const goalsEl = document.getElementById("about-goals");
-    if (goalsEl) goalsEl.textContent = profileData.about?.goals || "—";
     
-    const aboutTextP = document.querySelector(".about-text > p");
-    if (aboutTextP && profileData.about?.introduction) aboutTextP.textContent = profileData.about.introduction;
-
-    const achievementsEl = document.getElementById("achievements-content");
-    if (achievementsEl) {
-      const text = (profileData.about?.achievements || "").trim();
-      achievementsEl.innerHTML = text
-        ? text.split("\n").filter(Boolean).map(line => `<p class="card-body" style="margin-bottom:8px;">🏆 ${line}</p>`).join("")
-        : `<p class="card-body">No achievements added yet.</p>`;
-    }
+    const emailEl = document.getElementById("contact-email");
+    if (emailEl && profileData.contact?.email) emailEl.href = `mailto:${profileData.contact.email}`;
 
     renderSocialLinks(profileData.socialLinks || []);
-    document.title = `${profileData.name} | ${profileData.role}`;
-    window.dispatchEvent(new CustomEvent("profileLoaded"));
 
-  } catch (err) { console.warn("Profile not loaded:", err.message); }
+    if (profileData.files) {
+      const logoEl = document.getElementById("brand-logo-img");
+      if (logoEl && profileData.files.logo) logoEl.src = profileData.files.logo;
+
+      const heroSection = document.getElementById("home-hero");
+      if (heroSection && profileData.files.heroBackground) {
+        heroSection.style.backgroundImage = `linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.92)), url('${profileData.files.heroBackground}')`;
+      }
+
+      const resumeBtn = document.getElementById("hero-resume-btn");
+      if (resumeBtn && profileData.files.resume) resumeBtn.href = profileData.files.resume;
+
+      const aboutPhoto = document.getElementById("about-photo");
+      if (aboutPhoto && profileData.files.profilePhoto) aboutPhoto.src = profileData.files.profilePhoto;
+    }
+  } catch (err) { console.error("Profile load error:", err); }
 }
 
 function renderSocialLinks(links) {
@@ -155,12 +156,13 @@ function renderSocialLinks(links) {
   const contactContainer = document.getElementById("contact-social-links");
   const buildLinks = () => links.map(link => {
     const slug = getIconSlug(link.url);
-    const iconHtml = slug ? `<img src="https://cdn.simpleicons.org/${slug}/ffffff" style="width:18px;height:18px;" alt="${slug}" />` : "🔗";
-    const label = link.label || "Link";
-    return `<a href="${link.url}" class="btn btn-outline" target="_blank" title="${label}" onclick="trackClick('${slug || 'other'}')">${iconHtml} ${label}</a>`;
+    return `<a href="${link.url}" class="btn btn-outline social-link-tracked" data-slug="${slug || ''}" target="_blank">${slug ? slug.toUpperCase() : "Link"}</a>`;
   }).join("");
   if (heroContainer) heroContainer.innerHTML = buildLinks();
   if (contactContainer) contactContainer.innerHTML = buildLinks();
+  document.querySelectorAll(".social-link-tracked").forEach(a => {
+    a.addEventListener("click", () => trackClick(a.dataset.slug));
+  });
 }
 
 function setCurrentYear() {
@@ -170,7 +172,6 @@ function setCurrentYear() {
 
 function initNavbarScroll() {
   const navbar = document.getElementById("main-navbar");
-  if (!navbar) return;
   window.addEventListener("scroll", () => {
     if (window.scrollY > 80) navbar.classList.add("scrolled");
     else navbar.classList.remove("scrolled");
@@ -181,65 +182,40 @@ function initSidePanel() {
   const toggleBtn = document.getElementById("menu-toggle-btn");
   const overlay = document.getElementById("side-panel-overlay");
   const panel = document.getElementById("side-panel");
-  const closeBtn = document.getElementById("side-panel-close");
   if (!toggleBtn || !overlay || !panel) return;
-  const open = () => { overlay.classList.add("open"); panel.classList.add("open"); };
-  const close = () => { overlay.classList.remove("open"); panel.classList.remove("open"); };
-  toggleBtn.addEventListener("click", open);
-  if (closeBtn) closeBtn.addEventListener("click", close);
-  overlay.addEventListener("click", close);
-  const feedbackLink = document.getElementById("side-panel-feedback-link");
-  if (feedbackLink) {
-    feedbackLink.addEventListener("click", (e) => {
-      e.preventDefault(); close();
-      const fo = document.getElementById("feedback-modal-overlay");
-      if (fo) fo.style.display = "flex";
-    });
-  }
+  toggleBtn.addEventListener("click", () => { overlay.classList.add("open"); panel.classList.add("open"); });
+  overlay.addEventListener("click", () => { overlay.classList.remove("open"); panel.classList.remove("open"); });
 }
 
 function initFeedbackModal() {
   const fab = document.getElementById("feedback-fab");
   const overlay = document.getElementById("feedback-modal-overlay");
-  const closeBtn = document.getElementById("feedback-close-btn");
-  const form = document.getElementById("feedback-form");
-  if (!overlay || !form) return;
-  if (fab) fab.addEventListener("click", () => { overlay.style.display = "flex"; });
-  if (closeBtn) closeBtn.addEventListener("click", () => { overlay.style.display = "none"; });
-  form.addEventListener("submit", async (e) => {
+  if (!fab || !overlay) return;
+  fab.addEventListener("click", () => overlay.style.display = "flex");
+  document.getElementById("feedback-close-btn").addEventListener("click", () => overlay.style.display = "none");
+  
+  document.getElementById("feedback-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const statusEl = document.getElementById("feedback-status");
-    const name = document.getElementById("fb-name").value.trim();
-    const message = document.getElementById("fb-message").value.trim();
-    if (!message) return;
-    if (statusEl) statusEl.textContent = "Sending...";
-    try {
-      const res = await fetch("/api/public/feedback", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, message }) });
-      if (!res.ok) throw new Error("Failed.");
-      if (statusEl) statusEl.textContent = "✅ Thank you!";
-      form.reset();
-      setTimeout(() => { overlay.style.display = "none"; if (statusEl) statusEl.textContent = ""; }, 1500);
-    } catch (err) { if (statusEl) statusEl.textContent = "❌ Failed to send."; }
+    const msg = document.getElementById("fb-message").value;
+    if (typeof firebase !== "undefined") {
+      await firebase.database().ref("feedback").push({ message: msg, timestamp: new Date().toISOString() });
+      document.getElementById("feedback-status").textContent = "✅ Sent!";
+    }
   });
 }
 
 function initVisitorModal() {
   const overlay = document.getElementById("visitor-modal-overlay");
-  const form = document.getElementById("visitor-form");
-  const skipBtn = document.getElementById("visitor-skip-btn");
-  if (!overlay || !form) return;
-  if (sessionStorage.getItem("visitorModalShown")) { overlay.style.display = "none"; return; }
-  form.addEventListener("submit", async (e) => {
+  if (!overlay || sessionStorage.getItem("visitorModalShown")) { if(overlay) overlay.style.display = "none"; return; }
+  
+  document.getElementById("visitor-form").addEventListener("submit", async (e) => {
     e.preventDefault();
-    const name = document.getElementById("vf-name").value.trim();
-    const email = document.getElementById("vf-email").value.trim();
-    const purpose = document.getElementById("vf-purpose").value.trim();
-    if (!name || !email) return;
-    try {
-      await fetch("/api/public/visitor", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name, email, purpose }) });
-    } catch (err) {}
+    const name = document.getElementById("vf-name").value;
+    if (typeof firebase !== "undefined") {
+      await firebase.database().ref("visitors").push({ name: name, timestamp: new Date().toISOString() });
+    }
     sessionStorage.setItem("visitorModalShown", "true");
     overlay.style.display = "none";
   });
-  skipBtn.addEventListener("click", () => { sessionStorage.setItem("visitorModalShown", "true"); overlay.style.display = "none"; });
+  document.getElementById("visitor-skip-btn").addEventListener("click", () => { sessionStorage.setItem("visitorModalShown", "true"); overlay.style.display = "none"; });
 }

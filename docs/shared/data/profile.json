@@ -21,19 +21,11 @@
     "location": "Gwalior, Madhya Pradesh, India"
   },
   "socialLinks": [
-    {
-      "id": "social-1",
-      "label": "GitHub",
-      "url": "https://github.com/amitdhakar218"
-    },
-    {
-      "id": "social-2",
-      "label": "LinkedIn",
-      "url": "https://linkedin.com/in/amit-dhakar-564177385"
-    }
+    { "id": "social-1", "label": "GitHub", "url": "https://github.com/amitdhakar218" },
+    { "id": "social-2", "label": "LinkedIn", "url": "https://linkedin.com/in/amit-dhakar-564177385" }
   ],
   "files": {
-    "resume": "assets/uploads/1784986029735-IMG_20260718_120328.jpg",
+    "resume": "assets/resume.pdf",
     "profilePhoto": "assets/profile.jpg",
     "logo": "https://i.ibb.co/kVXZ49Ws/file-00000000aaa871fabf047f2816e41030.png",
     "heroBackground": "https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg"
