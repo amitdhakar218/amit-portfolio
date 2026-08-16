@@ -1,323 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amit Dhakar | Portfolio</title>
-  <link rel="stylesheet" href="shared/css/design-system.css" />
-  <link rel="stylesheet" href="shared/css/components.css" />
-  <link rel="stylesheet" href="css/style.css" />
-</head>
-<body>
-  <div class="side-panel-overlay" id="side-panel-overlay"></div>
-  <div class="side-panel" id="side-panel">
-    <button class="side-panel-close" id="side-panel-close">✕</button>
-    <a href="index.html" class="side-panel-link">🏠 Home</a>
-    <a href="#about" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">👤 About</a>
-    <a href="#projects" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">💼 Projects</a>
-    <a href="#skills" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🧠 Skills</a>
-    <a href="#certificates" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🎓 Certificates</a>
-    <a href="#gallery" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🖼️ Gallery</a>
-    <a href="#videos" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">🎬 Videos</a>
-    <a href="#blog" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">📝 Blog</a>
-    <a href="#contact-section" class="side-panel-link" onclick="document.getElementById('side-panel-overlay').classList.remove('open'); document.getElementById('side-panel').classList.remove('open');">📩 Contact</a>
-  </div>
-
-  <nav class="navbar" id="main-navbar">
-    <a href="index.html" class="brand-logo-wrap" style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);">
-      <img src="assets/logo.png" alt="Logo" class="brand-logo-img scrolled-always" id="brand-logo-img" />
-      <div class="navbar-logo brand-name-text">Amit<span style="color: var(--color-primary);">.</span></div>
-    </a>
-    <button class="menu-toggle-btn" id="menu-toggle-btn">⋮</button>
-  </nav>
-
-  <section class="hero" id="home-hero" style="background-image: linear-gradient(rgba(5,5,5,0.85), rgba(5,5,5,0.92)), url('assets/hero-bg.jpg'); background-size: cover; background-position: center;">
-    <div class="hero-content">
-      <h1 class="hero-title">Amit Dhakar</h1>
-      <p class="hero-tagline">Building AI Applications using JavaScript, Node.js & Termux</p>
-      <div class="hero-buttons">
-        <a href="#about" class="btn btn-primary">Learn More</a>
-        <a href="#contact-section" class="btn btn-outline">Contact</a>
-      </div>
-      <div class="hero-social-links" id="hero-social-links"></div>
-    </div>
-  </section>
-
-  <section id="about" class="section">
-    <h2 class="section-title">About Me</h2>
-    <div class="card">
-      <p id="about-intro" class="card-body">Loading...</p>
-      <div class="about-details" style="margin-top: var(--space-lg); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-md);">
-        <div class="card"><h3 class="card-title">🎓 Education</h3><p class="card-body" id="about-education">—</p></div>
-        <div class="card"><h3 class="card-title">💼 Experience</h3><p class="card-body" id="about-experience">—</p></div>
-        <div class="card"><h3 class="card-title">🎯 Goals</h3><p class="card-body" id="about-goals">—</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="projects" class="section reveal">
-    <h2 class="section-title">Projects</h2>
-    <div class="projects-grid" id="projects-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="skills" class="section reveal">
-    <h2 class="section-title">Skills</h2>
-    <div class="skills-list" id="skills-list"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="certificates" class="section reveal">
-    <h2 class="section-title">Certificates</h2>
-    <div class="certificates-grid" id="certificates-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="gallery" class="section reveal">
-    <h2 class="section-title">Gallery</h2>
-    <div class="certificates-grid" id="gallery-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="videos" class="section reveal">
-    <h2 class="section-title">Videos</h2>
-    <div class="projects-grid" id="videos-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="blog" class="section reveal">
-    <h2 class="section-title">Blog</h2>
-    <div class="blog-grid" id="blog-grid"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="achievements" class="section reveal">
-    <h2 class="section-title">Achievements</h2>
-    <div class="card" id="achievements-content"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section id="contact-section" class="section reveal">
-    <h2 class="section-title">Contact</h2>
-    <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
-    <div class="contact-links" id="contact-social-links"></div>
-    <form id="contact-form" style="margin-top: var(--space-lg);">
-      <div class="form-grid" style="grid-template-columns: 1fr;">
-        <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
-        <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
-        <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
-        <label class="form-field"><span>Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
-        <label class="form-field"><span>Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
-        <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
-      </div>
-      <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
-    </form>
-  </section>
-
-  <footer class="footer">
-    <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
-  </footer>
-
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="js/common.js"></script>
-  
   <script>
-    const CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const CONTACT_API_URL = "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
-
-    // Projects Loading
-    async function loadProjects() {
+    // Load Projects
+    async function loadProjectsHome() {
       if (typeof firebase !== "undefined" && firebase.database) {
         firebase.database().ref("projects").once("value", snapshot => {
           const projects = snapshot.val();
           if (!projects) return;
-          const html = Object.entries(projects).map(([id, proj]) => `
+          const html = Object.entries(projects).slice(0, 3).map(([id, proj]) => `
             <div class="card">
               <h3 class="card-title">${proj.name || 'Project'}</h3>
               <p class="card-body">${proj.description || ''}</p>
-              ${proj.link ? `<a href="${proj.link}" class="btn btn-outline" target="_blank">View</a>` : ''}
             </div>
           `).join("");
-          document.getElementById("projects-grid").innerHTML = html;
+          const el = document.getElementById("projects-grid");
+          if (el) el.innerHTML = html;
         });
       }
     }
 
-    // Skills Loading
-    async function loadSkills() {
+    // Load Skills
+    async function loadSkillsHome() {
       if (typeof firebase !== "undefined" && firebase.database) {
         firebase.database().ref("skills").once("value", snapshot => {
           const skills = snapshot.val();
           if (!skills) return;
-          const html = Object.values(skills).map(skill => `<span class="btn btn-outline">${skill}</span>`).join("");
-          document.getElementById("skills-list").innerHTML = html;
+          const html = Object.values(skills).slice(0, 5).map(skill => `<span class="btn btn-outline">${skill}</span>`).join("");
+          const el = document.getElementById("skills-list");
+          if (el) el.innerHTML = html;
         });
       }
     }
 
-    // Certificates Loading
-    async function loadCertificates() {
+    // Load About
+    async function loadAboutHome() {
       if (typeof firebase !== "undefined" && firebase.database) {
-        firebase.database().ref("certificates").once("value", snapshot => {
-          const certs = snapshot.val();
-          if (!certs) return;
-          const html = Object.entries(certs).map(([id, cert]) => `
-            <div class="card">
-              <h3 class="card-title">${cert.name || 'Certificate'}</h3>
-              <p class="text-muted">${cert.date || ''}</p>
-              ${cert.image ? `<img src="${cert.image}" alt="${cert.name}" style="max-width:200px; margin-top: var(--space-sm);" />` : ''}
-            </div>
-          `).join("");
-          document.getElementById("certificates-grid").innerHTML = html;
+        firebase.database().ref("profile/about").once("value", snapshot => {
+          const about = snapshot.val();
+          if (!about) return;
+          const introEl = document.getElementById("about-intro");
+          if (introEl) introEl.textContent = about.introduction || '';
+          const eduEl = document.getElementById("about-education");
+          if (eduEl) eduEl.textContent = about.education || '—';
+          const expEl = document.getElementById("about-experience");
+          if (expEl) expEl.textContent = about.experience || '—';
+          const goalEl = document.getElementById("about-goals");
+          if (goalEl) goalEl.textContent = about.goals || '—';
         });
       }
     }
 
-    // Gallery Loading
-    async function loadGallery() {
-      if (typeof firebase !== "undefined" && firebase.database) {
-        firebase.database().ref("gallery").once("value", snapshot => {
-          const gallery = snapshot.val();
-          if (!gallery) return;
-          const html = Object.entries(gallery).map(([id, item]) => `
-            <div class="card">
-              ${item.image ? `<img src="${item.image}" alt="${item.title || ''}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;" />` : ''}
-              <h3 class="card-title" style="margin-top: var(--space-sm);">${item.title || 'Gallery Item'}</h3>
-            </div>
-          `).join("");
-          document.getElementById("gallery-grid").innerHTML = html;
-        });
-      }
-    }
-
-    // Videos Loading
-    async function loadVideos() {
-      if (typeof firebase !== "undefined" && firebase.database) {
-        firebase.database().ref("videos").once("value", snapshot => {
-          const videos = snapshot.val();
-          if (!videos) return;
-          const html = Object.entries(videos).map(([id, vid]) => `
-            <div class="card">
-              <h3 class="card-title">${vid.title || 'Video'}</h3>
-              <p class="card-body">${vid.description || ''}</p>
-              ${vid.link ? `<a href="${vid.link}" class="btn btn-outline" target="_blank">Watch</a>` : ''}
-            </div>
-          `).join("");
-          document.getElementById("videos-grid").innerHTML = html;
-        });
-      }
-    }
-
-    // Blog Loading
-    async function loadBlog() {
-      if (typeof firebase !== "undefined" && firebase.database) {
-        firebase.database().ref("blog").once("value", snapshot => {
-          const blogs = snapshot.val();
-          if (!blogs) return;
-          const html = Object.entries(blogs).map(([id, blog]) => `
-            <div class="card">
-              <h3 class="card-title">${blog.title || 'Blog Post'}</h3>
-              <p class="text-muted">${blog.date || ''}</p>
-              <p class="card-body">${blog.content ? blog.content.substring(0, 100) + '...' : ''}</p>
-            </div>
-          `).join("");
-          document.getElementById("blog-grid").innerHTML = html;
-        });
-      }
-    }
-
-    // Achievements Loading
-    async function loadAchievements() {
-      if (typeof firebase !== "undefined" && firebase.database) {
-        firebase.database().ref("profile").once("value", snapshot => {
-          const profile = snapshot.val();
-          if (!profile || !profile.about || !profile.about.achievements) return;
-          const achievements = profile.about.achievements || '';
-          document.getElementById("achievements-content").innerHTML = `<p class="card-body">${achievements}</p>`;
-        });
-      }
-    }
-
-    // Contact Form
-    async function uploadToCloudinary(file, type) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_PRESET);
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${type}/upload`, {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-      return data.secure_url;
-    }
-
+    // Call on load
     document.addEventListener("DOMContentLoaded", () => {
-      // Load all data
-      loadProjects();
-      loadSkills();
-      loadCertificates();
-      loadGallery();
-      loadVideos();
-      loadBlog();
-      loadAchievements();
-
-      // Contact Form Handler
-      const form = document.getElementById("contact-form");
-      if (form) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const statusEl = document.getElementById("contact-form-status");
-          const submitBtn = document.getElementById("cf-submit-btn");
-          const emailVal = document.getElementById("cf-email").value.trim();
-          const subjectVal = document.getElementById("cf-subject").value.trim();
-          const messageVal = document.getElementById("cf-message").value.trim();
-          const linkVal = document.getElementById("cf-link").value.trim();
-          const imageFile = document.getElementById("cf-image").files[0];
-          const videoFile = document.getElementById("cf-video").files[0];
-
-          if (!emailVal || !messageVal) return;
-
-          statusEl.style.color = "var(--color-muted)";
-          submitBtn.disabled = true;
-
-          try {
-            let imageUrl = "";
-            let videoUrl = "";
-
-            if (imageFile) {
-              statusEl.textContent = "Uploading image...";
-              imageUrl = await uploadToCloudinary(imageFile, "image");
-            }
-            if (videoFile) {
-              statusEl.textContent = "Uploading video...";
-              videoUrl = await uploadToCloudinary(videoFile, "video");
-            }
-
-            statusEl.textContent = "Sending...";
-
-            const res = await fetch(CONTACT_API_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: emailVal,
-                subject: subjectVal,
-                message: messageVal,
-                imageUrl,
-                videoUrl,
-                linkUrl: linkVal
-              })
-            });
-            const result = await res.json();
-            if (!res.ok) throw new Error(result.error || "Failed to send");
-
-            statusEl.textContent = "✅ Sent! I'll get back to you soon.";
-            statusEl.style.color = "var(--color-accent)";
-            form.reset();
-          } catch (err) {
-            statusEl.textContent = `❌ ${err.message}`;
-            statusEl.style.color = "#ef4444";
-          } finally {
-            submitBtn.disabled = false;
-          }
-        });
-      }
+      loadProjectsHome();
+      loadSkillsHome();
+      loadAboutHome();
     });
   </script>
-</body>
-</html>
