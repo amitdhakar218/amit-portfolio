@@ -3,74 +3,68 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Amit Studio | Resume</title>
+  <title>Resume Management | Amit Studio</title>
   <link rel="stylesheet" href="../../shared/css/design-system.css" />
   <link rel="stylesheet" href="../../shared/css/components.css" />
   <link rel="stylesheet" href="../css/style.css" />
 </head>
-<body style="visibility:hidden">
-  <div class="studio-layout">
-    <aside class="sidebar">
-      <div class="navbar-logo" style="margin-bottom: var(--space-lg);">Amit<span style="color: var(--color-accent);">Studio</span></div>
-      <nav>
-        <a href="../index.html" class="sidebar-item">📊 Dashboard</a>
-        <a href="profile.html" class="sidebar-item">👤 Profile</a>
-        <a href="projects.html" class="sidebar-item">💼 Projects</a>
-        <a href="skills.html" class="sidebar-item">🧠 Skills</a>
-        <a href="certificates.html" class="sidebar-item">🎓 Certificates</a>
-        <a href="resume.html" class="sidebar-item active">📄 Resume</a>
-        <a href="gallery.html" class="sidebar-item">🖼️ Gallery</a>
-        <a href="videos.html" class="sidebar-item">🎬 Videos</a>
-        <a href="blog.html" class="sidebar-item">📝 Blog</a>
-        <a href="analytics.html" class="sidebar-item">📈 Analytics</a>
-        <a href="theme.html" class="sidebar-item">🎨 Theme</a>
-        <a href="settings.html" class="sidebar-item">⚙️ Settings</a>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">Amit Studio</div>
+    <button class="menu-toggle-btn" id="menu-toggle-btn">⋮</button>
+  </nav>
+
+  <div class="studio-container">
+    <aside class="studio-sidebar" id="studio-sidebar">
+      <div class="studio-logo">Amit.</div>
+      <nav class="studio-nav">
+        <a href="profile.html" class="nav-link">👤 Profile</a>
+        <a href="projects.html" class="nav-link">💼 Projects</a>
+        <a href="skills.html" class="nav-link">🧠 Skills</a>
+        <a href="certificates.html" class="nav-link">🎓 Certificates</a>
+        <a href="resume.html" class="nav-link active">📄 Resume</a>
+        <a href="gallery.html" class="nav-link">🖼️ Gallery</a>
+        <a href="videos.html" class="nav-link">🎬 Videos</a>
+        <a href="blog.html" class="nav-link">📝 Blog</a>
+        <a href="analytics.html" class="nav-link">📊 Analytics</a>
+        <a href="settings.html" class="nav-link">⚙️ Settings</a>
+        <button id="logout-btn" class="btn btn-outline" style="width:100%; margin-top: var(--space-lg);">🚪 Logout</button>
       </nav>
     </aside>
-    <div class="studio-main">
-      <header class="navbar studio-topbar">
-        <div><h2 style="margin:0;">Resume</h2></div>
-        <div style="display:flex; align-items:center; gap: var(--space-md);">
-          <div class="text-muted text-mono" id="studio-date"></div>
-          <button type="button" class="btn btn-outline" id="logout-btn">🚪 Logout</button>
-        </div>
-      </header>
-      <main class="studio-content">
-        <p class="text-muted" id="resume-status" style="margin-bottom: var(--space-lg);">Loading resume info...</p>
 
-        <div class="card" style="margin-bottom: var(--space-lg);">
-          <h3 class="card-title">Current Resume</h3>
-          <p class="card-body text-mono" id="resume-current-path" style="margin: var(--space-sm) 0;">—</p>
-          <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
-            <a href="#" class="btn btn-primary" id="resume-preview-btn" target="_blank">👁️ Download Preview</a>
-          </div>
+    <main class="studio-main">
+      <h1>📄 Resume Management</h1>
+      
+      <div class="card" style="margin-bottom: var(--space-lg);">
+        <h3 class="card-title">Upload New Resume</h3>
+        <div class="form-grid" style="grid-template-columns: 1fr;">
+          <label class="form-field">
+            <span>Resume Title</span>
+            <input type="text" id="resume-title" placeholder="e.g., Senior Developer 2025" required />
+          </label>
+          <label class="form-field">
+            <span>Description</span>
+            <textarea id="resume-description" placeholder="Brief description" rows="2"></textarea>
+          </label>
+          <label class="form-field">
+            <span>Upload File (PDF/Image/Text)</span>
+            <input type="file" id="resume-file" accept=".pdf,.jpg,.jpeg,.png,.txt,.doc,.docx" required />
+          </label>
         </div>
+        <p id="resume-upload-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm);"></p>
+        <button id="resume-upload-btn" class="btn btn-primary" style="width:100%;">⬆️ Upload Resume</button>
+      </div>
 
-        <div class="card">
-          <h3 class="card-title">Replace Resume</h3>
-          <form id="resume-form">
-            <div class="form-grid">
-              <label class="form-field form-field-wide"><span>Resume File Path</span><input type="text" id="field-resume-path" placeholder="assets/resume.pdf" /></label>
-              <label class="form-field form-field-wide">
-                <span>— OR Upload Resume PDF —</span>
-                <input type="file" id="resume-file-upload" accept="application/pdf" />
-                <p class="text-muted" id="resume-upload-status" style="font-size:0.8rem; margin-top:4px;"></p>
-              </label>
-            </div>
-            <div class="hero-buttons" style="justify-content: flex-start; margin-top: var(--space-md);">
-              <button type="submit" class="btn btn-primary">💾 Update Resume Path</button>
-            </div>
-          </form>
-        </div>
-      </main>
-    </div>
+      <div class="card">
+        <h3 class="card-title">Your Resumes</h3>
+        <div id="resume-list-container"><p class="text-muted">Loading...</p></div>
+      </div>
+    </main>
   </div>
 
-  <!-- Firebase Compat CDN Scripts -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   <script src="../js/app.js"></script>
   <script src="../js/resume.js"></script>
 </body>
