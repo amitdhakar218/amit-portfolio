@@ -1,15 +1,4 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyBg8Y3T_B25Kvg6IHKNemu6JMAXUFhfn-M",
-  authDomain: "amit-portfolio-79db4.firebaseapp.com",
-  databaseURL: "https://amit-portfolio-79db4-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "amit-portfolio-79db4",
-  storageBucket: "amit-portfolio-79db4.firebasestorage.app",
-  appId: "1:925822310763:web:c59695e6aab94e9cca942e"
-};
-
-if (typeof firebase !== "undefined" && !firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+// Firebase already initialized by app.js - don't re-initialize
 
 async function uploadResume() {
   const title = document.getElementById("resume-title").value.trim();
@@ -30,13 +19,15 @@ async function uploadResume() {
   uploadBtn.disabled = true;
 
   try {
-    // Upload to Firebase Storage
+    if (typeof firebase === "undefined" || !firebase.storage) {
+      throw new Error("Firebase Storage not available");
+    }
+
     const fileName = `resumes/${Date.now()}-${file.name}`;
     const storageRef = firebase.storage().ref(fileName);
-    await storageRef.put(file);
-    const downloadURL = await storageRef.getDownloadURL();
+    const snapshot = await storageRef.put(file);
+    const downloadURL = await snapshot.ref.getDownloadURL();
 
-    // Save to Realtime Database
     const resumeId = Date.now().toString();
     await firebase.database().ref(`resumes/${resumeId}`).set({
       id: resumeId,
@@ -56,6 +47,7 @@ async function uploadResume() {
     fileInput.value = "";
     loadResumes();
   } catch (err) {
+    console.error("Upload error:", err);
     statusEl.textContent = `❌ ${err.message}`;
     statusEl.style.color = "#ef4444";
   } finally {
@@ -85,16 +77,15 @@ function loadResumes() {
               📥 ${resume.downloads || 0} downloads | 📅 ${new Date(resume.uploadedAt).toLocaleDateString()}
             </p>
           </div>
-          <button class="btn btn-outline delete-resume" data-id="${id}" style="padding: var(--space-xs) var(--space-sm);">🗑️ Delete</button>
+          <button class="btn btn-outline delete-resume" data-id="${id}">🗑️ Delete</button>
         </div>
       </div>
     `).join("");
 
     container.innerHTML = html;
 
-    // Delete button listeners
     document.querySelectorAll(".delete-resume").forEach(btn => {
-      btn.addEventListener("click", (e) => deleteResume(e.target.dataset.id));
+      btn.addEventListener("click", () => deleteResume(btn.dataset.id));
     });
   });
 }
