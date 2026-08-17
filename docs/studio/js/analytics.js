@@ -84,3 +84,93 @@ function loadVisitorsList() {
       </div>`).join("");
   }, () => { container.innerHTML = `<p class="text-muted">⚠️ Could not load visitors.</p>`; });
 }
+
+// Load Resume Downloads
+function loadResumeDownloads() {
+  if (typeof firebase === "undefined" || !firebase.database) return;
+
+  firebase.database().ref("resume-downloads").once("value", snapshot => {
+    const downloads = snapshot.val();
+    const container = document.getElementById("resume-downloads-container");
+
+    if (!downloads) {
+      container.innerHTML = "<p class='text-muted'>No downloads yet</p>";
+      return;
+    }
+
+    // Group by resume
+    const grouped = {};
+    Object.entries(downloads).forEach(([key, download]) => {
+      const title = download.resumeTitle || "Unknown";
+      if (!grouped[title]) grouped[title] = [];
+      grouped[title].push(download);
+    });
+
+    const html = Object.entries(grouped).map(([title, items]) => `
+      <div style="border-bottom: 1px solid var(--color-border); padding: var(--space-md) 0;">
+        <h4 style="margin: 0 0 var(--space-sm) 0; color: var(--color-primary);">${title}</h4>
+        <p class="text-muted" style="margin: 0 0 var(--space-sm) 0;">📥 Total Downloads: <strong>${items.length}</strong></p>
+        <div style="font-size: 0.85em; max-height: 200px; overflow-y: auto;">
+          ${items.map(item => `
+            <div style="padding: var(--space-xs) 0; border-bottom: 1px solid var(--color-border-light);">
+              <span style="color: var(--color-primary);">👤 ${item.name || 'Anonymous'}</span> 
+              (<span class="text-muted">${item.email}</span>) 
+              | 🌍 <strong>${item.country}</strong> 
+              | 📅 ${new Date(item.timestamp).toLocaleDateString()}
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+
+    container.innerHTML = html;
+  });
+}
+
+// Load Resume Views
+function loadResumeViews() {
+  if (typeof firebase === "undefined" || !firebase.database) return;
+
+  firebase.database().ref("resume-views").once("value", snapshot => {
+    const views = snapshot.val();
+    const container = document.getElementById("resume-views-container");
+
+    if (!views) {
+      container.innerHTML = "<p class='text-muted'>No views yet</p>";
+      return;
+    }
+
+    // Group by resume
+    const grouped = {};
+    Object.entries(views).forEach(([key, view]) => {
+      const title = view.resumeTitle || "Unknown";
+      if (!grouped[title]) grouped[title] = [];
+      grouped[title].push(view);
+    });
+
+    const html = Object.entries(grouped).map(([title, items]) => `
+      <div style="border-bottom: 1px solid var(--color-border); padding: var(--space-md) 0;">
+        <h4 style="margin: 0 0 var(--space-sm) 0; color: var(--color-primary);">${title}</h4>
+        <p class="text-muted" style="margin: 0 0 var(--space-sm) 0;">👁️ Total Views: <strong>${items.length}</strong></p>
+        <div style="font-size: 0.85em; max-height: 200px; overflow-y: auto;">
+          ${items.map(item => `
+            <div style="padding: var(--space-xs) 0; border-bottom: 1px solid var(--color-border-light);">
+              🌍 <strong>${item.country}</strong> 
+              | 📍 ${item.city || 'Unknown'} 
+              | IP: ${item.ip} 
+              | 📅 ${new Date(item.timestamp).toLocaleDateString()}
+            </div>
+          `).join("")}
+        </div>
+      </div>
+    `).join("");
+
+    container.innerHTML = html;
+  });
+}
+
+// Call on load
+document.addEventListener("DOMContentLoaded", () => {
+  loadResumeDownloads();
+  loadResumeViews();
+});
