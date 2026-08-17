@@ -21,49 +21,8 @@
     <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
     <a href="videos.html" class="side-panel-link">🎬 Videos</a>
     <a href="blog.html" class="side-panel-link">📝 Blog</a>
-    <a href="achievements.html" class="side-panel-link">🏆 Achievements</a>
     <a href="contact.html" class="side-panel-link">📩 Contact</a>
-    <a href="#" class="side-panel-link feedback-link" id="side-panel-feedback-link">💬 Feedback</a>
   </div>
-
-  
-  <!-- Feedback -->
-  <button type="button" id="feedback-fab" class="btn btn-primary">
-    💬 Feedback
-  </button>
-
-  <div class="modal-overlay" id="feedback-modal-overlay">
-    <div class="card modal-box">
-      <h3 class="card-title">💬 Leave Feedback</h3>
-
-      <p id="feedback-status" class="text-muted" style="min-height:1.2em; margin-bottom:var(--space-sm);"></p>
-
-      <form id="feedback-form">
-        <div class="form-grid" style="grid-template-columns:1fr;">
-          <label class="form-field">
-            <span>Your Name (optional)</span>
-            <input type="text" id="fb-name" />
-          </label>
-
-          <label class="form-field">
-            <span>Your Feedback</span>
-            <textarea id="fb-message" rows="4" required></textarea>
-          </label>
-        </div>
-
-        <div class="hero-buttons" style="margin-top:var(--space-md);">
-          <button type="submit" class="btn btn-primary" style="flex:1;">
-            Send
-          </button>
-
-          <button type="button" class="btn btn-outline" id="feedback-close-btn" style="flex:1;">
-            Close
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
-
 
   <nav class="navbar" id="main-navbar">
     <a href="index.html" class="brand-logo-wrap" style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);">
@@ -100,8 +59,8 @@
   </section>
 
   <section class="section" style="padding-top: var(--space-xl);">
-    <h2 class="section-title">Resume</h2>
-    <div class="card"><a href="assets/resume.pdf" class="btn btn-primary" download>📥 Download My Resume</a></div>
+    <h2 class="section-title">📄 Resumes</h2>
+    <div id="resume-list-container"><p class="text-muted">Loading resumes...</p></div>
   </section>
 
   <section class="section" style="padding-top: var(--space-xl);">
@@ -135,11 +94,6 @@
   </section>
 
   <section class="section" style="padding-top: var(--space-xl);">
-    <h2 class="section-title">Achievements</h2>
-    <div class="card" id="achievements-content"><p class="text-muted">Loading...</p></div>
-  </section>
-
-  <section class="section" style="padding-top: var(--space-xl);">
     <h2 class="section-title">Contact</h2>
     <div class="contact-links" id="contact-social-links"></div>
     <div class="card" style="margin-top: var(--space-lg);">
@@ -161,103 +115,13 @@
   </section>
 
   <footer class="footer">
-    <p class="text-muted" id="footer-location"></p>
     <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
   </footer>
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
   <script src="js/common.js"></script>
-  
-  <script>
-    const CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const CONTACT_API_URL = "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
-
-    async function uploadToCloudinary(file, type) {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("upload_preset", CLOUDINARY_PRESET);
-      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/${type}/upload`, {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error?.message || "Upload failed");
-      return data.secure_url;
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const form = document.getElementById("contact-form");
-      if (form) {
-        form.addEventListener("submit", async (e) => {
-          e.preventDefault();
-          const statusEl = document.getElementById("contact-form-status");
-          const submitBtn = document.getElementById("cf-submit-btn");
-          const emailVal = document.getElementById("cf-email").value.trim();
-          const subjectVal = document.getElementById("cf-subject").value.trim();
-          const messageVal = document.getElementById("cf-message").value.trim();
-          const linkVal = document.getElementById("cf-link").value.trim();
-          const imageFile = document.getElementById("cf-image").files[0];
-          const videoFile = document.getElementById("cf-video").files[0];
-
-          if (!emailVal || !messageVal) return;
-
-          statusEl.style.color = "var(--color-muted)";
-          submitBtn.disabled = true;
-
-          try {
-            let imageUrl = "";
-            let videoUrl = "";
-
-            if (imageFile) {
-              statusEl.textContent = "Uploading image...";
-              imageUrl = await uploadToCloudinary(imageFile, "image");
-            }
-            if (videoFile) {
-              statusEl.textContent = "Uploading video...";
-              videoUrl = await uploadToCloudinary(videoFile, "video");
-            }
-
-            statusEl.textContent = "Sending...";
-
-            const res = await fetch(CONTACT_API_URL, {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                email: emailVal,
-                subject: subjectVal,
-                message: messageVal,
-                imageUrl,
-                videoUrl,
-                linkUrl: linkVal
-              })
-            });
-            const result = await res.json();
-            if (!res.ok) throw new Error(result.error || "Failed to send");
-
-            if (typeof firebase !== "undefined" && firebase.database) {
-              firebase.database().ref("visitors").push({
-                email: emailVal,
-                subject: subjectVal,
-                message: messageVal,
-                timestamp: new Date().toISOString()
-              });
-            }
-
-            statusEl.textContent = "✅ Sent! I'll get back to you soon.";
-            statusEl.style.color = "var(--color-accent)";
-            form.reset();
-          } catch (err) {
-            statusEl.textContent = `❌ ${err.message}`;
-            statusEl.style.color = "#ef4444";
-          } finally {
-            submitBtn.disabled = false;
-          }
-        });
-      }
-    });
-  </script>
   <script src="js/home-page.js"></script>
 </body>
 </html>
