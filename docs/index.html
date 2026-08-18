@@ -17,22 +17,22 @@
 
   <style>
     /* =========================================================
-       REQUESTED HOME-ONLY CHANGES
+       ONLY REQUESTED HOME PAGE CHANGES
     ========================================================== */
 
-    /* Background: 9:15, larger, only slightly dark */
+    /* Background: 9:16, larger, lightly dark */
     .home-background-hero {
       position: relative;
       width: 100%;
-      aspect-ratio: 9 / 15;
+      aspect-ratio: 9 / 16;
       min-height: 600px;
-      max-height: 1100px;
+      max-height: 1200px;
       overflow: hidden;
 
       background-image:
         linear-gradient(
-          rgba(0, 0, 0, 0.25),
-          rgba(0, 0, 0, 0.25)
+          rgba(0, 0, 0, 0.20),
+          rgba(0, 0, 0, 0.20)
         ),
         url("https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg");
 
@@ -57,6 +57,29 @@
         0 0 12px rgba(255, 255, 255, 0.18);
     }
 
+    /* GitHub + LinkedIn under hero buttons */
+    .home-hero-social-links {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    .home-hero-social-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .home-hero-social-links svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
     /* =========================================================
        HOME ABOUT
     ========================================================== */
@@ -71,12 +94,6 @@
     .home-about-details .card {
       height: 100%;
       box-sizing: border-box;
-    }
-
-    @media (max-width: 800px) {
-      .home-about-details {
-        grid-template-columns: 1fr;
-      }
     }
 
     /* =========================================================
@@ -102,9 +119,21 @@
       max-width: 700px;
     }
 
+    .home-contact-social-links svg {
+      width: 18px;
+      height: 18px;
+      display: block;
+    }
+
+    @media (max-width: 800px) {
+      .home-about-details {
+        grid-template-columns: 1fr;
+      }
+    }
+
     @media (max-width: 600px) {
       .home-background-hero {
-        aspect-ratio: 9 / 15;
+        aspect-ratio: 9 / 16;
         min-height: 0;
         max-height: none;
       }
@@ -116,7 +145,7 @@
 
   <!-- =========================================================
        SIDE MENU
-       SEPARATE PAGES — DO NOT CHANGE
+       SEPARATE PAGES — KEEP WORKING
   ========================================================== -->
 
   <div class="side-panel-overlay" id="side-panel-overlay"></div>
@@ -236,6 +265,47 @@
 
         </div>
 
+        <!-- ONLY TWO HOME HERO LINKS -->
+        <div class="home-hero-social-links">
+
+          <a
+            href="https://github.com/amitdhakar218"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline"
+            aria-label="GitHub"
+          >
+            <span class="social-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .7A11.3 11.3 0 0 0 8.4 22.8c.57.1.78-.25.78-.55v-2.1c-3.18.69-3.85-1.35-3.85-1.35-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.54-.29-5.2-1.27-5.2-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.17a10.9 10.9 0 0 1 5.7 0c2.17-1.48 3.13-1.17 3.13-1.17.62 1.57.23 2.73.11 3.02.73.8 1.18 1.82 1.18 3.07 0 4.39-2.67 5.35-5.21 5.64.41.36.78 1.07.78 2.16v3.2c0 .3.21.65.79.54A11.3 11.3 0 0 0 12 .7Z"
+                />
+              </svg>
+            </span>
+            GitHub
+          </a>
+
+          <a
+            href="https://www.linkedin.com/in/amit-dhakar-564177385"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline"
+            aria-label="LinkedIn"
+          >
+            <span class="social-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.03 2.03 0 1 0 5.25 7.06 2.03 2.03 0 0 0 5.25 3ZM20.44 13.42c0-3.46-1.84-5.07-4.3-5.07-1.98 0-2.86 1.09-3.35 1.85V8.5H9.41V20h3.38v-6.06c0-1.6.3-3.15 2.28-3.15 1.95 0 1.98 1.83 1.98 3.25V20h3.39v-6.58Z"
+                />
+              </svg>
+            </span>
+            LinkedIn
+          </a>
+
+        </div>
+
       </div>
 
     </section>
@@ -272,7 +342,6 @@
         <div class="home-about-details">
 
           <div class="card">
-
             <h3 class="card-title">
               🎓 Education
             </h3>
@@ -283,12 +352,9 @@
             >
               Loading...
             </p>
-
           </div>
 
-
           <div class="card">
-
             <h3 class="card-title">
               💼 Experience
             </h3>
@@ -299,12 +365,9 @@
             >
               Loading...
             </p>
-
           </div>
 
-
           <div class="card">
-
             <h3 class="card-title">
               🎯 Goals
             </h3>
@@ -315,7 +378,6 @@
             >
               Loading...
             </p>
-
           </div>
 
         </div>
@@ -328,14 +390,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="about.html"
         class="btn btn-outline"
       >
         Read Full About →
       </a>
-
     </div>
 
   </section>
@@ -364,14 +424,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="projects.html"
         class="btn btn-outline"
       >
         View All Projects →
       </a>
-
     </div>
 
   </section>
@@ -400,14 +458,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="skills.html"
         class="btn btn-outline"
       >
         View All Skills →
       </a>
-
     </div>
 
   </section>
@@ -436,14 +492,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="certificates.html"
         class="btn btn-outline"
       >
         View All Certificates →
       </a>
-
     </div>
 
   </section>
@@ -472,14 +526,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="gallery.html"
         class="btn btn-outline"
       >
         View Full Gallery →
       </a>
-
     </div>
 
   </section>
@@ -508,14 +560,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="videos.html"
         class="btn btn-outline"
       >
         View All Videos →
       </a>
-
     </div>
 
   </section>
@@ -544,14 +594,12 @@
       class="hero-buttons"
       style="margin-top:var(--space-lg);"
     >
-
       <a
         href="blog.html"
         class="btn btn-outline"
       >
         View All Blog Posts →
       </a>
-
     </div>
 
   </section>
@@ -578,14 +626,12 @@
         class="hero-buttons"
         style="margin-top:var(--space-md);"
       >
-
         <a
           href="resume.html"
           class="btn btn-primary"
         >
           📄 View Resume
         </a>
-
       </div>
 
     </div>
@@ -595,7 +641,7 @@
 
   <!-- =========================================================
        CONTACT
-       FULL COPY OF CONTACT PAGE
+       COPY OF CONTACT PAGE FEATURES
   ========================================================== -->
 
   <section class="section" id="contact">
@@ -619,7 +665,7 @@
         class="btn btn-outline"
         id="home-contact-phone"
       >
-        📱 Phone
+        📱 Call
       </a>
 
       <a
@@ -628,13 +674,13 @@
         target="_blank"
         rel="noopener noreferrer"
       >
-        💬 WhatsApp Me
+        💬 WhatsApp
       </a>
 
     </div>
 
 
-    <!-- All social links from Studio/Firebase -->
+    <!-- ALL STUDIO SOCIAL LINKS -->
 
     <div
       class="contact-links home-contact-social-links"
@@ -642,7 +688,7 @@
     ></div>
 
 
-    <!-- Direct contact form -->
+    <!-- DIRECT SEND MESSAGE -->
 
     <div class="card home-contact-form-card">
 
@@ -671,95 +717,32 @@
         >
 
           <label class="form-field">
-
-            <span>
-              Your Email
-            </span>
-
+            <span>Your Email</span>
             <input
               type="email"
               id="home-cf-email"
               required
             />
-
           </label>
 
-
           <label class="form-field">
-
-            <span>
-              Subject
-            </span>
-
+            <span>Subject</span>
             <input
               type="text"
               id="home-cf-subject"
             />
-
           </label>
 
-
           <label class="form-field">
-
-            <span>
-              Message
-            </span>
-
+            <span>Message</span>
             <textarea
               id="home-cf-message"
-              rows="3"
+              rows="4"
               required
             ></textarea>
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Image (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-image"
-              accept="image/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Video (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-video"
-              accept="video/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Link (optional)
-            </span>
-
-            <input
-              type="url"
-              id="home-cf-link"
-              placeholder="https://..."
-            />
-
           </label>
 
         </div>
-
 
         <button
           type="submit"
@@ -767,7 +750,7 @@
           style="width:100%; margin-top:var(--space-md);"
           id="home-cf-submit-btn"
         >
-          Send
+          Send Message
         </button>
 
       </form>
@@ -837,30 +820,20 @@
         >
 
           <label class="form-field">
-
-            <span>
-              Your Name (optional)
-            </span>
-
+            <span>Your Name (optional)</span>
             <input
               type="text"
               id="fb-name"
             />
-
           </label>
 
           <label class="form-field">
-
-            <span>
-              Your Feedback
-            </span>
-
+            <span>Your Feedback</span>
             <textarea
               id="fb-message"
               rows="4"
               required
             ></textarea>
-
           </label>
 
         </div>
@@ -908,13 +881,9 @@
     ></p>
 
     <p class="text-muted">
-
       &copy;
-
       <span id="current-year"></span>
-
       Amit Dhakar
-
     </p>
 
   </footer>
@@ -925,21 +894,20 @@
   ========================================================== -->
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 
   <!-- =========================================================
        COMMON JS
+       KEEP EXISTING COMMON.JS
   ========================================================== -->
 
   <script src="js/common.js"></script>
 
 
   <!-- =========================================================
-       HOME DATA MODULES
+       PAGE DATA MODULES
   ========================================================== -->
 
   <script src="js/projects-page.js"></script>
@@ -951,241 +919,407 @@
 
 
   <!-- =========================================================
-       HOME CONTACT LOGIC
-       Same API/Cloudinary setup as contact.html
+       HOME-ONLY DATA SYNC
+       This guarantees Home About + Contact use the same
+       Firebase/local profile data as the About/Contact pages.
   ========================================================== -->
 
   <script>
-    const HOME_CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const HOME_CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const HOME_CONTACT_API_URL =
-      "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
+    document.addEventListener("DOMContentLoaded", async () => {
 
-    async function homeUploadToCloudinary(file, type) {
+      async function getHomeProfile() {
 
-      const formData = new FormData();
+        let data = null;
 
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        HOME_CLOUDINARY_PRESET
+        try {
+          if (
+            typeof firebase !== "undefined" &&
+            firebase.database
+          ) {
+            const snapshot = await firebase
+              .database()
+              .ref("profile")
+              .once("value");
+
+            data = snapshot.val();
+          }
+        } catch (error) {
+          console.warn("Home Firebase profile load failed:", error);
+        }
+
+        if (!data) {
+          try {
+            const response = await fetch(
+              "shared/data/profile.json",
+              { cache: "no-store" }
+            );
+
+            if (response.ok) {
+              data = await response.json();
+            }
+          } catch (error) {
+            console.warn("Home local profile load failed:", error);
+          }
+        }
+
+        return data;
+      }
+
+
+      function setText(id, value, fallback = "—") {
+        const element = document.getElementById(id);
+
+        if (!element) return;
+
+        const text =
+          value !== undefined &&
+          value !== null &&
+          String(value).trim() !== ""
+            ? String(value)
+            : fallback;
+
+        element.textContent = text;
+      }
+
+
+      function homeIcon(slug) {
+
+        const icons = {
+
+          github:
+            `<svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M12 .7A11.3 11.3 0 0 0 8.4 22.8c.57.1.78-.25.78-.55v-2.1c-3.18.69-3.85-1.35-3.85-1.35-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.54-.29-5.2-1.27-5.2-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.17a10.9 10.9 0 0 1 5.7 0c2.17-1.48 3.13-1.17 3.13-1.17.62 1.57.23 2.73.11 3.02.73.8 1.18 1.82 1.18 3.07 0 4.39-2.67 5.35-5.21 5.64.41.36.78 1.07.78 2.16v3.2c0 .3.21.65.79.54A11.3 11.3 0 0 0 12 .7Z"
+              />
+            </svg>`,
+
+          linkedin:
+            `<svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.03 2.03 0 1 0 5.25 7.06 2.03 2.03 0 0 0 5.25 3ZM20.44 13.42c0-3.46-1.84-5.07-4.3-5.07-1.98 0-2.86 1.09-3.35 1.85V8.5H9.41V20h3.38v-6.06c0-1.6.3-3.15 2.28-3.15 1.95 0 1.98 1.83 1.98 3.25V20h3.39v-6.58Z"
+              />
+            </svg>`,
+
+          youtube:
+            `<svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.55 3.6 12 3.6 12 3.6s-7.55 0-9.4.5A3 3 0 0 0 .5 6.2 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.85.5 9.4.5 9.4.5s7.55 0 9.4-.5a3 3 0 0 0 2.1-2.1A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.8ZM9.6 15.6V8.4l6.3 3.6-6.3 3.6Z"
+              />
+            </svg>`,
+
+          instagram:
+            `<svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                fill="currentColor"
+                d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5Zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7Zm5 3.5A4.5 4.5 0 1 1 12 16.5 4.5 4.5 0 0 1 12 7.5Zm0 2A2.5 2.5 0 1 0 12 14.5 2.5 2.5 0 0 0 12 9.5ZM17.5 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2Z"
+              />
+            </svg>`
+
+        };
+
+        return icons[slug] || "🔗";
+      }
+
+
+      function getSlug(url) {
+
+        const value = String(url || "").toLowerCase();
+
+        if (value.includes("github.com")) return "github";
+        if (value.includes("linkedin.com")) return "linkedin";
+        if (
+          value.includes("youtube.com") ||
+          value.includes("youtu.be")
+        ) return "youtube";
+        if (value.includes("instagram.com")) return "instagram";
+
+        return null;
+      }
+
+
+      function renderHomeSocialLinks(links) {
+
+        const container =
+          document.getElementById(
+            "home-contact-social-links"
+          );
+
+        if (!container) return;
+
+        container.innerHTML = "";
+
+        (Array.isArray(links) ? links : []).forEach((link) => {
+
+          if (!link || !link.url) return;
+
+          const slug = getSlug(link.url);
+
+          const label =
+            link.label ||
+            (
+              slug
+                ? slug.charAt(0).toUpperCase() + slug.slice(1)
+                : "Link"
+            );
+
+          const anchor =
+            document.createElement("a");
+
+          anchor.href = link.url;
+          anchor.target = "_blank";
+          anchor.rel = "noopener noreferrer";
+          anchor.className = "btn btn-outline";
+
+          anchor.innerHTML = `
+            <span class="social-icon">
+              ${homeIcon(slug)}
+            </span>
+            <span>${label}</span>
+          `;
+
+          container.appendChild(anchor);
+
+        });
+      }
+
+
+      const profile = await getHomeProfile();
+
+      if (!profile) {
+        setText(
+          "home-about-content",
+          "About data could not be loaded."
+        );
+
+        setText(
+          "home-about-education",
+          "—"
+        );
+
+        setText(
+          "home-about-experience",
+          "—"
+        );
+
+        setText(
+          "home-about-goals",
+          "—"
+        );
+
+        return;
+      }
+
+
+      /* =======================================================
+         ABOUT — EXACT SAME PROFILE DATA
+      ======================================================== */
+
+      setText(
+        "home-about-content",
+        profile.about?.introduction,
+        ""
       );
 
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${HOME_CLOUDINARY_CLOUD_NAME}/${type}/upload`,
-        {
-          method: "POST",
-          body: formData
+      setText(
+        "home-about-education",
+        profile.about?.education
+      );
+
+      setText(
+        "home-about-experience",
+        profile.about?.experience
+      );
+
+      setText(
+        "home-about-goals",
+        profile.about?.goals
+      );
+
+
+      /* =======================================================
+         ABOUT PHOTO
+      ======================================================== */
+
+      const aboutPhoto =
+        document.getElementById(
+          "home-about-photo"
+        );
+
+      if (
+        aboutPhoto &&
+        profile.files?.profilePhoto
+      ) {
+        aboutPhoto.src =
+          profile.files.profilePhoto;
+      }
+
+
+      /* =======================================================
+         CONTACT EMAIL
+      ======================================================== */
+
+      const email =
+        profile.contact?.email || "";
+
+      const emailButton =
+        document.getElementById(
+          "home-contact-email"
+        );
+
+      if (emailButton && email) {
+        emailButton.href =
+          `mailto:${email}`;
+      }
+
+
+      /* =======================================================
+         CONTACT PHONE
+      ======================================================== */
+
+      const phone =
+        profile.contact?.phone ||
+        profile.contact?.mobile ||
+        "";
+
+      const phoneButton =
+        document.getElementById(
+          "home-contact-phone"
+        );
+
+      if (phoneButton && phone) {
+
+        const cleanPhone =
+          String(phone)
+            .replace(/[^\d+]/g, "");
+
+        phoneButton.href =
+          `tel:${cleanPhone}`;
+
+      }
+
+
+      /* =======================================================
+         ALL STUDIO SOCIAL LINKS
+      ======================================================== */
+
+      renderHomeSocialLinks(
+        profile.socialLinks || []
+      );
+
+    });
+
+
+    /* =========================================================
+       HOME CONTACT FORM
+    ========================================================== */
+
+    document.addEventListener("DOMContentLoaded", () => {
+
+      const form =
+        document.getElementById(
+          "home-contact-form"
+        );
+
+      if (!form) return;
+
+      form.addEventListener(
+        "submit",
+        async (event) => {
+
+          event.preventDefault();
+
+          const status =
+            document.getElementById(
+              "home-contact-form-status"
+            );
+
+          const submitButton =
+            document.getElementById(
+              "home-cf-submit-btn"
+            );
+
+          const email =
+            document.getElementById(
+              "home-cf-email"
+            ).value.trim();
+
+          const subject =
+            document.getElementById(
+              "home-cf-subject"
+            ).value.trim();
+
+          const message =
+            document.getElementById(
+              "home-cf-message"
+            ).value.trim();
+
+          if (!email || !message) {
+            return;
+          }
+
+          status.textContent = "Sending...";
+          status.style.color =
+            "var(--color-muted)";
+
+          submitButton.disabled = true;
+
+          try {
+
+            if (
+              typeof firebase === "undefined" ||
+              !firebase.database
+            ) {
+              throw new Error(
+                "Firebase connection unavailable"
+              );
+            }
+
+            await firebase
+              .database()
+              .ref("visitors")
+              .push({
+                email,
+                subject,
+                message,
+                timestamp:
+                  new Date().toISOString()
+              });
+
+            status.textContent =
+              "✅ Sent! I'll get back to you soon.";
+
+            status.style.color =
+              "var(--color-accent)";
+
+            form.reset();
+
+          } catch (error) {
+
+            console.error(
+              "Home contact error:",
+              error
+            );
+
+            status.textContent =
+              `❌ ${error.message}`;
+
+            status.style.color =
+              "#ef4444";
+
+          } finally {
+
+            submitButton.disabled = false;
+
+          }
+
         }
       );
 
-      const data = await response.json();
+    });
 
-      if (!response.ok) {
-        throw new Error(
-          data.error?.message || "Upload failed"
-        );
-      }
-
-      return data.secure_url;
-    }
-
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
-
-        const form =
-          document.getElementById("home-contact-form");
-
-        if (!form) return;
-
-
-        form.addEventListener(
-          "submit",
-          async (event) => {
-
-            event.preventDefault();
-
-
-            const statusEl =
-              document.getElementById(
-                "home-contact-form-status"
-              );
-
-            const submitBtn =
-              document.getElementById(
-                "home-cf-submit-btn"
-              );
-
-
-            const emailVal =
-              document.getElementById(
-                "home-cf-email"
-              ).value.trim();
-
-            const subjectVal =
-              document.getElementById(
-                "home-cf-subject"
-              ).value.trim();
-
-            const messageVal =
-              document.getElementById(
-                "home-cf-message"
-              ).value.trim();
-
-            const linkVal =
-              document.getElementById(
-                "home-cf-link"
-              ).value.trim();
-
-
-            const imageFile =
-              document.getElementById(
-                "home-cf-image"
-              ).files[0];
-
-            const videoFile =
-              document.getElementById(
-                "home-cf-video"
-              ).files[0];
-
-
-            if (!emailVal || !messageVal) {
-              return;
-            }
-
-
-            statusEl.style.color =
-              "var(--color-muted)";
-
-            submitBtn.disabled = true;
-
-
-            try {
-
-              let imageUrl = "";
-              let videoUrl = "";
-
-
-              if (imageFile) {
-
-                statusEl.textContent =
-                  "Uploading image...";
-
-                imageUrl =
-                  await homeUploadToCloudinary(
-                    imageFile,
-                    "image"
-                  );
-              }
-
-
-              if (videoFile) {
-
-                statusEl.textContent =
-                  "Uploading video...";
-
-                videoUrl =
-                  await homeUploadToCloudinary(
-                    videoFile,
-                    "video"
-                  );
-              }
-
-
-              statusEl.textContent =
-                "Sending...";
-
-
-              const response =
-                await fetch(
-                  HOME_CONTACT_API_URL,
-                  {
-                    method: "POST",
-
-                    headers: {
-                      "Content-Type":
-                        "application/json"
-                    },
-
-                    body: JSON.stringify({
-                      email: emailVal,
-                      subject: subjectVal,
-                      message: messageVal,
-                      imageUrl,
-                      videoUrl,
-                      linkUrl: linkVal
-                    })
-                  }
-                );
-
-
-              const result =
-                await response.json();
-
-
-              if (!response.ok) {
-                throw new Error(
-                  result.error ||
-                  "Failed to send"
-                );
-              }
-
-
-              if (
-                typeof firebase !== "undefined" &&
-                firebase.database
-              ) {
-
-                firebase
-                  .database()
-                  .ref("visitors")
-                  .push({
-                    email: emailVal,
-                    subject: subjectVal,
-                    message: messageVal,
-                    timestamp:
-                      new Date().toISOString()
-                  });
-              }
-
-
-              statusEl.textContent =
-                "✅ Sent! I'll get back to you soon.";
-
-              statusEl.style.color =
-                "var(--color-accent)";
-
-
-              form.reset();
-
-
-            } catch (error) {
-
-              console.error(
-                "Home contact error:",
-                error
-              );
-
-              statusEl.textContent =
-                `❌ ${error.message}`;
-
-              statusEl.style.color =
-                "#ef4444";
-
-
-            } finally {
-
-              submitBtn.disabled = false;
-
-            }
-
-          }
-        );
-
-      }
-    );
   </script>
 
 </body>
