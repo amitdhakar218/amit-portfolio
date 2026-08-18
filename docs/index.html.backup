@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Amit Dhakar | Portfolio</title>
+  <link rel="stylesheet" href="shared/css/design-system.css" />
+  <link rel="stylesheet" href="shared/css/components.css" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="side-panel-overlay" id="side-panel-overlay"></div>
+  <div class="side-panel" id="side-panel">
+    <button class="side-panel-close" id="side-panel-close">✕</button>
+    <a href="index.html" class="side-panel-link">🏠 Home</a>
+    <a href="about.html" class="side-panel-link">👤 About</a>
+    <a href="projects.html" class="side-panel-link">💼 Projects</a>
+    <a href="skills.html" class="side-panel-link">🧠 Skills</a>
+    <a href="certificates.html" class="side-panel-link">🎓 Certificates</a>
+    <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
+    <a href="videos.html" class="side-panel-link">🎬 Videos</a>
+    <a href="blog.html" class="side-panel-link">📝 Blog</a>
+    <a href="contact.html" class="side-panel-link">📩 Contact</a>
+  </div>
+
+  <nav class="navbar" id="main-navbar">
+    <a href="index.html" class="brand-logo-wrap" style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);">
+      <img src="assets/logo.png" alt="Logo" class="brand-logo-img" id="brand-logo-img" />
+      <div class="navbar-logo">Amit<span style="color: var(--color-primary);">.</span></div>
+    </a>
+    <button class="menu-toggle-btn" id="menu-toggle-btn">⋮</button>
+  </nav>
+
+  <section class="hero" id="home-hero">
+    <div class="hero-blob hero-blob-1"></div>
+    <div class="hero-blob hero-blob-2"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Amit Dhakar</h1>
+      <p class="hero-tagline">Building AI Applications using JavaScript, Node.js & Termux</p>
+      <div class="hero-buttons">
+        <a href="about.html" class="btn btn-primary">Learn More</a>
+        <a href="contact.html" class="btn btn-outline">Contact</a>
+      </div>
+      <div class="hero-social-links" id="hero-social-links"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: var(--space-xl);">
+    <h2 class="section-title">About Me</h2>
+    <div class="card">
+      <p id="about-intro" class="card-body">Loading...</p>
+      <div class="about-details" style="margin-top: var(--space-lg); display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--space-md);">
+        <div class="card"><h3 class="card-title">🎓 Education</h3><p class="card-body" id="about-education">—</p></div>
+        <div class="card"><h3 class="card-title">💼 Experience</h3><p class="card-body" id="about-experience">—</p></div>
+        <div class="card"><h3 class="card-title">🎯 Goals</h3><p class="card-body" id="about-goals">—</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top: var(--space-xl);">
+    <h2 class="section-title">📄 Resumes</h2>
+    <div id="resume-list-container"><p class="text-muted">Loading resumes...</p></div>
+  </section>
+
+  <section class="section" style="padding-top: var(--space-xl);">
+    <h2 class="section-title">Contact</h2>
+    <div class="contact-links" id="contact-social-links"></div>
+    <p id="contact-form-status" class="text-muted" style="min-height:1.2em; margin-bottom: var(--space-sm); margin-top: var(--space-lg);"></p>
+    <form id="contact-form">
+      <div class="form-grid" style="grid-template-columns: 1fr;">
+        <label class="form-field"><span>Your Email</span><input type="email" id="cf-email" required /></label>
+        <label class="form-field"><span>Subject</span><input type="text" id="cf-subject" /></label>
+        <label class="form-field"><span>Message</span><textarea id="cf-message" rows="3" required></textarea></label>
+        <label class="form-field"><span>Attach Image (optional)</span><input type="file" id="cf-image" accept="image/*" /></label>
+        <label class="form-field"><span>Attach Video (optional)</span><input type="file" id="cf-video" accept="video/*" /></label>
+        <label class="form-field"><span>Link (optional)</span><input type="url" id="cf-link" placeholder="https://..." /></label>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%; margin-top: var(--space-md);" id="cf-submit-btn">Send</button>
+    </form>
+  </section>
+
+  <footer class="footer">
+    <p class="text-muted">&copy; <span id="current-year"></span> Amit Dhakar</p>
+  </footer>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home-page.js"></script>
+</body>
+</html>

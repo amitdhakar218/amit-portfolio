@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Amit Dhakar | Portfolio</title>
+
+  <meta
+    name="description"
+    content="Amit Dhakar — Electronics & Communication student, developer and technology enthusiast."
+  />
+
+  <link rel="stylesheet" href="shared/css/design-system.css" />
+  <link rel="stylesheet" href="shared/css/components.css" />
+  <link rel="stylesheet" href="css/style.css" />
+
+  <style>
+    /* =========================================================
+       ONLY REQUESTED CHANGE #2
+       LARGE BACKGROUND IMAGE
+    ========================================================== */
+
+    html {
+      min-height: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background-image:
+        linear-gradient(
+          rgba(0, 0, 0, 0.28),
+          rgba(0, 0, 0, 0.28)
+        ),
+        url("https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg");
+      background-position: center top;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+    }
+
+    /* =========================================================
+       ONLY REQUESTED CHANGE #3
+       AMIT DHAKAR YELLOW + RED BORDER + WHITE GLOW
+    ========================================================== */
+
+    .home-amit-name {
+      color: #ffd700 !important;
+      -webkit-text-stroke: 1.5px #ff0000;
+      text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.25),
+        0 0 10px rgba(255, 255, 255, 0.25),
+        0 0 16px rgba(255, 255, 255, 0.18);
+    }
+
+    /* =========================================================
+       ONLY REQUESTED CHANGE #4
+       GITHUB + LINKEDIN
+    ========================================================== */
+
+    .home-social-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .home-social-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- =========================================================
+       SIDE MENU
+  ========================================================== -->
+
+  <div class="side-panel-overlay" id="side-panel-overlay"></div>
+
+  <div class="side-panel" id="side-panel">
+
+    <button
+      type="button"
+      class="side-panel-close"
+      id="side-panel-close"
+    >
+      ✕
+    </button>
+
+    <div style="clear:both; margin-top:var(--space-lg);"></div>
+
+    <a href="#home" class="side-panel-link">🏠 Home</a>
+
+    <a href="#about" class="side-panel-link">👤 About</a>
+
+    <a href="#projects" class="side-panel-link">💼 Projects</a>
+
+    <a href="#skills" class="side-panel-link">🧠 Skills</a>
+
+    <a href="#certificates" class="side-panel-link">🎓 Certificates</a>
+
+    <a href="#gallery" class="side-panel-link">🖼️ Gallery</a>
+
+    <a href="#videos" class="side-panel-link">🎬 Videos</a>
+
+    <a href="#blog" class="side-panel-link">📝 Blog</a>
+
+    <a href="#resume" class="side-panel-link">📄 Resume</a>
+
+    <a href="#contact" class="side-panel-link">📩 Contact</a>
+
+    <a href="#feedback" class="side-panel-link feedback-link">
+      💬 Feedback
+    </a>
+
+  </div>
+
+
+  <!-- =========================================================
+       NAVBAR
+  ========================================================== -->
+
+  <nav class="navbar" id="main-navbar">
+
+    <a
+      href="#home"
+      class="brand-logo-wrap"
+      style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);"
+    >
+
+      <img
+        src="assets/logo.png"
+        alt="Amit Dhakar Logo"
+        class="brand-logo-img scrolled-always"
+        id="brand-logo-img"
+      />
+
+      <div class="navbar-logo brand-name-text">
+        Amit<span style="color:var(--color-primary);">.</span>
+      </div>
+
+    </a>
+
+    <button
+      type="button"
+      class="menu-toggle-btn"
+      id="menu-toggle-btn"
+      aria-label="Open menu"
+    >
+      ⋮
+    </button>
+
+  </nav>
+
+
+  <!-- =========================================================
+       HOME / HERO
+  ========================================================== -->
+
+  <section
+    class="hero section"
+    id="home"
+    style="
+      padding-top:var(--space-2xl);
+      min-height:90vh;
+      display:flex;
+      align-items:center;
+    "
+  >
+
+    <div class="hero-content">
+
+      <p class="text-muted">
+        Hello, I'm
+      </p>
+
+      <h1 class="hero-title home-amit-name">
+        Amit Dhakar
+      </h1>
+
+      <p class="hero-subtitle">
+        Electronics & Communication Student · Developer ·
+        Technology Enthusiast
+      </p>
+
+      <p class="hero-description">
+        I am learning software development, app development,
+        web technologies and artificial intelligence while
+        building practical projects.
+      </p>
+
+      <div class="hero-buttons">
+
+        <a href="#projects" class="btn btn-primary">
+          🚀 View Projects
+        </a>
+
+        <a href="#contact" class="btn btn-outline">
+          📩 Contact Me
+        </a>
+
+      </div>
+
+
+      <!-- GitHub + LinkedIn -->
+
+      <div class="home-social-links">
+
+        <a
+          href="https://github.com/amitdhakar218"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline home-social-link"
+          aria-label="GitHub"
+        >
+          🐙 GitHub
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/amit-dhakar-564177385"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline home-social-link"
+          aria-label="LinkedIn"
+        >
+          💼 LinkedIn
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       ABOUT
+       FIX: Home About अब Firebase/profile data पढ़ेगा
+  ========================================================== -->
+
+  <section class="section" id="about">
+
+    <h2 class="section-title">
+      About Me
+    </h2>
+
+    <div class="card">
+
+      <p
+        class="card-body"
+        id="home-about-content"
+      >
+        Loading...
+      </p>
+
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-md);"
+      >
+
+        <a
+          href="about.html"
+          class="btn btn-outline"
+        >
+          Read More
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       PROJECTS
+  ========================================================== -->
+
+  <section class="section" id="projects">
+
+    <h2 class="section-title">
+      Projects
+    </h2>
+
+    <div
+      class="projects-grid"
+      id="projects-grid"
+    >
+      <p class="text-muted">
+        Loading projects...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="projects.html"
+        class="btn btn-outline"
+      >
+        View All Projects →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       SKILLS
+  ========================================================== -->
+
+  <section class="section" id="skills">
+
+    <h2 class="section-title">
+      Skills
+    </h2>
+
+    <div
+      class="skills-list"
+      id="skills-list"
+    >
+      <p class="text-muted">
+        Loading skills...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="skills.html"
+        class="btn btn-outline"
+      >
+        View All Skills →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       CERTIFICATES
+  ========================================================== -->
+
+  <section class="section" id="certificates">
+
+    <h2 class="section-title">
+      Certificates
+    </h2>
+
+    <div
+      class="certificates-grid"
+      id="certificates-grid"
+    >
+      <p class="text-muted">
+        Loading certificates...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="certificates.html"
+        class="btn btn-outline"
+      >
+        View All Certificates →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       GALLERY
+  ========================================================== -->
+
+  <section class="section" id="gallery">
+
+    <h2 class="section-title">
+      Gallery
+    </h2>
+
+    <div
+      class="certificates-grid"
+      id="full-gallery-grid"
+    >
+      <p class="text-muted">
+        Loading gallery...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="gallery.html"
+        class="btn btn-outline"
+      >
+        View Full Gallery →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       VIDEOS
+  ========================================================== -->
+
+  <section class="section" id="videos">
+
+    <h2 class="section-title">
+      Videos
+    </h2>
+
+    <div
+      class="blog-grid"
+      id="full-videos-grid"
+    >
+      <p class="text-muted">
+        Loading videos...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="videos.html"
+        class="btn btn-outline"
+      >
+        View All Videos →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       BLOG
+  ========================================================== -->
+
+  <section class="section" id="blog">
+
+    <h2 class="section-title">
+      Blog
+    </h2>
+
+    <div
+      class="blog-grid"
+      id="full-blog-grid"
+    >
+      <p class="text-muted">
+        Loading blog posts...
+      </p>
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="blog.html"
+        class="btn btn-outline"
+      >
+        View All Blog Posts →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       RESUME
+  ========================================================== -->
+
+  <section class="section" id="resume">
+
+    <h2 class="section-title">
+      Resume
+    </h2>
+
+    <div class="card">
+
+      <p class="card-body">
+        Download my latest resume to learn more about my
+        education, technical skills, projects and experience.
+      </p>
+
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-md);"
+      >
+
+        <a
+          href="resume.html"
+          class="btn btn-primary"
+        >
+          📄 View Resume
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       CONTACT
+  ========================================================== -->
+
+  <section class="section" id="contact">
+
+    <h2 class="section-title">
+      Contact
+    </h2>
+
+    <div class="card">
+
+      <p class="card-body">
+        Interested in working together, discussing a project,
+        internship opportunities or technology?
+      </p>
+
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-md);"
+      >
+
+        <a
+          href="contact.html"
+          class="btn btn-primary"
+        >
+          📩 Contact Me
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       FEEDBACK
+  ========================================================== -->
+
+  <section class="section" id="feedback">
+
+    <h2 class="section-title">
+      Feedback
+    </h2>
+
+    <div class="card">
+
+      <p class="card-body">
+        Your feedback helps improve this portfolio.
+      </p>
+
+      <button
+        type="button"
+        id="feedback-fab"
+        class="btn btn-primary"
+        style="margin-top:var(--space-md);"
+      >
+        💬 Leave Feedback
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
+       FEEDBACK MODAL
+  ========================================================== -->
+
+  <div
+    class="modal-overlay"
+    id="feedback-modal-overlay"
+    style="display:none;"
+  >
+
+    <div class="card modal-box">
+
+      <h3 class="card-title">
+        💬 Leave Feedback
+      </h3>
+
+      <p
+        id="feedback-status"
+        class="text-muted"
+        style="min-height:1.2em; margin-bottom:var(--space-sm);"
+      ></p>
+
+      <form id="feedback-form">
+
+        <div
+          class="form-grid"
+          style="grid-template-columns:1fr;"
+        >
+
+          <label class="form-field">
+
+            <span>
+              Your Name (optional)
+            </span>
+
+            <input
+              type="text"
+              id="fb-name"
+            />
+
+          </label>
+
+          <label class="form-field">
+
+            <span>
+              Your Feedback
+            </span>
+
+            <textarea
+              id="fb-message"
+              rows="4"
+              required
+            ></textarea>
+
+          </label>
+
+        </div>
+
+        <div
+          class="hero-buttons"
+          style="margin-top:var(--space-md);"
+        >
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="flex:1;"
+          >
+            Send
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="feedback-close-btn"
+            style="flex:1;"
+          >
+            Close
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
+       FOOTER
+  ========================================================== -->
+
+  <footer class="footer">
+
+    <p
+      class="text-muted"
+      id="footer-location"
+    ></p>
+
+    <p class="text-muted">
+
+      &copy;
+
+      <span id="current-year"></span>
+
+      Amit Dhakar
+
+    </p>
+
+  </footer>
+
+
+  <!-- =========================================================
+       FIREBASE
+  ========================================================== -->
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
+
+  <!-- =========================================================
+       COMMON JS
+  ========================================================== -->
+
+  <script src="js/common.js"></script>
+
+
+  <!-- =========================================================
+       PAGE MODULES
+  ========================================================== -->
+
+  <script src="js/projects-page.js"></script>
+
+  <script src="js/skills-page.js"></script>
+
+  <script src="js/certificates-page.js"></script>
+
+  <script src="js/gallery-page.js"></script>
+
+  <script src="js/videos-page.js"></script>
+
+  <script src="js/blog-page.js"></script>
+
+
+  <!-- =========================================================
+       HOME ABOUT FIX
+       Firebase से About/Profile data पढ़ना
+  ========================================================== -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+
+      const aboutEl =
+        document.getElementById("home-about-content");
+
+      if (!aboutEl) return;
+
+      try {
+
+        let profileData = null;
+
+        /*
+         * पहले Firebase Realtime Database से
+         * संभावित profile/about locations पढ़ेंगे।
+         */
+
+        if (
+          typeof firebase !== "undefined" &&
+          firebase.database
+        ) {
+
+          const paths = [
+            "profile",
+            "about"
+          ];
+
+          for (const path of paths) {
+
+            try {
+
+              const snapshot =
+                await firebase
+                  .database()
+                  .ref(path)
+                  .once("value");
+
+              const data = snapshot.val();
+
+              if (data) {
+                profileData = data;
+                break;
+              }
+
+            } catch (firebasePathError) {
+
+              console.warn(
+                "Could not read Firebase path:",
+                path,
+                firebasePathError
+              );
+
+            }
+
+          }
+
+        }
+
+
+        /*
+         * Firebase data मिलने पर अलग-अलग possible
+         * field names को support करेंगे।
+         */
+
+        if (profileData) {
+
+          const text =
+            profileData.intro ||
+            profileData.about ||
+            profileData.description ||
+            profileData.bio ||
+            profileData.content ||
+            profileData.text ||
+            "";
+
+          if (text) {
+            aboutEl.textContent = text;
+          }
+
+        }
+
+
+        /*
+         * अगर Firebase में About data नहीं मिला,
+         * तो Loading हमेशा नहीं रहेगा।
+         */
+
+        if (
+          !profileData ||
+          !(
+            profileData.intro ||
+            profileData.about ||
+            profileData.description ||
+            profileData.bio ||
+            profileData.content ||
+            profileData.text
+          )
+        ) {
+
+          aboutEl.textContent =
+            "I am Amit Dhakar, an Electronics & Communication student interested in software development, app development, artificial intelligence and modern web technologies.";
+
+        }
+
+      } catch (error) {
+
+        console.error(
+          "Home About loading error:",
+          error
+        );
+
+        aboutEl.textContent =
+          "I am Amit Dhakar, an Electronics & Communication student interested in software development, app development, artificial intelligence and modern web technologies.";
+
+      }
+
+    });
+  </script>
+
+</body>
+</html>

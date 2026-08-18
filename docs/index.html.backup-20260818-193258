@@ -17,22 +17,22 @@
 
   <style>
     /* =========================================================
-       REQUESTED HOME-ONLY CHANGES
+       ONLY REQUESTED HOME PAGE CHANGES
     ========================================================== */
 
-    /* Background: 9:15, larger, only slightly dark */
+    /* Background image: 9:14, dark, ends before About */
     .home-background-hero {
       position: relative;
       width: 100%;
-      aspect-ratio: 9 / 15;
-      min-height: 600px;
-      max-height: 1100px;
+      aspect-ratio: 9 / 14;
+      min-height: 520px;
+      max-height: 900px;
       overflow: hidden;
 
       background-image:
         linear-gradient(
-          rgba(0, 0, 0, 0.25),
-          rgba(0, 0, 0, 0.25)
+          rgba(0, 0, 0, 0.48),
+          rgba(0, 0, 0, 0.48)
         ),
         url("https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg");
 
@@ -57,54 +57,30 @@
         0 0 12px rgba(255, 255, 255, 0.18);
     }
 
-    /* =========================================================
-       HOME ABOUT
-    ========================================================== */
-
-    .home-about-details {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-md);
-      margin-top: var(--space-lg);
-    }
-
-    .home-about-details .card {
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 800px) {
-      .home-about-details {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* =========================================================
-       HOME CONTACT
-    ========================================================== */
-
-    .home-contact-links {
+    /* Only GitHub + LinkedIn */
+    .home-social-links {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: var(--space-sm);
       margin-top: var(--space-md);
-    }
-
-    .home-contact-social-links {
-      display: flex;
       flex-wrap: wrap;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
     }
 
-    .home-contact-form-card {
-      margin-top: var(--space-lg);
-      max-width: 700px;
+    .home-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    /* Home sections */
+    .home-section-copy {
+      margin-top: var(--space-md);
     }
 
     @media (max-width: 600px) {
       .home-background-hero {
-        aspect-ratio: 9 / 15;
+        aspect-ratio: 9 / 14;
         min-height: 0;
         max-height: none;
       }
@@ -116,7 +92,8 @@
 
   <!-- =========================================================
        SIDE MENU
-       SEPARATE PAGES — DO NOT CHANGE
+       IMPORTANT:
+       These links open separate pages.
   ========================================================== -->
 
   <div class="side-panel-overlay" id="side-panel-overlay"></div>
@@ -218,19 +195,36 @@
           building practical projects.
         </p>
 
-        <div class="hero-buttons">
+        <!-- ONLY TWO LINKS -->
+        <div class="home-social-links">
 
           <a
-            href="#projects"
-            class="btn btn-primary"
+            href="https://github.com/amitdhakar218"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline home-social-link"
           >
-            🚀 View Projects
+            🐙 GitHub
           </a>
 
           <a
-            href="#contact"
-            class="btn btn-outline"
+            href="https://www.linkedin.com/in/amit-dhakar-564177385"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline home-social-link"
           >
+            💼 LinkedIn
+          </a>
+
+        </div>
+
+        <div class="hero-buttons">
+
+          <a href="#projects" class="btn btn-primary">
+            🚀 View Projects
+          </a>
+
+          <a href="#contact" class="btn btn-outline">
             📩 Contact Me
           </a>
 
@@ -245,7 +239,7 @@
 
   <!-- =========================================================
        ABOUT
-       DUPLICATE OF ABOUT PAGE DATA
+       Same data/content area as the About feature.
   ========================================================== -->
 
   <section class="section" id="about">
@@ -254,87 +248,28 @@
       About Me
     </h2>
 
-    <div class="about-content">
+    <div class="card">
 
-      <img
-        src="assets/profile.jpg"
-        alt="Amit Dhakar"
-        class="about-photo radius-lg"
-        id="home-about-photo"
-      />
+      <p
+        class="card-body"
+        id="home-about-content"
+      >
+        Loading...
+      </p>
 
-      <div class="about-text">
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-md);"
+      >
 
-        <p id="home-about-content">
-          Loading...
-        </p>
-
-        <div class="home-about-details">
-
-          <div class="card">
-
-            <h3 class="card-title">
-              🎓 Education
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-education"
-            >
-              Loading...
-            </p>
-
-          </div>
-
-
-          <div class="card">
-
-            <h3 class="card-title">
-              💼 Experience
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-experience"
-            >
-              Loading...
-            </p>
-
-          </div>
-
-
-          <div class="card">
-
-            <h3 class="card-title">
-              🎯 Goals
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-goals"
-            >
-              Loading...
-            </p>
-
-          </div>
-
-        </div>
+        <a
+          href="about.html"
+          class="btn btn-outline"
+        >
+          Read More
+        </a>
 
       </div>
-
-    </div>
-
-    <div
-      class="hero-buttons"
-      style="margin-top:var(--space-lg);"
-    >
-
-      <a
-        href="about.html"
-        class="btn btn-outline"
-      >
-        Read Full About →
-      </a>
 
     </div>
 
@@ -343,6 +278,8 @@
 
   <!-- =========================================================
        PROJECTS
+       Home copy of Projects
+       Separate page: projects.html
   ========================================================== -->
 
   <section class="section" id="projects">
@@ -379,6 +316,8 @@
 
   <!-- =========================================================
        SKILLS
+       Home copy of Skills
+       Separate page: skills.html
   ========================================================== -->
 
   <section class="section" id="skills">
@@ -415,6 +354,8 @@
 
   <!-- =========================================================
        CERTIFICATES
+       Home copy of Certificates
+       Separate page: certificates.html
   ========================================================== -->
 
   <section class="section" id="certificates">
@@ -451,6 +392,8 @@
 
   <!-- =========================================================
        GALLERY
+       Home copy of Gallery
+       Separate page: gallery.html
   ========================================================== -->
 
   <section class="section" id="gallery">
@@ -487,6 +430,8 @@
 
   <!-- =========================================================
        VIDEOS
+       Home copy of Videos
+       Separate page: videos.html
   ========================================================== -->
 
   <section class="section" id="videos">
@@ -523,6 +468,8 @@
 
   <!-- =========================================================
        BLOG
+       Home copy of Blog
+       Separate page: blog.html
   ========================================================== -->
 
   <section class="section" id="blog">
@@ -559,6 +506,7 @@
 
   <!-- =========================================================
        RESUME
+       Separate page: resume.html
   ========================================================== -->
 
   <section class="section" id="resume">
@@ -595,7 +543,8 @@
 
   <!-- =========================================================
        CONTACT
-       FULL COPY OF CONTACT PAGE
+       Home copy of Contact
+       Separate page: contact.html
   ========================================================== -->
 
   <section class="section" id="contact">
@@ -604,173 +553,26 @@
       Contact
     </h2>
 
-    <div class="contact-links home-contact-links">
+    <div class="card">
 
-      <a
-        href="mailto:"
-        class="btn btn-outline"
-        id="home-contact-email"
-      >
-        📧 Email
-      </a>
-
-      <a
-        href="tel:"
-        class="btn btn-outline"
-        id="home-contact-phone"
-      >
-        📱 Phone
-      </a>
-
-      <a
-        href="https://wa.me/919174573889"
-        class="btn btn-primary"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        💬 WhatsApp Me
-      </a>
-
-    </div>
-
-
-    <!-- All social links from Studio/Firebase -->
-
-    <div
-      class="contact-links home-contact-social-links"
-      id="home-contact-social-links"
-    ></div>
-
-
-    <!-- Direct contact form -->
-
-    <div class="card home-contact-form-card">
-
-      <h3 class="card-title">
-        📩 Send Me Info Directly
-      </h3>
-
-      <p
-        class="text-muted"
-        style="font-size:0.85rem; margin-bottom:var(--space-md);"
-      >
-        Fill this and it goes straight to my dashboard.
+      <p class="card-body">
+        Interested in working together, discussing a project,
+        internship opportunities or technology?
       </p>
 
-      <p
-        id="home-contact-form-status"
-        class="text-muted"
-        style="min-height:1.2em; margin-bottom:var(--space-sm);"
-      ></p>
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-md);"
+      >
 
-      <form id="home-contact-form">
-
-        <div
-          class="form-grid"
-          style="grid-template-columns:1fr;"
-        >
-
-          <label class="form-field">
-
-            <span>
-              Your Email
-            </span>
-
-            <input
-              type="email"
-              id="home-cf-email"
-              required
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Subject
-            </span>
-
-            <input
-              type="text"
-              id="home-cf-subject"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Message
-            </span>
-
-            <textarea
-              id="home-cf-message"
-              rows="3"
-              required
-            ></textarea>
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Image (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-image"
-              accept="image/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Video (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-video"
-              accept="video/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Link (optional)
-            </span>
-
-            <input
-              type="url"
-              id="home-cf-link"
-              placeholder="https://..."
-            />
-
-          </label>
-
-        </div>
-
-
-        <button
-          type="submit"
+        <a
+          href="contact.html"
           class="btn btn-primary"
-          style="width:100%; margin-top:var(--space-md);"
-          id="home-cf-submit-btn"
         >
-          Send
-        </button>
+          📩 Contact Me
+        </a>
 
-      </form>
+      </div>
 
     </div>
 
@@ -940,253 +742,21 @@
 
   <!-- =========================================================
        HOME DATA MODULES
+       These load the same data used by the separate pages.
   ========================================================== -->
 
   <script src="js/projects-page.js"></script>
+
   <script src="js/skills-page.js"></script>
+
   <script src="js/certificates-page.js"></script>
+
   <script src="js/gallery-page.js"></script>
+
   <script src="js/videos-page.js"></script>
+
   <script src="js/blog-page.js"></script>
 
-
-  <!-- =========================================================
-       HOME CONTACT LOGIC
-       Same API/Cloudinary setup as contact.html
-  ========================================================== -->
-
-  <script>
-    const HOME_CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const HOME_CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const HOME_CONTACT_API_URL =
-      "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
-
-    async function homeUploadToCloudinary(file, type) {
-
-      const formData = new FormData();
-
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        HOME_CLOUDINARY_PRESET
-      );
-
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${HOME_CLOUDINARY_CLOUD_NAME}/${type}/upload`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error?.message || "Upload failed"
-        );
-      }
-
-      return data.secure_url;
-    }
-
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
-
-        const form =
-          document.getElementById("home-contact-form");
-
-        if (!form) return;
-
-
-        form.addEventListener(
-          "submit",
-          async (event) => {
-
-            event.preventDefault();
-
-
-            const statusEl =
-              document.getElementById(
-                "home-contact-form-status"
-              );
-
-            const submitBtn =
-              document.getElementById(
-                "home-cf-submit-btn"
-              );
-
-
-            const emailVal =
-              document.getElementById(
-                "home-cf-email"
-              ).value.trim();
-
-            const subjectVal =
-              document.getElementById(
-                "home-cf-subject"
-              ).value.trim();
-
-            const messageVal =
-              document.getElementById(
-                "home-cf-message"
-              ).value.trim();
-
-            const linkVal =
-              document.getElementById(
-                "home-cf-link"
-              ).value.trim();
-
-
-            const imageFile =
-              document.getElementById(
-                "home-cf-image"
-              ).files[0];
-
-            const videoFile =
-              document.getElementById(
-                "home-cf-video"
-              ).files[0];
-
-
-            if (!emailVal || !messageVal) {
-              return;
-            }
-
-
-            statusEl.style.color =
-              "var(--color-muted)";
-
-            submitBtn.disabled = true;
-
-
-            try {
-
-              let imageUrl = "";
-              let videoUrl = "";
-
-
-              if (imageFile) {
-
-                statusEl.textContent =
-                  "Uploading image...";
-
-                imageUrl =
-                  await homeUploadToCloudinary(
-                    imageFile,
-                    "image"
-                  );
-              }
-
-
-              if (videoFile) {
-
-                statusEl.textContent =
-                  "Uploading video...";
-
-                videoUrl =
-                  await homeUploadToCloudinary(
-                    videoFile,
-                    "video"
-                  );
-              }
-
-
-              statusEl.textContent =
-                "Sending...";
-
-
-              const response =
-                await fetch(
-                  HOME_CONTACT_API_URL,
-                  {
-                    method: "POST",
-
-                    headers: {
-                      "Content-Type":
-                        "application/json"
-                    },
-
-                    body: JSON.stringify({
-                      email: emailVal,
-                      subject: subjectVal,
-                      message: messageVal,
-                      imageUrl,
-                      videoUrl,
-                      linkUrl: linkVal
-                    })
-                  }
-                );
-
-
-              const result =
-                await response.json();
-
-
-              if (!response.ok) {
-                throw new Error(
-                  result.error ||
-                  "Failed to send"
-                );
-              }
-
-
-              if (
-                typeof firebase !== "undefined" &&
-                firebase.database
-              ) {
-
-                firebase
-                  .database()
-                  .ref("visitors")
-                  .push({
-                    email: emailVal,
-                    subject: subjectVal,
-                    message: messageVal,
-                    timestamp:
-                      new Date().toISOString()
-                  });
-              }
-
-
-              statusEl.textContent =
-                "✅ Sent! I'll get back to you soon.";
-
-              statusEl.style.color =
-                "var(--color-accent)";
-
-
-              form.reset();
-
-
-            } catch (error) {
-
-              console.error(
-                "Home contact error:",
-                error
-              );
-
-              statusEl.textContent =
-                `❌ ${error.message}`;
-
-              statusEl.style.color =
-                "#ef4444";
-
-
-            } finally {
-
-              submitBtn.disabled = false;
-
-            }
-
-          }
-        );
-
-      }
-    );
-  </script>
 
 </body>
 </html>

@@ -17,97 +17,54 @@
 
   <style>
     /* =========================================================
-       REQUESTED HOME-ONLY CHANGES
+       REQUESTED CHANGE 1
+       BACKGROUND IMAGE SCROLLS WITH THE WEBSITE
     ========================================================== */
 
-    /* Background: 9:15, larger, only slightly dark */
-    .home-background-hero {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 9 / 15;
-      min-height: 600px;
-      max-height: 1100px;
-      overflow: hidden;
-
+    body {
       background-image:
         linear-gradient(
-          rgba(0, 0, 0, 0.25),
-          rgba(0, 0, 0, 0.25)
+          rgba(0, 0, 0, 0.28),
+          rgba(0, 0, 0, 0.28)
         ),
         url("https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg");
 
-      background-size: cover;
-      background-position: center center;
+      background-position: center top;
       background-repeat: no-repeat;
+      background-size: cover;
+
+      /* IMPORTANT:
+         background अब page के साथ scroll होगा */
+      background-attachment: scroll;
     }
 
-    .home-background-hero .hero {
-      height: 100%;
-      min-height: 100%;
-      box-sizing: border-box;
+    /* =========================================================
+       REQUESTED CHANGE 3
+       AMIT DHAKAR = YELLOW
+    ========================================================== */
+
+    .home-amit-name {
+      color: #ffd700 !important;
+    }
+
+    /* =========================================================
+       ONLY 2 SOCIAL LINKS ON HOME
+       GitHub + LinkedIn
+    ========================================================== */
+
+    .home-social-links {
       display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .home-social-link {
+      display: inline-flex;
       align-items: center;
-    }
-
-    /* Amit Dhakar yellow */
-    .home-name-yellow {
-      color: #ffd900 !important;
-      text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.25),
-        0 0 12px rgba(255, 255, 255, 0.18);
-    }
-
-    /* =========================================================
-       HOME ABOUT
-    ========================================================== */
-
-    .home-about-details {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-md);
-      margin-top: var(--space-lg);
-    }
-
-    .home-about-details .card {
-      height: 100%;
-      box-sizing: border-box;
-    }
-
-    @media (max-width: 800px) {
-      .home-about-details {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    /* =========================================================
-       HOME CONTACT
-    ========================================================== */
-
-    .home-contact-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
-    }
-
-    .home-contact-social-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
-    }
-
-    .home-contact-form-card {
-      margin-top: var(--space-lg);
-      max-width: 700px;
-    }
-
-    @media (max-width: 600px) {
-      .home-background-hero {
-        aspect-ratio: 9 / 15;
-        min-height: 0;
-        max-height: none;
-      }
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
     }
   </style>
 </head>
@@ -116,7 +73,7 @@
 
   <!-- =========================================================
        SIDE MENU
-       SEPARATE PAGES — DO NOT CHANGE
+       Same features/pages as the 3-dot menu
   ========================================================== -->
 
   <div class="side-panel-overlay" id="side-panel-overlay"></div>
@@ -133,17 +90,31 @@
 
     <div style="clear:both; margin-top:var(--space-lg);"></div>
 
-    <a href="index.html" class="side-panel-link">🏠 Home</a>
-    <a href="about.html" class="side-panel-link">👤 About</a>
-    <a href="projects.html" class="side-panel-link">💼 Projects</a>
-    <a href="skills.html" class="side-panel-link">🧠 Skills</a>
-    <a href="certificates.html" class="side-panel-link">🎓 Certificates</a>
-    <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
-    <a href="videos.html" class="side-panel-link">🎬 Videos</a>
-    <a href="blog.html" class="side-panel-link">📝 Blog</a>
-    <a href="resume.html" class="side-panel-link">📄 Resume</a>
-    <a href="contact.html" class="side-panel-link">📩 Contact</a>
-    <a href="#feedback" class="side-panel-link feedback-link">💬 Feedback</a>
+    <a href="#home" class="side-panel-link">🏠 Home</a>
+
+    <a href="#about" class="side-panel-link">👤 About</a>
+
+    <a href="#projects" class="side-panel-link">💼 Projects</a>
+
+    <a href="#skills" class="side-panel-link">🧠 Skills</a>
+
+    <a href="#certificates" class="side-panel-link">🎓 Certificates</a>
+
+    <a href="#gallery" class="side-panel-link">🖼️ Gallery</a>
+
+    <a href="#videos" class="side-panel-link">🎬 Videos</a>
+
+    <a href="#blog" class="side-panel-link">📝 Blog</a>
+
+    <a href="#achievements" class="side-panel-link">🏆 Achievements</a>
+
+    <a href="#resume" class="side-panel-link">📄 Resume</a>
+
+    <a href="#contact" class="side-panel-link">📩 Contact</a>
+
+    <a href="#feedback" class="side-panel-link feedback-link">
+      💬 Feedback
+    </a>
 
   </div>
 
@@ -155,7 +126,7 @@
   <nav class="navbar" id="main-navbar">
 
     <a
-      href="index.html"
+      href="#home"
       class="brand-logo-wrap"
       style="color:inherit; display:flex; align-items:center; gap:var(--space-sm);"
     >
@@ -186,69 +157,98 @@
 
 
   <!-- =========================================================
-       HOME BACKGROUND + HERO
+       HOME / HERO
   ========================================================== -->
 
-  <div class="home-background-hero">
+  <section
+    class="hero section"
+    id="home"
+    style="
+      padding-top:var(--space-2xl);
+      min-height:90vh;
+      display:flex;
+      align-items:center;
+    "
+  >
 
-    <section
-      class="hero section"
-      id="home"
-      style="padding-top:var(--space-2xl);"
-    >
+    <div class="hero-content">
 
-      <div class="hero-content">
+      <p class="text-muted">
+        Hello, I'm
+      </p>
 
-        <p class="text-muted">
-          Hello, I'm
-        </p>
+      <h1 class="hero-title home-amit-name">
+        Amit Dhakar
+      </h1>
 
-        <h1 class="hero-title home-name-yellow">
-          Amit Dhakar
-        </h1>
+      <p class="hero-subtitle">
+        Electronics & Communication Student · Developer ·
+        Technology Enthusiast
+      </p>
 
-        <p class="hero-subtitle">
-          Electronics & Communication Student · Developer ·
-          Technology Enthusiast
-        </p>
+      <p class="hero-description">
+        I am learning software development, app development,
+        web technologies and artificial intelligence while
+        building practical projects.
+      </p>
 
-        <p class="hero-description">
-          I am learning software development, app development,
-          web technologies and artificial intelligence while
-          building practical projects.
-        </p>
+      <div class="hero-buttons">
 
-        <div class="hero-buttons">
+        <a
+          href="#projects"
+          class="btn btn-primary"
+        >
+          🚀 View Projects
+        </a>
 
-          <a
-            href="#projects"
-            class="btn btn-primary"
-          >
-            🚀 View Projects
-          </a>
-
-          <a
-            href="#contact"
-            class="btn btn-outline"
-          >
-            📩 Contact Me
-          </a>
-
-        </div>
+        <a
+          href="#contact"
+          class="btn btn-outline"
+        >
+          📩 Contact Me
+        </a>
 
       </div>
 
-    </section>
 
-  </div>
+      <!-- ONLY TWO LINKS -->
+
+      <div class="home-social-links">
+
+        <a
+          href="https://github.com/amitdhakar218"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline home-social-link"
+        >
+          🐙 GitHub
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/amit-dhakar-564177385"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn btn-outline home-social-link"
+        >
+          💼 LinkedIn
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
 
 
   <!-- =========================================================
        ABOUT
-       DUPLICATE OF ABOUT PAGE DATA
+       Same About data fields used by About page
   ========================================================== -->
 
-  <section class="section" id="about">
+  <section
+    class="section"
+    id="about"
+  >
 
     <h2 class="section-title">
       About Me
@@ -260,16 +260,16 @@
         src="assets/profile.jpg"
         alt="Amit Dhakar"
         class="about-photo radius-lg"
-        id="home-about-photo"
+        id="about-photo"
       />
 
       <div class="about-text">
 
-        <p id="home-about-content">
+        <p id="about-intro">
           Loading...
         </p>
 
-        <div class="home-about-details">
+        <div class="about-details">
 
           <div class="card">
 
@@ -279,9 +279,9 @@
 
             <p
               class="card-body"
-              id="home-about-education"
+              id="about-education"
             >
-              Loading...
+              —
             </p>
 
           </div>
@@ -295,9 +295,9 @@
 
             <p
               class="card-body"
-              id="home-about-experience"
+              id="about-experience"
             >
-              Loading...
+              —
             </p>
 
           </div>
@@ -311,9 +311,9 @@
 
             <p
               class="card-body"
-              id="home-about-goals"
+              id="about-goals"
             >
-              Loading...
+              —
             </p>
 
           </div>
@@ -324,28 +324,19 @@
 
     </div>
 
-    <div
-      class="hero-buttons"
-      style="margin-top:var(--space-lg);"
-    >
-
-      <a
-        href="about.html"
-        class="btn btn-outline"
-      >
-        Read Full About →
-      </a>
-
-    </div>
-
   </section>
 
 
   <!-- =========================================================
        PROJECTS
+       Existing JS:
+       js/projects-page.js
   ========================================================== -->
 
-  <section class="section" id="projects">
+  <section
+    class="section"
+    id="projects"
+  >
 
     <h2 class="section-title">
       Projects
@@ -355,9 +346,11 @@
       class="projects-grid"
       id="projects-grid"
     >
+
       <p class="text-muted">
         Loading projects...
       </p>
+
     </div>
 
     <div
@@ -379,9 +372,14 @@
 
   <!-- =========================================================
        SKILLS
+       Existing JS:
+       js/skills-page.js
   ========================================================== -->
 
-  <section class="section" id="skills">
+  <section
+    class="section"
+    id="skills"
+  >
 
     <h2 class="section-title">
       Skills
@@ -391,9 +389,11 @@
       class="skills-list"
       id="skills-list"
     >
+
       <p class="text-muted">
         Loading skills...
       </p>
+
     </div>
 
     <div
@@ -415,9 +415,14 @@
 
   <!-- =========================================================
        CERTIFICATES
+       Existing JS:
+       js/certificates-page.js
   ========================================================== -->
 
-  <section class="section" id="certificates">
+  <section
+    class="section"
+    id="certificates"
+  >
 
     <h2 class="section-title">
       Certificates
@@ -427,9 +432,11 @@
       class="certificates-grid"
       id="certificates-grid"
     >
+
       <p class="text-muted">
         Loading certificates...
       </p>
+
     </div>
 
     <div
@@ -451,9 +458,14 @@
 
   <!-- =========================================================
        GALLERY
+       Existing JS:
+       js/gallery-page.js
   ========================================================== -->
 
-  <section class="section" id="gallery">
+  <section
+    class="section"
+    id="gallery"
+  >
 
     <h2 class="section-title">
       Gallery
@@ -463,9 +475,11 @@
       class="certificates-grid"
       id="full-gallery-grid"
     >
+
       <p class="text-muted">
         Loading gallery...
       </p>
+
     </div>
 
     <div
@@ -487,9 +501,14 @@
 
   <!-- =========================================================
        VIDEOS
+       Existing JS:
+       js/videos-page.js
   ========================================================== -->
 
-  <section class="section" id="videos">
+  <section
+    class="section"
+    id="videos"
+  >
 
     <h2 class="section-title">
       Videos
@@ -499,9 +518,11 @@
       class="blog-grid"
       id="full-videos-grid"
     >
+
       <p class="text-muted">
         Loading videos...
       </p>
+
     </div>
 
     <div
@@ -523,9 +544,14 @@
 
   <!-- =========================================================
        BLOG
+       Existing JS:
+       js/blog-page.js
   ========================================================== -->
 
-  <section class="section" id="blog">
+  <section
+    class="section"
+    id="blog"
+  >
 
     <h2 class="section-title">
       Blog
@@ -535,9 +561,11 @@
       class="blog-grid"
       id="full-blog-grid"
     >
+
       <p class="text-muted">
         Loading blog posts...
       </p>
+
     </div>
 
     <div
@@ -558,10 +586,55 @@
 
 
   <!-- =========================================================
+       ACHIEVEMENTS
+       Existing common system can load this section
+  ========================================================== -->
+
+  <section
+    class="section"
+    id="achievements"
+  >
+
+    <h2 class="section-title">
+      Achievements
+    </h2>
+
+    <div
+      class="card"
+      id="achievements-content"
+    >
+
+      <p class="text-muted">
+        Loading...
+      </p>
+
+    </div>
+
+    <div
+      class="hero-buttons"
+      style="margin-top:var(--space-lg);"
+    >
+
+      <a
+        href="achievements.html"
+        class="btn btn-outline"
+      >
+        View All Achievements →
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================
        RESUME
   ========================================================== -->
 
-  <section class="section" id="resume">
+  <section
+    class="section"
+    id="resume"
+  >
 
     <h2 class="section-title">
       Resume
@@ -595,21 +668,24 @@
 
   <!-- =========================================================
        CONTACT
-       FULL COPY OF CONTACT PAGE
+       Same contact features
   ========================================================== -->
 
-  <section class="section" id="contact">
+  <section
+    class="section"
+    id="contact"
+  >
 
     <h2 class="section-title">
       Contact
     </h2>
 
-    <div class="contact-links home-contact-links">
+    <div class="contact-links">
 
       <a
         href="mailto:"
         class="btn btn-outline"
-        id="home-contact-email"
+        id="contact-email"
       >
         📧 Email
       </a>
@@ -617,7 +693,7 @@
       <a
         href="tel:"
         class="btn btn-outline"
-        id="home-contact-phone"
+        id="contact-phone"
       >
         📱 Phone
       </a>
@@ -631,20 +707,18 @@
         💬 WhatsApp Me
       </a>
 
+      <div
+        class="contact-links"
+        id="contact-social-links"
+      ></div>
+
     </div>
 
 
-    <!-- All social links from Studio/Firebase -->
-
     <div
-      class="contact-links home-contact-social-links"
-      id="home-contact-social-links"
-    ></div>
-
-
-    <!-- Direct contact form -->
-
-    <div class="card home-contact-form-card">
+      class="card"
+      style="margin-top:var(--space-lg); max-width:500px;"
+    >
 
       <h3 class="card-title">
         📩 Send Me Info Directly
@@ -658,12 +732,12 @@
       </p>
 
       <p
-        id="home-contact-form-status"
+        id="contact-form-status"
         class="text-muted"
         style="min-height:1.2em; margin-bottom:var(--space-sm);"
       ></p>
 
-      <form id="home-contact-form">
+      <form id="contact-form">
 
         <div
           class="form-grid"
@@ -678,7 +752,7 @@
 
             <input
               type="email"
-              id="home-cf-email"
+              id="cf-email"
               required
             />
 
@@ -693,7 +767,7 @@
 
             <input
               type="text"
-              id="home-cf-subject"
+              id="cf-subject"
             />
 
           </label>
@@ -706,55 +780,10 @@
             </span>
 
             <textarea
-              id="home-cf-message"
+              id="cf-message"
               rows="3"
               required
             ></textarea>
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Image (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-image"
-              accept="image/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Video (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-video"
-              accept="video/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Link (optional)
-            </span>
-
-            <input
-              type="url"
-              id="home-cf-link"
-              placeholder="https://..."
-            />
 
           </label>
 
@@ -765,7 +794,7 @@
           type="submit"
           class="btn btn-primary"
           style="width:100%; margin-top:var(--space-md);"
-          id="home-cf-submit-btn"
+          id="cf-submit-btn"
         >
           Send
         </button>
@@ -781,7 +810,10 @@
        FEEDBACK
   ========================================================== -->
 
-  <section class="section" id="feedback">
+  <section
+    class="section"
+    id="feedback"
+  >
 
     <h2 class="section-title">
       Feedback
@@ -849,6 +881,7 @@
 
           </label>
 
+
           <label class="form-field">
 
             <span>
@@ -864,6 +897,7 @@
           </label>
 
         </div>
+
 
         <div
           class="hero-buttons"
@@ -922,6 +956,7 @@
 
   <!-- =========================================================
        FIREBASE
+       Existing Firebase setup kept
   ========================================================== -->
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -939,254 +974,100 @@
 
 
   <!-- =========================================================
-       HOME DATA MODULES
+       EXISTING PAGE MODULES
   ========================================================== -->
 
   <script src="js/projects-page.js"></script>
+
   <script src="js/skills-page.js"></script>
+
   <script src="js/certificates-page.js"></script>
+
   <script src="js/gallery-page.js"></script>
+
   <script src="js/videos-page.js"></script>
+
   <script src="js/blog-page.js"></script>
 
 
   <!-- =========================================================
-       HOME CONTACT LOGIC
-       Same API/Cloudinary setup as contact.html
+       CONTACT FORM
+       Same visitors Firebase path used by Contact page
   ========================================================== -->
 
   <script>
-    const HOME_CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const HOME_CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const HOME_CONTACT_API_URL =
-      "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
+    document.addEventListener("DOMContentLoaded", () => {
 
-    async function homeUploadToCloudinary(file, type) {
+      const form =
+        document.getElementById("contact-form");
 
-      const formData = new FormData();
+      if (!form) return;
 
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        HOME_CLOUDINARY_PRESET
-      );
+      form.addEventListener("submit", async (e) => {
 
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${HOME_CLOUDINARY_CLOUD_NAME}/${type}/upload`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
+        e.preventDefault();
 
-      const data = await response.json();
+        const statusEl =
+          document.getElementById("contact-form-status");
 
-      if (!response.ok) {
-        throw new Error(
-          data.error?.message || "Upload failed"
-        );
-      }
+        const submitBtn =
+          document.getElementById("cf-submit-btn");
 
-      return data.secure_url;
-    }
+        const emailVal =
+          document.getElementById("cf-email").value.trim();
 
+        const subjectVal =
+          document.getElementById("cf-subject").value.trim();
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
+        const messageVal =
+          document.getElementById("cf-message").value.trim();
 
-        const form =
-          document.getElementById("home-contact-form");
+        if (!emailVal || !messageVal) return;
 
-        if (!form) return;
+        statusEl.textContent = "Sending...";
 
+        submitBtn.disabled = true;
 
-        form.addEventListener(
-          "submit",
-          async (event) => {
+        try {
 
-            event.preventDefault();
+          if (
+            typeof firebase !== "undefined" &&
+            firebase.database
+          ) {
 
-
-            const statusEl =
-              document.getElementById(
-                "home-contact-form-status"
-              );
-
-            const submitBtn =
-              document.getElementById(
-                "home-cf-submit-btn"
-              );
-
-
-            const emailVal =
-              document.getElementById(
-                "home-cf-email"
-              ).value.trim();
-
-            const subjectVal =
-              document.getElementById(
-                "home-cf-subject"
-              ).value.trim();
-
-            const messageVal =
-              document.getElementById(
-                "home-cf-message"
-              ).value.trim();
-
-            const linkVal =
-              document.getElementById(
-                "home-cf-link"
-              ).value.trim();
-
-
-            const imageFile =
-              document.getElementById(
-                "home-cf-image"
-              ).files[0];
-
-            const videoFile =
-              document.getElementById(
-                "home-cf-video"
-              ).files[0];
-
-
-            if (!emailVal || !messageVal) {
-              return;
-            }
-
-
-            statusEl.style.color =
-              "var(--color-muted)";
-
-            submitBtn.disabled = true;
-
-
-            try {
-
-              let imageUrl = "";
-              let videoUrl = "";
-
-
-              if (imageFile) {
-
-                statusEl.textContent =
-                  "Uploading image...";
-
-                imageUrl =
-                  await homeUploadToCloudinary(
-                    imageFile,
-                    "image"
-                  );
-              }
-
-
-              if (videoFile) {
-
-                statusEl.textContent =
-                  "Uploading video...";
-
-                videoUrl =
-                  await homeUploadToCloudinary(
-                    videoFile,
-                    "video"
-                  );
-              }
-
-
-              statusEl.textContent =
-                "Sending...";
-
-
-              const response =
-                await fetch(
-                  HOME_CONTACT_API_URL,
-                  {
-                    method: "POST",
-
-                    headers: {
-                      "Content-Type":
-                        "application/json"
-                    },
-
-                    body: JSON.stringify({
-                      email: emailVal,
-                      subject: subjectVal,
-                      message: messageVal,
-                      imageUrl,
-                      videoUrl,
-                      linkUrl: linkVal
-                    })
-                  }
-                );
-
-
-              const result =
-                await response.json();
-
-
-              if (!response.ok) {
-                throw new Error(
-                  result.error ||
-                  "Failed to send"
-                );
-              }
-
-
-              if (
-                typeof firebase !== "undefined" &&
-                firebase.database
-              ) {
-
-                firebase
-                  .database()
-                  .ref("visitors")
-                  .push({
-                    email: emailVal,
-                    subject: subjectVal,
-                    message: messageVal,
-                    timestamp:
-                      new Date().toISOString()
-                  });
-              }
-
-
-              statusEl.textContent =
-                "✅ Sent! I'll get back to you soon.";
-
-              statusEl.style.color =
-                "var(--color-accent)";
-
-
-              form.reset();
-
-
-            } catch (error) {
-
-              console.error(
-                "Home contact error:",
-                error
-              );
-
-              statusEl.textContent =
-                `❌ ${error.message}`;
-
-              statusEl.style.color =
-                "#ef4444";
-
-
-            } finally {
-
-              submitBtn.disabled = false;
-
-            }
+            await firebase
+              .database()
+              .ref("visitors")
+              .push({
+                email: emailVal,
+                subject: subjectVal,
+                message: messageVal,
+                timestamp: new Date().toISOString()
+              });
 
           }
-        );
 
-      }
-    );
+          statusEl.textContent =
+            "✅ Sent! I'll get back to you soon.";
+
+          form.reset();
+
+        } catch (err) {
+
+          statusEl.textContent =
+            "❌ " + err.message;
+
+        } finally {
+
+          submitBtn.disabled = false;
+
+        }
+
+      });
+
+    });
   </script>
+
 
 </body>
 </html>

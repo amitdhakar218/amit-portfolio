@@ -17,22 +17,20 @@
 
   <style>
     /* =========================================================
-       REQUESTED HOME-ONLY CHANGES
+       REQUESTED HOME PAGE DESIGN
     ========================================================== */
 
-    /* Background: 9:15, larger, only slightly dark */
     .home-background-hero {
       position: relative;
       width: 100%;
       aspect-ratio: 9 / 15;
-      min-height: 600px;
-      max-height: 1100px;
+      min-height: 560px;
       overflow: hidden;
 
       background-image:
         linear-gradient(
-          rgba(0, 0, 0, 0.25),
-          rgba(0, 0, 0, 0.25)
+          rgba(0, 0, 0, 0.58),
+          rgba(0, 0, 0, 0.58)
         ),
         url("https://i.ibb.co/YBgnyZKW/In-Shot-20260622-230134462.jpg");
 
@@ -49,39 +47,44 @@
       align-items: center;
     }
 
-    /* Amit Dhakar yellow */
     .home-name-yellow {
       color: #ffd900 !important;
       text-shadow:
-        0 0 6px rgba(255, 255, 255, 0.25),
-        0 0 12px rgba(255, 255, 255, 0.18);
+        0 0 6px rgba(255,255,255,0.25),
+        0 0 12px rgba(255,255,255,0.18);
     }
 
-    /* =========================================================
-       HOME ABOUT
-    ========================================================== */
-
-    .home-about-details {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: var(--space-md);
-      margin-top: var(--space-lg);
+    .home-social-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+      flex-wrap: wrap;
     }
 
-    .home-about-details .card {
-      height: 100%;
-      box-sizing: border-box;
+    .home-social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
     }
 
-    @media (max-width: 800px) {
-      .home-about-details {
-        grid-template-columns: 1fr;
-      }
+    .home-social-link .social-icon {
+      display: inline-flex;
+      width: 20px;
+      height: 20px;
+      align-items: center;
+      justify-content: center;
     }
 
-    /* =========================================================
-       HOME CONTACT
-    ========================================================== */
+    .home-social-link .social-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .home-data-loading {
+      opacity: 0.75;
+    }
 
     .home-contact-links {
       display: flex;
@@ -90,24 +93,68 @@
       margin-top: var(--space-md);
     }
 
-    .home-contact-social-links {
+    .home-contact-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .home-contact-socials {
       display: flex;
       flex-wrap: wrap;
       gap: var(--space-sm);
       margin-top: var(--space-md);
     }
 
-    .home-contact-form-card {
-      margin-top: var(--space-lg);
-      max-width: 700px;
+    .home-contact-socials .social-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .home-contact-socials svg {
+      width: 20px;
+      height: 20px;
     }
 
     @media (max-width: 600px) {
       .home-background-hero {
         aspect-ratio: 9 / 15;
         min-height: 0;
-        max-height: none;
       }
+    }
+
+    /* =========================================================
+       VISITOR MODAL
+    ========================================================== */
+
+    #visitor-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.72);
+      backdrop-filter: blur(5px);
+    }
+
+    #visitor-modal-overlay .visitor-modal-box {
+      width: min(100%, 480px);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .visitor-modal-actions {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-md);
+    }
+
+    .visitor-modal-actions button {
+      flex: 1;
     }
   </style>
 </head>
@@ -116,7 +163,7 @@
 
   <!-- =========================================================
        SIDE MENU
-       SEPARATE PAGES — DO NOT CHANGE
+       EVERY FEATURE OPENS ITS OWN PAGE
   ========================================================== -->
 
   <div class="side-panel-overlay" id="side-panel-overlay"></div>
@@ -141,6 +188,7 @@
     <a href="gallery.html" class="side-panel-link">🖼️ Gallery</a>
     <a href="videos.html" class="side-panel-link">🎬 Videos</a>
     <a href="blog.html" class="side-panel-link">📝 Blog</a>
+    <a href="achievements.html" class="side-panel-link">🏆 Achievements</a>
     <a href="resume.html" class="side-panel-link">📄 Resume</a>
     <a href="contact.html" class="side-panel-link">📩 Contact</a>
     <a href="#feedback" class="side-panel-link feedback-link">💬 Feedback</a>
@@ -187,6 +235,7 @@
 
   <!-- =========================================================
        HOME BACKGROUND + HERO
+       BACKGROUND ENDS BEFORE ABOUT
   ========================================================== -->
 
   <div class="home-background-hero">
@@ -218,19 +267,55 @@
           building practical projects.
         </p>
 
-        <div class="hero-buttons">
+        <!-- ONLY TWO LINKS UNDER NAME -->
+
+        <div class="home-social-links" id="home-hero-social-links">
 
           <a
-            href="#projects"
-            class="btn btn-primary"
+            href="https://github.com/amitdhakar218"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline home-social-link"
+            aria-label="GitHub"
           >
-            🚀 View Projects
+            <span class="social-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M12 .7A11.3 11.3 0 0 0 8.4 22.8c.57.1.78-.25.78-.55v-2.1c-3.18.69-3.85-1.35-3.85-1.35-.52-1.33-1.27-1.69-1.27-1.69-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.02 1.75 2.67 1.25 3.32.96.1-.74.4-1.25.73-1.54-2.54-.29-5.2-1.27-5.2-5.65 0-1.25.45-2.27 1.18-3.07-.12-.29-.51-1.45.11-3.02 0 0 .96-.31 3.13 1.17a10.9 10.9 0 0 1 5.7 0c2.17-1.48 3.13-1.17 3.13-1.17.62 1.57.23 2.73.11 3.02.73.8 1.18 1.82 1.18 3.07 0 4.39-2.67 5.35-5.21 5.64.41.36.78 1.07.78 2.16v3.2c0 .3.21.65.79.54A11.3 11.3 0 0 0 12 .7Z"
+                />
+              </svg>
+            </span>
+            GitHub
           </a>
 
           <a
-            href="#contact"
-            class="btn btn-outline"
+            href="https://www.linkedin.com/in/amit-dhakar-564177385"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-outline home-social-link"
+            aria-label="LinkedIn"
           >
+            <span class="social-icon">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  fill="currentColor"
+                  d="M6.94 8.5H3.56V20h3.38V8.5ZM5.25 3A2.03 2.03 0 1 0 5.25 7.06 2.03 2.03 0 0 0 5.25 3ZM20.44 13.42c0-3.46-1.84-5.07-4.3-5.07-1.98 0-2.86 1.09-3.35 1.85V8.5H9.41V20h3.38v-6.06c0-1.6.3-3.15 2.28-3.15 1.95 0 1.98 1.83 1.98 3.25V20h3.39v-6.58Z"
+                />
+              </svg>
+            </span>
+            LinkedIn
+          </a>
+
+        </div>
+
+        <div class="hero-buttons">
+
+          <a href="#projects" class="btn btn-primary">
+            🚀 View Projects
+          </a>
+
+          <a href="#contact" class="btn btn-outline">
             📩 Contact Me
           </a>
 
@@ -244,8 +329,7 @@
 
 
   <!-- =========================================================
-       ABOUT
-       DUPLICATE OF ABOUT PAGE DATA
+       ABOUT — HOME DUPLICATE OF ABOUT PAGE DATA
   ========================================================== -->
 
   <section class="section" id="about">
@@ -265,76 +349,48 @@
 
       <div class="about-text">
 
-        <p id="home-about-content">
+        <p id="home-about-intro" class="home-data-loading">
           Loading...
         </p>
 
-        <div class="home-about-details">
+        <div class="about-details">
 
           <div class="card">
-
-            <h3 class="card-title">
-              🎓 Education
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-education"
-            >
-              Loading...
+            <h3 class="card-title">🎓 Education</h3>
+            <p class="card-body" id="home-about-education">
+              —
             </p>
-
           </div>
 
-
           <div class="card">
-
-            <h3 class="card-title">
-              💼 Experience
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-experience"
-            >
-              Loading...
+            <h3 class="card-title">💼 Experience</h3>
+            <p class="card-body" id="home-about-experience">
+              —
             </p>
-
           </div>
 
-
           <div class="card">
-
-            <h3 class="card-title">
-              🎯 Goals
-            </h3>
-
-            <p
-              class="card-body"
-              id="home-about-goals"
-            >
-              Loading...
+            <h3 class="card-title">🎯 Goals</h3>
+            <p class="card-body" id="home-about-goals">
+              —
             </p>
-
           </div>
 
         </div>
 
+        <div
+          class="hero-buttons"
+          style="margin-top:var(--space-md);"
+        >
+          <a
+            href="about.html"
+            class="btn btn-outline"
+          >
+            Read Full About →
+          </a>
+        </div>
+
       </div>
-
-    </div>
-
-    <div
-      class="hero-buttons"
-      style="margin-top:var(--space-lg);"
-    >
-
-      <a
-        href="about.html"
-        class="btn btn-outline"
-      >
-        Read Full About →
-      </a>
 
     </div>
 
@@ -342,7 +398,7 @@
 
 
   <!-- =========================================================
-       PROJECTS
+       PROJECTS — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="projects">
@@ -378,7 +434,7 @@
 
 
   <!-- =========================================================
-       SKILLS
+       SKILLS — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="skills">
@@ -414,7 +470,7 @@
 
 
   <!-- =========================================================
-       CERTIFICATES
+       CERTIFICATES — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="certificates">
@@ -450,7 +506,7 @@
 
 
   <!-- =========================================================
-       GALLERY
+       GALLERY — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="gallery">
@@ -486,7 +542,7 @@
 
 
   <!-- =========================================================
-       VIDEOS
+       VIDEOS — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="videos">
@@ -522,7 +578,7 @@
 
 
   <!-- =========================================================
-       BLOG
+       BLOG — HOME DUPLICATE
   ========================================================== -->
 
   <section class="section" id="blog">
@@ -594,8 +650,7 @@
 
 
   <!-- =========================================================
-       CONTACT
-       FULL COPY OF CONTACT PAGE
+       CONTACT — HOME DUPLICATE OF CONTACT PAGE
   ========================================================== -->
 
   <section class="section" id="contact">
@@ -604,173 +659,60 @@
       Contact
     </h2>
 
-    <div class="contact-links home-contact-links">
+    <div class="card">
 
-      <a
-        href="mailto:"
-        class="btn btn-outline"
-        id="home-contact-email"
-      >
-        📧 Email
-      </a>
-
-      <a
-        href="tel:"
-        class="btn btn-outline"
-        id="home-contact-phone"
-      >
-        📱 Phone
-      </a>
-
-      <a
-        href="https://wa.me/919174573889"
-        class="btn btn-primary"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        💬 WhatsApp Me
-      </a>
-
-    </div>
-
-
-    <!-- All social links from Studio/Firebase -->
-
-    <div
-      class="contact-links home-contact-social-links"
-      id="home-contact-social-links"
-    ></div>
-
-
-    <!-- Direct contact form -->
-
-    <div class="card home-contact-form-card">
-
-      <h3 class="card-title">
-        📩 Send Me Info Directly
-      </h3>
-
-      <p
-        class="text-muted"
-        style="font-size:0.85rem; margin-bottom:var(--space-md);"
-      >
-        Fill this and it goes straight to my dashboard.
+      <p class="card-body">
+        Interested in working together, discussing a project,
+        internship opportunities or technology?
       </p>
 
-      <p
-        id="home-contact-form-status"
-        class="text-muted"
-        style="min-height:1.2em; margin-bottom:var(--space-sm);"
-      ></p>
+      <div class="home-contact-links">
 
-      <form id="home-contact-form">
-
-        <div
-          class="form-grid"
-          style="grid-template-columns:1fr;"
+        <a
+          href="mailto:"
+          id="home-contact-email"
+          class="btn btn-outline"
         >
+          📧 Email
+        </a>
 
-          <label class="form-field">
+        <a
+          href="tel:"
+          id="home-contact-phone"
+          class="btn btn-outline"
+        >
+          📱 Phone
+        </a>
 
-            <span>
-              Your Email
-            </span>
-
-            <input
-              type="email"
-              id="home-cf-email"
-              required
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Subject
-            </span>
-
-            <input
-              type="text"
-              id="home-cf-subject"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Message
-            </span>
-
-            <textarea
-              id="home-cf-message"
-              rows="3"
-              required
-            ></textarea>
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Image (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-image"
-              accept="image/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Attach Video (optional)
-            </span>
-
-            <input
-              type="file"
-              id="home-cf-video"
-              accept="video/*"
-            />
-
-          </label>
-
-
-          <label class="form-field">
-
-            <span>
-              Link (optional)
-            </span>
-
-            <input
-              type="url"
-              id="home-cf-link"
-              placeholder="https://..."
-            />
-
-          </label>
-
-        </div>
-
-
-        <button
-          type="submit"
+        <a
+          href="https://wa.me/919174573889"
+          target="_blank"
+          rel="noopener noreferrer"
           class="btn btn-primary"
-          style="width:100%; margin-top:var(--space-md);"
-          id="home-cf-submit-btn"
         >
-          Send
-        </button>
+          💬 WhatsApp
+        </a>
 
-      </form>
+      </div>
+
+      <div
+        id="home-contact-social-links"
+        class="home-contact-socials"
+      ></div>
+
+      <div
+        class="hero-buttons"
+        style="margin-top:var(--space-lg);"
+      >
+
+        <a
+          href="contact.html"
+          class="btn btn-primary"
+        >
+          📩 Open Full Contact Page →
+        </a>
+
+      </div>
 
     </div>
 
@@ -897,6 +839,111 @@
 
 
   <!-- =========================================================
+       VISITOR DETAILS MODAL
+       THIS WAS MISSING FROM CURRENT INDEX
+  ========================================================== -->
+
+  <div
+    id="visitor-modal-overlay"
+  >
+
+    <div class="card visitor-modal-box">
+
+      <h2 class="card-title">
+        👋 Welcome!
+      </h2>
+
+      <p class="card-body">
+        Before you explore my portfolio, you can tell me a little
+        about yourself. This helps me understand who is visiting.
+      </p>
+
+      <p
+        id="visitor-status"
+        class="text-muted"
+        style="min-height:1.2em;"
+      ></p>
+
+      <form id="visitor-form">
+
+        <div
+          class="form-grid"
+          style="grid-template-columns:1fr;"
+        >
+
+          <label class="form-field">
+
+            <span>
+              Your Name
+            </span>
+
+            <input
+              type="text"
+              id="vf-name"
+              placeholder="Enter your name"
+              required
+            />
+
+          </label>
+
+          <label class="form-field">
+
+            <span>
+              Your Email (optional)
+            </span>
+
+            <input
+              type="email"
+              id="vf-email"
+              placeholder="example@email.com"
+            />
+
+          </label>
+
+          <label class="form-field">
+
+            <span>
+              What are you interested in? (optional)
+            </span>
+
+            <input
+              type="text"
+              id="vf-interest"
+              placeholder="Projects, internship, technology..."
+            />
+
+          </label>
+
+        </div>
+
+        <div class="visitor-modal-actions">
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="visitor-confirm-btn"
+          >
+            Confirm
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-outline"
+            id="visitor-skip-btn"
+          >
+            Skip
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =========================================================
        FOOTER
   ========================================================== -->
 
@@ -925,9 +972,7 @@
   ========================================================== -->
 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 
 
@@ -940,6 +985,7 @@
 
   <!-- =========================================================
        HOME DATA MODULES
+       SAME DATA MODULES USED BY SEPARATE PAGES
   ========================================================== -->
 
   <script src="js/projects-page.js"></script>
@@ -948,245 +994,6 @@
   <script src="js/gallery-page.js"></script>
   <script src="js/videos-page.js"></script>
   <script src="js/blog-page.js"></script>
-
-
-  <!-- =========================================================
-       HOME CONTACT LOGIC
-       Same API/Cloudinary setup as contact.html
-  ========================================================== -->
-
-  <script>
-    const HOME_CLOUDINARY_CLOUD_NAME = "va6h8cbz";
-    const HOME_CLOUDINARY_PRESET = "amit_portfolio_uploads";
-    const HOME_CONTACT_API_URL =
-      "https://amit-contact-api-git-main-amitdhakar218s-projects.vercel.app/api/send-email";
-
-    async function homeUploadToCloudinary(file, type) {
-
-      const formData = new FormData();
-
-      formData.append("file", file);
-      formData.append(
-        "upload_preset",
-        HOME_CLOUDINARY_PRESET
-      );
-
-      const response = await fetch(
-        `https://api.cloudinary.com/v1_1/${HOME_CLOUDINARY_CLOUD_NAME}/${type}/upload`,
-        {
-          method: "POST",
-          body: formData
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.error?.message || "Upload failed"
-        );
-      }
-
-      return data.secure_url;
-    }
-
-
-    document.addEventListener(
-      "DOMContentLoaded",
-      () => {
-
-        const form =
-          document.getElementById("home-contact-form");
-
-        if (!form) return;
-
-
-        form.addEventListener(
-          "submit",
-          async (event) => {
-
-            event.preventDefault();
-
-
-            const statusEl =
-              document.getElementById(
-                "home-contact-form-status"
-              );
-
-            const submitBtn =
-              document.getElementById(
-                "home-cf-submit-btn"
-              );
-
-
-            const emailVal =
-              document.getElementById(
-                "home-cf-email"
-              ).value.trim();
-
-            const subjectVal =
-              document.getElementById(
-                "home-cf-subject"
-              ).value.trim();
-
-            const messageVal =
-              document.getElementById(
-                "home-cf-message"
-              ).value.trim();
-
-            const linkVal =
-              document.getElementById(
-                "home-cf-link"
-              ).value.trim();
-
-
-            const imageFile =
-              document.getElementById(
-                "home-cf-image"
-              ).files[0];
-
-            const videoFile =
-              document.getElementById(
-                "home-cf-video"
-              ).files[0];
-
-
-            if (!emailVal || !messageVal) {
-              return;
-            }
-
-
-            statusEl.style.color =
-              "var(--color-muted)";
-
-            submitBtn.disabled = true;
-
-
-            try {
-
-              let imageUrl = "";
-              let videoUrl = "";
-
-
-              if (imageFile) {
-
-                statusEl.textContent =
-                  "Uploading image...";
-
-                imageUrl =
-                  await homeUploadToCloudinary(
-                    imageFile,
-                    "image"
-                  );
-              }
-
-
-              if (videoFile) {
-
-                statusEl.textContent =
-                  "Uploading video...";
-
-                videoUrl =
-                  await homeUploadToCloudinary(
-                    videoFile,
-                    "video"
-                  );
-              }
-
-
-              statusEl.textContent =
-                "Sending...";
-
-
-              const response =
-                await fetch(
-                  HOME_CONTACT_API_URL,
-                  {
-                    method: "POST",
-
-                    headers: {
-                      "Content-Type":
-                        "application/json"
-                    },
-
-                    body: JSON.stringify({
-                      email: emailVal,
-                      subject: subjectVal,
-                      message: messageVal,
-                      imageUrl,
-                      videoUrl,
-                      linkUrl: linkVal
-                    })
-                  }
-                );
-
-
-              const result =
-                await response.json();
-
-
-              if (!response.ok) {
-                throw new Error(
-                  result.error ||
-                  "Failed to send"
-                );
-              }
-
-
-              if (
-                typeof firebase !== "undefined" &&
-                firebase.database
-              ) {
-
-                firebase
-                  .database()
-                  .ref("visitors")
-                  .push({
-                    email: emailVal,
-                    subject: subjectVal,
-                    message: messageVal,
-                    timestamp:
-                      new Date().toISOString()
-                  });
-              }
-
-
-              statusEl.textContent =
-                "✅ Sent! I'll get back to you soon.";
-
-              statusEl.style.color =
-                "var(--color-accent)";
-
-
-              form.reset();
-
-
-            } catch (error) {
-
-              console.error(
-                "Home contact error:",
-                error
-              );
-
-              statusEl.textContent =
-                `❌ ${error.message}`;
-
-              statusEl.style.color =
-                "#ef4444";
-
-
-            } finally {
-
-              submitBtn.disabled = false;
-
-            }
-
-          }
-        );
-
-      }
-    );
-  </script>
 
 </body>
 </html>
